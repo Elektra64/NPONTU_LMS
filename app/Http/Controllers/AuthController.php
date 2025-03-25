@@ -14,7 +14,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email' => ['required', 'email', 'exists:users'],
+            'email' => ["bail", 'required', 'email', 'exists:users'],
             'password' => ['required']
         ]);
 
@@ -33,7 +33,7 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'email' => ['required', 'email', 'exists:users'],
+            'email' => ['required', 'email'],
             'password' => ['required', 'confirmed'],
             'username' => ['required', 'max:255', 'unique:users,username'],
             'role' => ['required', Rule::in(['admin', 'learner'])],
@@ -43,8 +43,8 @@ class AuthController extends Controller
 
         try {
             $user = User::create([
-                'firstName' => $request->first_name,
-                'lastName' => $request->last_name,
+                'first_name' => $request->firstName,
+                'last_name' => $request->lastName,
                 'email' => $request->email,
                 'username' => $request->username,
                 'role' => $request->role,
