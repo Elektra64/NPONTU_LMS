@@ -1,0 +1,452 @@
+
+
+tailwind.config = {
+    theme: {
+        extend: {
+            colors: {
+                'primary': '#4A5568',
+                'secondary': '#718096',
+                'background': '#F7FAFC',
+                'accent-light': '#E2E8F0',
+                'accent-dark': '#2D3748',
+                'fine-color': '#A1DBF1'
+            },
+            animation: {
+                'fade-in': 'fadeIn 0.5s ease-out',
+                'slide-in-left': 'slideInLeft 0.5s ease-out',
+                'pulse-slow': 'pulse 2s infinite',
+            },
+            keyframes: {
+                fadeIn: {
+                    '0%': { opacity: '0' },
+                    '100%': { opacity: '1' },
+                },
+                slideInLeft: {
+                    '0%': { transform: 'translateX(-100%)', opacity: '0' },
+                    '100%': { transform: 'translateX(0)', opacity: '1' },
+                }
+            }
+        }
+    }
+}
+
+let courses = [
+    {
+        id: "web-dev-masterclass",
+        title: "Web Development Masterclass",
+        category: "Web Development",
+        difficulty: "Intermediate",
+        description: "Learn full-stack web development with modern technologies",
+        duration_weeks: 12,
+        hours_per_week: 8,
+        video_url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+        final_exam: {
+            weight: 30,
+            passing_score: 70
+        },
+        modules: [
+            {
+                title: "HTML & CSS Fundamentals",
+                duration_days: 14,
+                description: "Learn the building blocks of web development",
+                quiz_weight: 20,
+                questions: [
+                    {
+                        text: "What does HTML stand for?",
+                        options: ["Hyper Text Markup Language", "Hyperlinks and Text Markup Language", "Home Tool Markup Language"],
+                        correct: 0
+                    }
+                ]
+            }
+        ],
+        enrollments: 245,
+        status: "Published",
+        lastUpdated: "2 days ago",
+        created_at: new Date('2023-05-15'),
+        imageUrl: "/webdev.jpg"
+    },
+    {
+        id: "data-science-bootcamp",
+        title: "Data Science Bootcamp",
+        category: "Data Science",
+        difficulty: "Beginner",
+        description: "Introduction to data science and machine learning",
+        duration_weeks: 10,
+        hours_per_week: 6,
+        video_url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+        final_exam: {
+            weight: 25,
+            passing_score: 65
+        },
+        modules: [
+            {
+                title: "Python for Data Science",
+                duration_days: 10,
+                description: "Learn Python basics for data analysis",
+                quiz_weight: 15,
+                questions: [
+                    {
+                        text: "Which library is used for numerical operations in Python?",
+                        options: ["NumPy", "Pandas", "Matplotlib"],
+                        correct: 0
+                    }
+                ]
+            }
+        ],
+        enrollments: 320,
+        status: "Published",
+        lastUpdated: "1 week ago",
+        created_at: new Date('2023-06-10'),
+        imageUrl: "/webdev.jpg"
+    },
+    {
+        id: "advanced-javascript",
+        title: "Advanced JavaScript Patterns",
+        category: "Web Development",
+        difficulty: "Advanced",
+        description: "Master advanced JavaScript concepts and patterns",
+        duration_weeks: 8,
+        hours_per_week: 10,
+        video_url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+        final_exam: {
+            weight: 35,
+            passing_score: 75
+        },
+        modules: [
+            {
+                title: "Design Patterns in JS",
+                duration_days: 12,
+                description: "Learn common JavaScript design patterns",
+                quiz_weight: 25,
+                questions: [
+                    {
+                        text: "Which pattern is used for creating objects?",
+                        options: ["Factory", "Observer", "Singleton"],
+                        correct: 0
+                    }
+                ]
+            }
+        ],
+        enrollments: 180,
+        status: "Published",
+        lastUpdated: "Just now",
+        created_at: new Date('2023-07-05'),
+        imageUrl: "/webdev.jpg"
+    }
+];
+
+// User Activity Data
+const userActivityData = {
+    labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
+    datasets: [
+        {
+            label: 'Active Users',
+            data: [120, 80, 250, 400, 350, 280],
+            backgroundColor: 'rgba(74, 85, 104, 0.2)',
+            borderColor: 'rgba(74, 85, 104, 1)',
+            borderWidth: 1,
+            tension: 0.4,
+            fill: true
+        }
+    ]
+};
+
+// Function to view course details
+function viewCourseDetails(courseId) {
+    const course = courses.find(c => c.id === courseId);
+    if (!course) {
+        alert('Course not found');
+        return;
+    }
+
+    // Populate modal with course details
+    document.getElementById('courseDetailsTitle').textContent = course.title;
+
+    // Format modules and questions
+    const modulesHtml = course.modules.map(module => `
+        <div class="mb-6 border-b pb-4">
+            <h3 class="text-xl font-semibold mb-2">${module.title}</h3>
+            <div class="flex items-center text-sm text-gray-600 mb-3">
+                <span class="mr-4">Duration: ${module.duration_days} days</span>
+                <span>Quiz Weight: ${module.quiz_weight}%</span>
+            </div>
+            <p class="text-gray-700 mb-4">${module.description}</p>
+
+            ${module.questions.length > 0 ? `
+            <h4 class="font-medium mb-2">Quiz Questions:</h4>
+            <div class="space-y-3">
+                ${module.questions.map((question, qIndex) => `
+                <div class="bg-gray-50 p-3 rounded">
+                    <p class="font-medium">Question ${qIndex + 1}: ${question.text}</p>
+                    <div class="grid grid-cols-2 gap-2 mt-2">
+                        ${question.options.map((option, oIndex) => `
+                        <div class="flex items-center">
+                            <span class="mr-2">${String.fromCharCode(65 + oIndex)}.</span>
+                            <span class="${oIndex === question.correct ? 'text-green-600 font-medium' : ''}">${option}</span>
+                        </div>
+                        `).join('')}
+                    </div>
+                </div>
+                `).join('')}
+            </div>
+            ` : '<p class="text-gray-500">No quiz questions for this module</p>'}
+        </div>
+    `).join('');
+
+    // Create the full course details HTML
+    const courseDetailsHtml = `
+        <div class="mb-6">
+            <h3 class="text-lg font-semibold mb-2">Course Overview</h3>
+            <p class="text-gray-700 mb-4">${course.description}</p>
+            <div class="grid md:grid-cols-3 gap-4 mb-4">
+                <div class="bg-gray-50 p-3 rounded">
+                    <p class="text-sm text-gray-500">Category</p>
+                    <p class="font-medium">${course.category}</p>
+                </div>
+                <div class="bg-gray-50 p-3 rounded">
+                    <p class="text-sm text-gray-500">Difficulty</p>
+                    <p class="font-medium">${course.difficulty}</p>
+                </div>
+                <div class="bg-gray-50 p-3 rounded">
+                    <p class="text-sm text-gray-500">Enrollments</p>
+                    <p class="font-medium">${course.enrollments}</p>
+                </div>
+            </div>
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-gray-50 p-3 rounded">
+                    <p class="text-sm text-gray-500">Duration</p>
+                    <p class="font-medium">${course.duration_weeks} weeks (${course.hours_per_week} hrs/week)</p>
+                </div>
+                <div class="bg-gray-50 p-3 rounded">
+                    <p class="text-sm text-gray-500">Final Exam</p>
+                    <p class="font-medium">Weight: ${course.final_exam.weight}% (Pass: ${course.final_exam.passing_score}%)</p>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="text-xl font-semibold mb-4">Course Modules</h3>
+        ${modulesHtml}
+
+        ${course.video_url ? `
+        <div class="mt-6">
+            <h3 class="text-lg font-semibold mb-2">Course Preview</h3>
+            <div class="aspect-w-16 aspect-h-9 bg-black rounded overflow-hidden">
+                <iframe src="${course.video_url}" class="w-full h-64" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+        ` : ''}
+    `;
+
+    document.getElementById('courseDetailsContent').innerHTML = courseDetailsHtml;
+
+    // Show the modal
+    document.getElementById('courseDetailsModal').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+// Close modal function
+function closeDetailsModal() {
+    document.getElementById('courseDetailsModal').classList.add('hidden');
+    document.body.style.overflow = '';
+}
+
+// Initialize the dashboard
+document.addEventListener('DOMContentLoaded', function() {
+    // Update statistics
+    updateStatistics();
+
+    // Render recent courses
+    renderRecentCourses();
+
+    // Initialize charts
+    initEnrollmentChart();
+    initUserActivityChart();
+
+    // Set last updated time
+    updateLastUpdatedTime();
+
+    // Refresh data every 5 minutes
+    setInterval(updateDashboardData, 300000);
+
+    // Close modal when clicking outside content
+    document.getElementById('courseDetailsModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeDetailsModal();
+        }
+    });
+});
+
+// Update dashboard statistics
+function updateStatistics() {
+    document.getElementById('totalCourses').textContent = courses.length;
+
+    // Calculate active users (simulated)
+    const activeUsers = Math.floor(Math.random() * 500) + 1000;
+    document.getElementById('activeUsers').textContent = activeUsers.toLocaleString();
+
+    // Calculate total enrollments
+    const totalEnrollments = courses.reduce((sum, course) => sum + course.enrollments, 0);
+    document.getElementById('courseEnrollments').textContent = totalEnrollments;
+}
+
+// Render recent courses (last 3 added)
+function renderRecentCourses() {
+    const courseGrid = document.getElementById('courseGrid');
+
+    // Sort courses by creation date (newest first)
+    const sortedCourses = [...courses].sort((a, b) => b.created_at - a.created_at).slice(0, 3);
+
+    courseGrid.innerHTML = sortedCourses.map(course => `
+        <div class="course-card bg-white border rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all duration-300">
+            <div class="h-40 bg-gray-200 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" />
+                </svg>
+            </div>
+            <div class="p-4">
+                <h3 class="text-lg font-bold mb-2">${course.title}</h3>
+                <div class="flex justify-between items-center mb-3">
+                    <span class="${getCategoryBadgeClasses(course.category)} px-2 py-1 rounded-full text-xs">${course.category}</span>
+                    <span class="${getDifficultyBadgeClasses(course.difficulty)} px-2 py-1 rounded-full text-xs">${course.difficulty}</span>
+                </div>
+                <div class="flex justify-between items-center text-sm">
+                    <span class="text-gray-600">${course.enrollments} enrollments</span>
+                    <span class="text-gray-500">${course.lastUpdated}</span>
+                </div>
+                <div class="mt-4 flex justify-center">
+                    <button onclick="viewCourseDetails('${course.id}')" class="text-blue-600 hover:text-blue-800 text-sm font-medium px-4 py-2 bg-blue-50 rounded-md">
+                        View Details
+                    </button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+// Initialize enrollment chart
+function initEnrollmentChart() {
+    const ctx = document.getElementById('enrollmentChart').getContext('2d');
+
+    // Prepare enrollment data by month
+    const enrollmentData = Array(12).fill(0);
+    courses.forEach(course => {
+        const month = course.created_at.getMonth();
+        enrollmentData[month] += course.enrollments;
+    });
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            datasets: [{
+                label: 'Course Enrollments',
+                data: enrollmentData,
+                backgroundColor: 'rgba(74, 85, 104, 0.7)',
+                borderColor: 'rgba(74, 85, 104, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
+// Initialize user activity chart
+function initUserActivityChart() {
+    const ctx = document.getElementById('userActivityChart').getContext('2d');
+
+    new Chart(ctx, {
+        type: 'line',
+        data: userActivityData,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
+// Update last updated time
+function updateLastUpdatedTime() {
+    const now = new Date();
+    const options = {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+    };
+    document.getElementById('lastUpdatedTime').textContent =
+        `Today at ${now.toLocaleTimeString('en-US', options)}`;
+}
+
+// Simulate data refresh
+function updateDashboardData() {
+    // Simulate some data changes
+    courses.forEach(course => {
+        // Randomly increase enrollments
+        if (Math.random() > 0.7) {
+            course.enrollments += Math.floor(Math.random() * 10);
+        }
+    });
+
+    // Update the UI
+    updateStatistics();
+    renderRecentCourses();
+    updateLastUpdatedTime();
+
+    // Show notification
+    showNotification('Dashboard data refreshed');
+}
+
+// Show notification
+function showNotification(message) {
+    const notification = document.createElement('div');
+    notification.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-lg animate-fade-in';
+    notification.textContent = message;
+    document.body.appendChild(notification);
+
+    setTimeout(() => {
+        notification.classList.remove('animate-fade-in');
+        notification.classList.add('animate-fade-out');
+        setTimeout(() => notification.remove(), 500);
+    }, 3000);
+}
+
+// Helper functions for badge styling
+function getCategoryBadgeClasses(category) {
+    const categoryClasses = {
+        'Web Development': 'bg-green-100 text-green-800',
+        'Data Science': 'bg-purple-100 text-purple-800',
+        'Design': 'bg-blue-100 text-blue-800',
+        'Marketing': 'bg-yellow-100 text-yellow-800',
+        'Business': 'bg-gray-100 text-gray-800'
+    };
+    return categoryClasses[category] || 'bg-gray-100 text-gray-800';
+}
+
+function getDifficultyBadgeClasses(difficulty) {
+    const difficultyClasses = {
+        'Beginner': 'bg-green-100 text-green-800',
+        'Intermediate': 'bg-yellow-100 text-yellow-800',
+        'Advanced': 'bg-red-100 text-red-800'
+    };
+    return difficultyClasses[difficulty] || 'bg-gray-100 text-gray-800';
+}
