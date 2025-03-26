@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EduVerse - Sign Up</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="{{ asset('assets/js/signup.js') }}"></script>
     <style>
         body {
             background-color: #F7FAFC;
@@ -25,7 +27,7 @@
             transform: translateY(-3px);
         }
 
-        .role-option input:checked + div {
+        .role-option input:checked+div {
             border-color: #4A5568;
             background-color: rgba(74, 85, 104, 0.05);
         }
@@ -35,11 +37,19 @@
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
         }
     </style>
 </head>
+
 <body class="min-h-screen flex items-center justify-center p-4">
     <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
         <!-- Animated background elements -->
@@ -66,22 +76,29 @@
             @csrf
 
             <div class="space-y-4">
-                <div>
-                    <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                    <input id="name" type="text" name="name" required autocomplete="name"
-                           class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring focus:ring-primary/50 transition">
+                <div class="flex flex-row justify-between items-center gap-4">
+                    <div>
+                        <label for="firstName" class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                        <input id="firstName" type="text" name="firstName" required autocomplete="name"
+                            class="w-[100%] px-4 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring focus:ring-primary/50 transition">
+                    </div>
+                    <div>
+                        <label for="lastName" class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                        <input id="lastName" type="text" name="lastName" required autocomplete="name"
+                            class="w-[100%] px-4 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring focus:ring-primary/50 transition">
+                    </div>
                 </div>
 
                 <div>
                     <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
                     <input id="email" type="email" name="email" required autocomplete="email"
-                           class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring focus:ring-primary/50 transition">
+                        class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring focus:ring-primary/50 transition">
                 </div>
 
                 <div>
                     <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
                     <input id="password" type="password" name="password" required autocomplete="new-password"
-                           class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring focus:ring-primary/50 transition">
+                        class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring focus:ring-primary/50 transition">
                 </div>
 
 
@@ -103,8 +120,9 @@
                         <input type="radio" name="role" value="admin" class="hidden">
                         <div class="p-4 border-2 border-gray-200 rounded-lg flex flex-col items-center transition-all">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21v-2a4 4 0 00-4-4H9a4 4 0 00-4 4v2" />
+                                <circle cx="12" cy="10" r="3" />
                             </svg>
                             <span class="font-medium">Admin</span>
                         </div>
@@ -114,7 +132,7 @@
 
             <div class="flex items-center">
                 <input id="terms" name="terms" type="checkbox" required
-                       class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+                    class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
                 <label for="terms" class="ml-2 block text-sm text-gray-700">
                     I agree to the <a href="#" class="text-primary hover:underline">Terms</a> and <a href="#" class="text-primary hover:underline">Privacy Policy</a>
                 </label>
@@ -122,7 +140,7 @@
 
             <div>
                 <button type="submit"
-                        class="w-full py-3 px-4 bg-blue-900 hover:bg-secondary text-white font-medium rounded-lg transition duration-300 transform hover:scale-105">
+                    class="w-full py-3 px-4 bg-blue-900 hover:bg-secondary text-white font-medium rounded-lg transition duration-300 transform hover:scale-105">
                     Create Account
                 </button>
             </div>
@@ -133,22 +151,6 @@
             </div>
         </form>
     </div>
-
-    <script>
-        // Add visual feedback for role selection
-        document.querySelectorAll('.role-option input').forEach(radio => {
-            radio.addEventListener('change', function() {
-                document.querySelectorAll('.role-option div').forEach(div => {
-                    div.classList.remove('border-primary', 'bg-primary/5');
-                });
-                if (this.checked) {
-                    this.nextElementSibling.classList.add('border-primary', 'bg-primary/5');
-                }
-            });
-        });
-
-        // Initialize the checked state
-        document.querySelector('.role-option input:checked').nextElementSibling.classList.add('border-primary', 'bg-primary/5');
-    </script>
 </body>
+
 </html>
