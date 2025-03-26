@@ -14,6 +14,7 @@ return new class extends Migration
     Schema::create('quizzes', function (Blueprint $table) {
         $table->id();
         $table->foreignId('course_id')->constrained('courses')->onDelete('cascade');
+            $table->foreignId('module_id')->constrained('modules')->onDelete('cascade');
         $table->enum('quiz_type', ['sub', 'final']);
         $table->integer('weight');
         $table->integer('order')->nullable();

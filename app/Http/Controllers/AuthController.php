@@ -2,96 +2,58 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller; 
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Auth\Events\Registered;
+use Illuminate\Validation\Rule;
 
 class AuthController extends Controller
 {
-    // This is the AuthController responsible for handling authentication-related actions.
-    // You can add methods for login, registration, and logout here.
-
-    public function showLoginForm()
-    {
-        return view('auth.login');
-    }
-
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string'
+            'email' => ["bail", 'required', 'email', 'exists:users'],
+            'password' => ['required']
         ]);
 
-        $userExists = User::where('email', $request->email)->exists();
-
-        if (Auth::attempt($request->only('email', 'password'), true)) {
-            return redirect()->route('admin.courses.dashboard');
+        try {
+            $user = User::where('email', $request->email)->firstOrFail();
+            if (!Hash::check($request->password, $user->password)) {
+                return response()->json(["apiToken" => null]);
+            }
+            $userToken = $user->createToken($user->username);
+            return response()->json(['apiToken' => $userToken->plainTextToken]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['apiToken' => null]);
         }
-
-        if (!$userExists) {
-            return redirect()->route('register')->with('message', 'It seems you don’t have an account yet. Please register to continue.')->withInput();
-        }
-
-        return redirect()->back()->with('error', 'The provided credentials are incorrect. Please try again.')->withInput();
-    }
-
-    public function showRegistrationForm()
-    {
-        return view('auth.register');
     }
 
     public function register(Request $request)
     {
         $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'username' => 'required|string|max:255|unique:users',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => [
-                'required',
-                'string',
-                'min:8',
-                'confirmed',
-                'regex:/[A-Z]/', // at least one uppercase letter
-                'regex:/[a-z]/', // at least one lowercase letter
-                'regex:/[0-9]/', // at least one digit
-                'regex:/[@$!%*?&]/' // at least one special character
-            ],
-            'role' => 'required|string'
-        ], [
-            'password.regex' => 'The password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.'
+            'email' => ['required', 'email'],
+            'password' => ['required', 'confirmed'],
+            'username' => ['required', 'max:255', 'unique:users,username'],
+            'role' => ['required', Rule::in(['admin', 'learner'])],
+            'firstName' => ['required'],
+            'lastName' => ['required'],
         ]);
 
-        $existingUser = User::where('email', $request->email)->first();
-
-        if ($existingUser) {
-            return redirect()->route('login')->with('message', 'You are already registered. Please log in to your account.');
+        try {
+            $user = User::create([
+                'first_name' => $request->firstName,
+                'last_name' => $request->lastName,
+                'email' => $request->email,
+                'username' => $request->username,
+                'role' => $request->role,
+                'password' => Hash::make($request->password)
+            ]);
+            $userToken = $user->createToken($user->username);
+            return response()->json(['apiToken' => $userToken->plainTextToken]);
+        } catch (QueryException $e) {
+            return response()->json(['apiToken' => null]);
         }
-
-        $user = User::create([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'username' => $request->username,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => $request->role,
-        ]);
-
-        event(new Registered($user));
-
-        Auth::login($user, true);
-        return redirect()->route('login');
-    }
-
-    public function logout(Request $request)
-    {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        return redirect()->route('welcome');
     }
 }
