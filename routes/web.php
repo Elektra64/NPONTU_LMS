@@ -25,7 +25,5 @@ Route::prefix('admin')->name('admin.')->controller(CourseController::class)->gro
     Route::get('courses/{course}/edit', 'edit')->name('courses.edit'); // Show edit form
     Route::put('courses/{course}', 'update')->name('courses.update'); // Update course
     Route::delete('courses/{course}', 'destroy')->name('courses.destroy'); // Delete course
-    Route::get('courses/search', 'search')->name('courses.search'); // Search courses
+    Route::get('courses/dashboard', 'dashboard')->name('courses.dashboard'); // Fix dashboard route
 });
-
-

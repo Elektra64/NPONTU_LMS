@@ -8,7 +8,7 @@ use App\Models\User;
 
 class CourseController extends Controller
 {
-    public function index()
+    public function dashboard()
     {
         $courses = Course::all();
         $totalCourses = Course::count();
@@ -36,16 +36,15 @@ class CourseController extends Controller
             'status' => 'required|in:draft,published',
         ]);
 
-        // Save the course to the database
-        $course = new Course();
-        $course->title = $request->title;
-        $course->description = $request->description;
-        $course->intro_content = $request->intro_content;
-        $course->difficulty_level = $request->difficulty_level;
-        $course->time_limit = $request->time_limit;
-        $course->status = $request->status;
-        $course->created_by = auth()->id(); // Assuming the course is created by the authenticated user
-        $course->save();
+        Course::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'intro_content' => $request->intro_content,
+            'difficulty_level' => $request->difficulty_level,
+            'time_limit' => $request->time_limit,
+            'status' => $request->status,
+            'created_by' => auth()->id() // Assuming the course is created by the authenticated user
+        ]);
 
         return redirect()->route('admin.courses.dashboard')
             ->with('success', 'Course created successfully.');
