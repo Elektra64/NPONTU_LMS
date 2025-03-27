@@ -1,5 +1,7 @@
 ## How the database schema and table of the quiz page would be like according to the front end structure
 
+pls look through
+
 CONTROLLER FOR QUIZ
 <?php
 
