@@ -68,7 +68,7 @@
         </div>
 
         <!-- Login Form -->
-        <form class="p-8 space-y-6" method="POST" action="{{ route('login') }}"><!--the action should route to the database path-->
+        <form class="p-8 space-y-6" method="POST" action="{{ route('login.post') }}">
             @csrf
 
             <div class="space-y-4">

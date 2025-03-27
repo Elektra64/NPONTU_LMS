@@ -21,21 +21,23 @@ class AuthController extends Controller
         try {
             $user = User::where('email', $request->email)->firstOrFail();
             if (!Hash::check($request->password, $user->password)) {
-                return response()->json(["apiToken" => null]);
+                return back()->withErrors(['email' => 'Invalid credentials']);
             }
-            $userToken = $user->createToken($user->username);
-            return response()->json(['apiToken' => $userToken->plainTextToken]);
+            
+            // Create session for the user
+            auth()->login($user);
+            
+            return redirect()->route('dashboard');
         } catch (ModelNotFoundException $e) {
-            return response()->json(['apiToken' => null]);
+            return back()->withErrors(['email' => 'Invalid credentials']);
         }
     }
 
     public function register(Request $request)
     {
         $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required', 'confirmed'],
-            'username' => ['required', 'max:255', 'unique:users,username'],
+            'email' => ['required', 'email', 'unique:users,email'],
+            'password' => ['required', 'min:8'],
             'role' => ['required', Rule::in(['admin', 'learner'])],
             'firstName' => ['required'],
             'lastName' => ['required'],
@@ -46,14 +48,17 @@ class AuthController extends Controller
                 'first_name' => $request->firstName,
                 'last_name' => $request->lastName,
                 'email' => $request->email,
-                'username' => $request->username,
+                'username' => strtolower($request->firstName . '.' . $request->lastName), // Generate username from name
                 'role' => $request->role,
                 'password' => Hash::make($request->password)
             ]);
-            $userToken = $user->createToken($user->username);
-            return response()->json(['apiToken' => $userToken->plainTextToken]);
+
+            return redirect()->route('login')
+                ->with('success', 'Account created successfully! Please login.');
         } catch (QueryException $e) {
-            return response()->json(['apiToken' => null]);
+            return back()
+                ->withInput()
+                ->with('error', 'Registration failed. Please try again.');
         }
     }
 }
