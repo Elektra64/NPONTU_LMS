@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EduVerse - Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="{{ asset('assets/js/login.js') }}"></script>
     <style>
         body {
             background-color: #F7FAFC;
@@ -67,7 +68,7 @@
         </div>
 
         <!-- Login Form -->
-        <form class="p-8 space-y-6" method="POST" action="{{ route('login') }}">
+        <form class="p-8 space-y-6" method="POST" action="{{ route('login') }}"><!--the action should route to the database path-->
             @csrf
 
             <div class="space-y-4">
@@ -147,37 +148,5 @@
             </div>
         </form>
     </div>
-
-    <script>
-        // Add subtle animation to form container on load
-        document.addEventListener('DOMContentLoaded', () => {
-            const form = document.querySelector('.form-container');
-            form.style.opacity = '0';
-            form.style.transform = 'translateY(20px)';
-
-            setTimeout(() => {
-                form.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-                form.style.opacity = '1';
-                form.style.transform = 'translateY(0)';
-            }, 100);
-        });
-
-        // Toggle password visibility
-        function togglePassword() {
-    const passwordInput = document.getElementById("password");
-    const eyeIcon = document.getElementById("eyeIcon");
-
-    if (passwordInput.type === "password") {
-        passwordInput.type = "text";
-        eyeIcon.innerHTML = `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"></path>
-                             <circle cx="12" cy="12" r="3"></circle>
-                             <line x1="3" y1="3" x2="21" y2="21"></line>`; // Eye with slash
-    } else {
-        passwordInput.type = "password";
-        eyeIcon.innerHTML = `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"></path>
-                             <circle cx="12" cy="12" r="3"></circle>`; // Normal eye
-    }
-}
-    </script>
 </body>
 </html>
