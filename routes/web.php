@@ -36,3 +36,8 @@ Route::get('/users', function () {
 Route::get('/home', function () {
     return view('home');
 })->name('home');
+
+Route::get('/publishedCourse', function () {
+    return view('publishedCourse');
+    })->name('publishedCourse');
+
