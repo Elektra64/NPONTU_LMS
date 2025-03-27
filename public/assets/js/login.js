@@ -5,8 +5,7 @@ async function handleLogin(event) {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     const remember = document.getElementById('remember').checked;
-    const form = event.target;
-    // const formAction = form.getAttribute('action'); //useful when you are routing directly to the backend
+    const form = document.querySelector(`form[action="{{ route('login') }}"]`);
     const csrfToken = form.querySelector('input[name="_token"]').value;
 
     // Form validation
@@ -45,7 +44,7 @@ async function handleLogin(event) {
     }
 }
 
-// Add event listener to the form
+// Add event listeners
 document.addEventListener('DOMContentLoaded', () => {
     // Form animation
     const form = document.querySelector('.form-container');
@@ -58,10 +57,30 @@ document.addEventListener('DOMContentLoaded', () => {
         form.style.transform = 'translateY(0)';
     }, 100);
 
-    // Add form submission handler
+    // Add form submission handler to the form
     const loginForm = document.querySelector(`form[action="{{ route('login') }}"]`);
     if (loginForm) {
         loginForm.addEventListener('submit', handleLogin);
+    }
+
+    // Add click handler to the submit button
+    const submitButton = document.querySelector('.submitFormButton');
+    if (submitButton) {
+        submitButton.addEventListener('click', function(event) {
+            // Prevent default form submission (we'll handle it via API)
+            event.preventDefault();
+
+            // Get the form and trigger submit event
+            const form = document.querySelector(`form[action="{{ route('login') }}"]`);
+            if (form) {
+                // Create and dispatch a submit event
+                const submitEvent = new Event('submit', {
+                    bubbles: true,
+                    cancelable: true
+                });
+                form.dispatchEvent(submitEvent);
+            }
+        });
     }
 });
 

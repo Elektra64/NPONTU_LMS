@@ -1,13 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <!-- ... (keep all your existing head content) ... -->
-</head>
-<body class="bg-background min-h-screen">
-    <!-- ... (keep all your existing HTML content until the script section) ... -->
 
-</body>
-</html>
+
 
 let courses = [
             {

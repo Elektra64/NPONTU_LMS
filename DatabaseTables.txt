@@ -1,0 +1,235 @@
+## How the database schema and table of the quiz page would be like according to the front end structure
+
+CONTROLLER FOR QUIZ
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Course;
+use App\Models\Quiz;
+
+class QuizController extends Controller
+{
+    public function index()
+    {
+        // Get all quizzes with their courses
+        $quizzes = Quiz::with('course')->get();
+
+        // Get all courses for the filter dropdown
+        $courses = Course::all();
+
+        return view('quizzes', compact('quizzes', 'courses'));
+    }
+
+    public function show(Quiz $quiz)
+    {
+        // Load quiz with questions and course
+        $quiz->load('questions.options', 'course');
+
+        return view('quiz-show', compact('quiz'));
+    }
+
+    public function storeResult(Request $request, Quiz $quiz)
+    {
+        $validated = $request->validate([
+            'answers' => 'required|array',
+            'answers.*' => 'integer'
+        ]);
+
+        $score = $quiz->calculateScore($validated['answers']);
+
+        // Save the attempt
+        $attempt = auth()->user()->quizAttempts()->create([
+            'quiz_id' => $quiz->id,
+            'score' => $score,
+            'passed' => $score >= $quiz->passing_score,
+            'answers' => $validated['answers']
+        ]);
+
+        return redirect()->route('quiz.results', $attempt);
+    }
+}
+
+
+
+DATABASE STRUCTURE FOR QUIZ SESSION
+
+Schema::create('quizzes', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('course_id')->constrained();
+    $table->string('title');
+    $table->enum('type', ['module', 'final']);
+    $table->integer('weight')->default(0);
+    $table->integer('duration')->default(30); // in minutes
+    $table->integer('passing_score')->default(70);
+    $table->timestamps();
+});
+
+Schema::create('questions', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('quiz_id')->constrained();
+    $table->text('text');
+    $table->integer('points')->default(1);
+    $table->timestamps();
+});
+
+Schema::create('options', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('question_id')->constrained();
+    $table->text('text');
+    $table->boolean('is_correct')->default(false);
+    $table->timestamps();
+});
+
+Schema::create('quiz_attempts', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('user_id')->constrained();
+    $table->foreignId('quiz_id')->constrained();
+    $table->integer('score');
+    $table->boolean('passed');
+    $table->json('answers'); // Stores user's answers
+    $table->timestamp('completed_at')->nullable();
+    $table->timestamps();
+});
+
+
+HOW ROUTE WOULD LOOK LIKE IN CASE OF OUR DATABASE
+
+Route::get('/courses', [CourseController::class, 'index']);
+Route::get('/quizzes', [QuizController::class, 'index']);
+Route::post('/quiz-attempts', [QuizAttemptController::class, 'store']);
+
+
+MODEL FOR QUIZ
+app/Models/Quiz.php
+
+class Quiz extends Model
+{
+    protected $fillable = ['course_id', 'title', 'type', 'weight', 'duration', 'passing_score'];
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
+
+    public function questions()
+    {
+        return $this->hasMany(Question::class);
+    }
+
+    public function calculateScore($userAnswers)
+    {
+        $correct = 0;
+        foreach ($this->questions as $question) {
+            if (isset($userAnswers[$question->id]) &&
+                $question->isCorrect($userAnswers[$question->id])) {
+                $correct++;
+            }
+        }
+        return ($correct / $this->questions->count()) * 100;
+    }
+}
+
+
+
+COURSE MANAGEMENT TABLES ,SCHEMES AND MODULES
+
+COURSE TABLE
+Schema::create('courses', function (Blueprint $table) {
+    $table->id();
+    $table->string('title');
+    $table->string('slug')->unique(); // For URLs (e.g., "web-dev-masterclass")
+    $table->text('description');
+    $table->string('category'); // Or use category_id if you have a categories table
+    $table->string('difficulty'); // Beginner, Intermediate, Advanced
+    $table->integer('duration_weeks');
+    $table->integer('hours_per_week');
+    $table->string('video_url')->nullable();
+    $table->integer('enrollments')->default(0);
+    $table->enum('status', ['draft', 'published', 'archived'])->default('draft');
+    $table->integer('final_exam_weight')->default(30);
+    $table->integer('passing_score')->default(70);
+    $table->timestamps();
+});
+
+MODULES TABLE
+
+Schema::create('modules', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('course_id')->constrained()->onDelete('cascade');
+    $table->string('title');
+    $table->text('description');
+    $table->integer('duration_days');
+    $table->integer('order')->default(0); // For sorting modules
+    $table->integer('quiz_weight')->default(20);
+    $table->timestamps();
+});
+
+ QUESTIONS TABLE (for Module Quizzes and Final Exam)
+
+ Schema::create('questions', function (Blueprint $table) {
+    $table->id();
+    $table->morphs('quizzable'); // Polymorphic relationship for module quizzes or final exam
+    $table->text('text');
+    $table->integer('points')->default(1);
+    $table->integer('order')->default(0);
+    $table->timestamps();
+});
+
+OPTIONS TABLE (for Question Answers)
+
+Schema::create('options', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('question_id')->constrained()->onDelete('cascade');
+    $table->text('text');
+    $table->boolean('is_correct')->default(false);
+    $table->integer('order')->default(0);
+    $table->timestamps();
+});
+
+FINAL EXAMS TABLE
+
+Schema::create('final_exams', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('course_id')->constrained()->onDelete('cascade');
+    $table->string('title')->default('Final Exam');
+    $table->text('description')->nullable();
+    $table->integer('duration_minutes')->default(60);
+    $table->timestamps();
+});
+
+COURSE ENROLLMENT TABLE
+Schema::create('enrollments', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('user_id')->constrained();
+    $table->foreignId('course_id')->constrained();
+    $table->timestamp('completed_at')->nullable();
+    $table->enum('status', ['active', 'completed', 'dropped'])->default('active');
+    $table->timestamps();
+});
+
+
+QUIZ ATTEMPTS
+Schema::create('quiz_attempts', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('user_id')->constrained();
+    $table->morphs('quizzable'); // For module quizzes or final exam
+    $table->integer('score');
+    $table->boolean('passed');
+    $table->json('answers'); // Stores user's answers
+    $table->timestamp('completed_at')->nullable();
+    $table->timestamps();
+});
+
+
+USER PROGRESS (Optional)
+
+Schema::create('user_progress', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('user_id')->constrained();
+    $table->foreignId('module_id')->constrained();
+    $table->boolean('completed')->default(false);
+    $table->timestamp('completed_at')->nullable();
+    $table->timestamps();
+});

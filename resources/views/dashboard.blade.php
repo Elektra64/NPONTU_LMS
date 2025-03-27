@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{{ asset('assets/js/dashboard.js') }}"></script>
 
-    </script>
+
     <style>
         ::-webkit-scrollbar {
             width: 8px;

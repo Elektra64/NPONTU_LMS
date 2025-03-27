@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EduVerse - Course Management</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="{{ asset('assets/js/course.js') }}"></script>
     <style>
         ::-webkit-scrollbar {
             width: 8px;
@@ -41,7 +40,7 @@
                             </svg>
                             Dashboard
                         </a>
-                        <a href="{{ route('courses') }}" class="flex items-center px-3 py-2 bg-accent-light text-primary rounded-md">
+                        <a href="{{ route('courses') }}" class="flex items-center px-3 py-2 text-gray-700 hover:bg-accent-light  rounded-md">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                                 <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.09a1 1 0 01.44 1.352l-2.101 4.63A1.518 1.518 0 004.412 16.2l.314-.1a1.036 1.036 0 00.707-.88V9.82a1 1 0 00-.293-.707L3.31 9.09z" />
                             </svg>
@@ -384,7 +383,7 @@
     </template>
 
 
-    <script>
-    </script>
+    <script src="{{ asset('assets/js/course.js') }}"></script>
+
 </body>
 </html>
