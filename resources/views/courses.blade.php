@@ -384,7 +384,6 @@
     </template>
 
 
-    <script>
-    </script>
+    
 </body>
 </html>

@@ -10,7 +10,7 @@
     <nav class="bg-gray-900 text-white p-4 flex justify-between items-center">
         <div class="flex items-center space-x-4">
             <span class="text-xl font-bold">EduVerse</span>
-            <a href="#" class="hover:underline">Courses</a>
+            <a href="{{ route('publishedCourse') }}" class="hover:underline">Courses</a>
             <a href="#" class="hover:underline">Dashboard</a>
         </div>
         <div class="flex items-center space-x-4">
@@ -19,10 +19,15 @@
             <div class="w-8 h-8 bg-white rounded-full"></div>
         </div>
     </nav>
-    <header class="bg-gray-900 text-white text-center py-20">
-        <h1 class="text-4xl font-bold">Welcome to EduVerse University</h1>
-        <p class="mt-4 text-lg">Transform your future with our cutting-edge online education platform. Learn from industry experts and earn recognized certifications.</p>
-        <button class="mt-6 bg-yellow-500 text-black px-6 py-2 rounded">Explore Courses</button>
+    <header class="relative text-white text-center py-20">
+        <img alt="Background image of EduVerse University" class="absolute inset-0 w-full h-full object-cover z-0" height="600" src="https://storage.googleapis.com/a1aa/image/NsEX4p-a4_ggpQASfKHWUdQer5yx5ciB-B_uXQpaoWA.jpg" width="1920"/>
+        <div class="relative z-10 bg-gray-900 bg-opacity-75 py-20">
+            <h1 class="text-4xl font-bold">Welcome to EduVerse University</h1>
+            <p class="mt-4 text-lg">Transform your future with our cutting-edge online education platform. Learn from industry experts and earn recognized certifications.</p>
+            <button class="mt-6 bg-yellow-500 text-black px-6 py-2 rounded hover:bg-yellow-600 hover:text-white transition duration-300">
+            <a href="{{ route('publishedCourse') }}">Explore Courses</a>    
+            </button>
+        </div>
     </header>
     <section class="py-16">
         <div class="text-center mb-12">
