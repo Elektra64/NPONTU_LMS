@@ -383,11 +383,8 @@
     </template>
 
 
-<<<<<<< HEAD
     <script src="{{ asset('assets/js/course.js') }}"></script>
 
-=======
 
->>>>>>> 13aacc2487eb1a8f15927bfccccb4ef2299d243b
 </body>
 </html>
