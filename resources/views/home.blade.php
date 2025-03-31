@@ -39,9 +39,7 @@
                 <a href="{{ route('courses.publishedCourse') }}" class="hover:text-yellow-400 transition duration-300 flex items-center">
                     <i class="fas fa-book mr-2"></i>Courses
                 </a>
-                <a href="#" class="hover:text-yellow-400 transition duration-300 flex items-center">
-                    <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
-                </a>
+               
                 <a href="#" class="hover:text-yellow-400 transition duration-300 flex items-center">
                     <i class="fas fa-calendar-alt mr-2"></i>Calendar
                 </a>
@@ -159,82 +157,34 @@
                 <p class="text-gray-300 max-w-2xl mx-auto">Browse our most popular courses loved by thousands of students worldwide</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Course 1 -->
+                @foreach($popularCourses as $course)
                 <div class="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl overflow-hidden shadow-lg course-card transition duration-300">
                     <div class="relative">
-                        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Web Development" class="w-full h-48 object-cover">
-                        <div class="absolute top-2 right-2 bg-yellow-500 text-black text-xs font-bold px-2 py-1 rounded">BESTSELLER</div>
+                        <img src="{{ $course['image'] }}" alt="{{ $course['title'] }}" class="w-full h-48 object-cover">
+                        @if(isset($course['badge']))
+                        <div class="absolute top-2 right-2 {{ $course['badgeColor'] }} text-xs font-bold px-2 py-1 rounded">{{ $course['badge'] }}</div>
+                        @endif
                     </div>
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-2">
-                            <span class="text-yellow-400 text-sm font-semibold">Web Development</span>
+                            <span class="text-yellow-400 text-sm font-semibold">{{ $course['category'] }}</span>
                             <div class="flex items-center text-yellow-400">
                                 <i class="fas fa-star"></i>
-                                <span class="ml-1 text-white">4.9</span>
+                                <span class="ml-1 text-white">{{ $course['rating'] }}</span>
                             </div>
                         </div>
-                        <h3 class="text-xl font-bold mb-2">Complete Web Developer Bootcamp 2023</h3>
-                        <p class="text-gray-300 text-sm mb-4">Master HTML, CSS, JavaScript, React, Node.js and more with this comprehensive course.</p>
+                        <h3 class="text-xl font-bold mb-2">{{ $course['title'] }}</h3>
+                        <p class="text-gray-300 text-sm mb-4">{{ $course['description'] }}</p>
                         <div class="flex justify-between items-center">
                             <div class="flex items-center text-sm text-gray-300">
                                 <i class="fas fa-user-graduate mr-1"></i>
-                                <span>12,345 students</span>
+                                <span>{{ number_format($course['students_count']) }} students</span>
                             </div>
-                            <a href="#" class="text-yellow-400 hover:text-yellow-300 text-sm font-semibold">Enroll Now <i class="fas fa-arrow-right ml-1"></i></a>
+                            <a href="{{ route('enroll.show', $course['id']) }}" class="text-yellow-400 hover:text-yellow-300 text-sm font-semibold">Enroll Now <i class="fas fa-arrow-right ml-1"></i></a>
                         </div>
                     </div>
                 </div>
-
-                <!-- Course 2 -->
-                <div class="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl overflow-hidden shadow-lg course-card transition duration-300">
-                    <div class="relative">
-                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Data Science" class="w-full h-48 object-cover">
-                        <div class="absolute top-2 right-2 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded">NEW</div>
-                    </div>
-                    <div class="p-6">
-                        <div class="flex justify-between items-start mb-2">
-                            <span class="text-yellow-400 text-sm font-semibold">Data Science</span>
-                            <div class="flex items-center text-yellow-400">
-                                <i class="fas fa-star"></i>
-                                <span class="ml-1 text-white">4.8</span>
-                            </div>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2">Data Science & Machine Learning</h3>
-                        <p class="text-gray-300 text-sm mb-4">Learn Python, Pandas, NumPy, Matplotlib, Scikit-learn, TensorFlow and more.</p>
-                        <div class="flex justify-between items-center">
-                            <div class="flex items-center text-sm text-gray-300">
-                                <i class="fas fa-user-graduate mr-1"></i>
-                                <span>8,765 students</span>
-                            </div>
-                            <a href="#" class="text-yellow-400 hover:text-yellow-300 text-sm font-semibold">Enroll Now <i class="fas fa-arrow-right ml-1"></i></a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Course 3 -->
-                <div class="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl overflow-hidden shadow-lg course-card transition duration-300">
-                    <div class="relative">
-                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Digital Marketing" class="w-full h-48 object-cover">
-                    </div>
-                    <div class="p-6">
-                        <div class="flex justify-between items-start mb-2">
-                            <span class="text-yellow-400 text-sm font-semibold">Marketing</span>
-                            <div class="flex items-center text-yellow-400">
-                                <i class="fas fa-star"></i>
-                                <span class="ml-1 text-white">4.7</span>
-                            </div>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2">Digital Marketing Masterclass</h3>
-                        <p class="text-gray-300 text-sm mb-4">SEO, Social Media, PPC, Email Marketing, Content Marketing, Analytics & More!</p>
-                        <div class="flex justify-between items-center">
-                            <div class="flex items-center text-sm text-gray-300">
-                                <i class="fas fa-user-graduate mr-1"></i>
-                                <span>6,543 students</span>
-                            </div>
-                            <a href="{route('enroll', { id: course.id })}" class="text-yellow-400 hover:text-yellow-300 text-sm font-semibold">Enroll Now <i class="fas fa-arrow-right ml-1"></i></a>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
             <div class="text-center mt-12">
                 <a href="{{ route('courses.publishedCourse') }}" class="inline-block bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-6 py-3 rounded-full transition duration-300">

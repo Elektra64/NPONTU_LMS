@@ -1,86 +1,37 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Get the data from HTML attribute
+    const courseDataElement = document.getElementById('courseData');
+    const courses = JSON.parse(courseDataElement.dataset.courses);
+
+    // Get DOM elements
     const searchInput = document.getElementById('searchInput');
     const categoryFilter = document.getElementById('categoryFilter');
     const difficultyFilter = document.getElementById('difficultyFilter');
     const courseGrid = document.getElementById('courseGrid');
 
-    const courses = [
-        {
-            id: 1,
-            title: "Complete Web Developer Bootcamp 2023",
-            category: "Web Development",
-            description: "Master HTML, CSS, JavaScript, React, Node.js and more with this comprehensive course.",
-            image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
-            rating: 4.9,
-            students: 12345,
-            difficulty: "beginner",
-            badge: "BESTSELLER",
-            badgeColor: "bg-yellow-500 text-black"
-        },
-        {
-            id: 2,
-            title: "Data Science & Machine Learning",
-            category: "Data Science",
-            description: "Learn Python, Pandas, NumPy, Matplotlib, Scikit-learn, TensorFlow and more.",
-            image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
-            rating: 4.8,
-            students: 8765,
-            difficulty: "intermediate",
-            badge: "NEW",
-            badgeColor: "bg-blue-500 text-white"
-        },
-        {
-            id: 3,
-            title: "Digital Marketing Masterclass",
-            category: "Marketing",
-            description: "SEO, Social Media, PPC, Email Marketing, Content Marketing, Analytics & More!",
-            image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
-            rating: 4.7,
-            students: 6543,
-            difficulty: "beginner"
-        },
-        {
-            id: 4,
-            title: "Business Fundamentals",
-            category: "Business",
-            description: "Learn the core concepts of business including finance, marketing, operations, and strategy.",
-            image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
-            rating: 4.8,
-            students: 9876,
-            difficulty: "beginner",
-            badge: "BESTSELLER",
-            badgeColor: "bg-yellow-500 text-black"
-        },
-        {
-            id: 5,
-            title: "UI/UX Design Specialization",
-            category: "Design",
-            description: "Master user interface and user experience design principles. Learn Figma, Adobe XD.",
-            image: "https://images.unsplash.com/photo-1626785774573-4b799315345d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
-            rating: 4.6,
-            students: 5432,
-            difficulty: "intermediate"
-        },
-        {
-            id: 6,
-            title: "Flutter Mobile App Development",
-            category: "Mobile Development",
-            description: "Build cross-platform mobile apps with Flutter and Dart. Publish to App Stores.",
-            image: "https://images.unsplash.com/photo-1610563166150-b34df4f3bcd6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
-            rating: 4.5,
-            students: 7654,
-            difficulty: "advanced",
-            badge: "FREE",
-            badgeColor: "bg-green-500 text-white"
-        }
-    ];
+    // Debug: Check if data loaded
+    console.log('Courses data:', courses);
+    if (!courses || courses.length === 0) {
+        courseGrid.innerHTML = `
+            <div class="col-span-3 text-center py-12">
+                <i class="fas fa-book-open text-3xl text-gray-400 mb-4"></i>
+                <h3 class="text-xl font-bold text-gray-700 mb-2">No courses available</h3>
+                <p class="text-gray-500">Check back later for new courses</p>
+            </div>
+        `;
+        return;
+    }
 
     function renderCourses(coursesToRender) {
         courseGrid.innerHTML = '';
 
         coursesToRender.forEach(course => {
+            // Create card element
             const courseCard = document.createElement('div');
             courseCard.className = 'bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl overflow-hidden shadow-lg course-card transition duration-300';
+
+            // Generate enroll URL
+            const enrollUrl = `/enroll/${course.id}/verify`;
 
             courseCard.innerHTML = `
                 <div class="relative">
@@ -103,9 +54,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="flex justify-between items-center">
                         <div class="flex items-center text-sm text-white">
                             <i class="fas fa-user-graduate mr-1"></i>
-                            <span>${course.students.toLocaleString()} students</span>
+                            <span>${course.students_count.toLocaleString()} students</span>
                         </div>
-                        <a href="/enroll/{{ $course->id }}"  class="text-yellow-400 hover:text-yellow-300 text-sm font-semibold">
+                        <a href="${enrollUrl}" class="text-yellow-400 hover:text-yellow-300 text-sm font-semibold">
                             Enroll Now <i class="fas fa-arrow-right ml-1"></i>
                         </a>
                     </div>
@@ -115,6 +66,9 @@ document.addEventListener('DOMContentLoaded', function() {
             courseGrid.appendChild(courseCard);
         });
     }
+
+    // Rest of your code remains the same...
+    renderCourses(courses);
 
     function filterCourses() {
         const searchTerm = searchInput.value.toLowerCase();
@@ -132,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const filteredCourses = courses.filter(course => {
                 const matchesSearch = course.title.toLowerCase().includes(searchTerm) ||
                                      course.description.toLowerCase().includes(searchTerm);
-                const matchesCategory = !category || course.category.toLowerCase().includes(category.toLowerCase());
+                const matchesCategory = !category || course.category.toLowerCase() === category.toLowerCase();
                 const matchesDifficulty = !difficulty || course.difficulty === difficulty.toLowerCase();
 
                 return matchesSearch && matchesCategory && matchesDifficulty;
@@ -152,8 +106,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 800);
     }
 
-    // Initial render
-    renderCourses(courses);
 
     // Event listeners
     searchInput.addEventListener('input', filterCourses);

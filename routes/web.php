@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\EnrollmentController;
+
 
 Route::get('/', function () {
     return view('dashboard');
@@ -38,58 +40,31 @@ Route::get('/home', function () {
 })->name('home');
 
 Route::get('/publishedCourse', function () {
-    return view('courses.publishedCourse');
+    $courses = app(EnrollmentController::class)->getAllCourses();
+    return view('courses.publishedCourse', ['courses' => $courses]); // Changed variable name
 })->name('courses.publishedCourse');
 
+Route::get('/home', function () {
+    $enrollmentController = new EnrollmentController();
+    $popularCourses = $enrollmentController->getPopularCourses(3);
+
+    return view('home', ['popularCourses' => $popularCourses]);
+});
 
 
-
-    ///enroll/${course.id} define this route for the course
-    // In routes/web.php
-Route::get('/enroll/{id}', [App\Http\Controllers\EnrollmentController::class, 'show'])
-->name('enroll');
-
-use App\Http\Controllers\EnrollmentController;
-
-Route::post('/enroll/{id}/verify', [EnrollmentController::class, 'verify'])
-     ->name('enroll.verify');
 
 // Enrollment routes
 // Remove duplicate routes and standardize parameter names
 Route::controller(EnrollmentController::class)->group(function () {
     Route::get('/enroll/{courseId}', 'show')->name('enroll.show');
-    Route::post('/enroll/{courseId}/verify', 'verify')->name('enroll.verify');
+
+    // Split into two separate routes:
+    Route::get('/enroll/{courseId}/verify', 'showVerifyPage')->name('enroll.verify'); // GET - Show the page
+    Route::post('/enroll/{courseId}/verify', 'verify')->name('enroll.verify.submit'); // POST - Handle form submission
+
     Route::get('/enroll/{courseId}/complete', 'complete')->name('enroll.complete');
     Route::post('/enroll/{courseId}/process', 'processEnrollment')->name('enroll.process');
     Route::get('/enroll/{courseId}/success', 'success')->name('enroll.success');
 });
 
 
-// routes/web.php testing purposes only
-Route::get('/test-mock/{id}', function($id) {
-    $mockCourses = [
-        1 => [
-            'id' => 1,
-            'title' => 'Web Development Bootcamp',
-            // ... other fields
-        ],
-        2 => [
-            'id' => 2,
-            'title' => 'Graphic Design Masterclass',
-            // ... other fields
-        ]
-    ];
-
-    return response()->json($mockCourses[$id] ?? [
-        'id' => $id,
-        'title' => 'Sample Course',
-        'description' => 'Default course'
-    ]);
-});
-
-Route::get('/test-mock/__ALL__', function() {
-    return response()->json([
-        1 => 'Web Development Bootcamp',
-        2 => 'Graphic Design Masterclass'
-    ]);
-});

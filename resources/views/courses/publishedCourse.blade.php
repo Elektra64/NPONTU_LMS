@@ -190,6 +190,7 @@
     </footer>
 
     <!-- Link to external JavaScript file -->
-    <script src="{{ asset('assets/js/publishedCourse.js') }}"></script>
-</body>
+<!-- Add this right before your script tag -->
+<div id="courseData" data-courses='@json($courses)'></div>
+<script src="{{ asset('assets/js/publishedCourse.js') }}"></script></body>
 </html>
