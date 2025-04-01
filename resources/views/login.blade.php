@@ -91,9 +91,8 @@
         </div>
 
         <!-- Login Form -->
-        <form class="p-8 space-y-6" method="POST">
-            <!--the action should route to the database path-->
-            {{-- @csrf --}}
+        <form class="p-8 space-y-6" method="POST" action="{{ route('login.post') }}">
+            @csrf
 
             <div class="space-y-4">
                 <div>
@@ -137,9 +136,8 @@
             </div>
 
             <div>
-                <button
-                    class="submitFormButton w-full py-3 px-4 bg-gradient-to-r from-blue-700 to-blue-200 hover:from-primary/90 hover:to-secondary/90 text-white font-medium rounded-lg transition duration-300 transform hover:scale-[1.02] shadow-md"
-                    onclick="handleLogin()">
+                <button type="submit"
+                    class="w-full py-3 px-4 bg-gradient-to-r from-blue-700 to-blue-200 hover:from-primary/90 hover:to-secondary/90 text-white font-medium rounded-lg transition duration-300 transform hover:scale-[1.02] shadow-md">
                     Sign In
                 </button>
             </div>

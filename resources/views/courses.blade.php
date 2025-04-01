@@ -59,7 +59,7 @@
                             </svg>
                             Courses
                         </a>
-                        <a href="#"
+                        <a href="{{ route('quizzes') }}"
                             class="flex items-center px-3 py-2 text-gray-700 hover:bg-accent-light rounded-md transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20"
                                 fill="currentColor">
@@ -69,7 +69,7 @@
                             </svg>
                             Quizzes
                         </a>
-                        <a href="#"
+                        <a href="{{ route('users') }}"
                             class="flex items-center px-3 py-2 text-gray-700 hover:bg-accent-light rounded-md transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 24 24"
                                 fill="currentColor">
