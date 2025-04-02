@@ -35,9 +35,9 @@ Route::get('/users', function () {
     return view('users');
 })->name('users');
 
-Route::get('/home', function () {
-    return view('home');
-})->name('home');
+// Route::get('/home', function () {
+//     return view('home');
+// })->name('home');
 
 Route::get('/publishedCourse', function () {
     $courses = app(EnrollmentController::class)->getAllCourses();
@@ -49,7 +49,8 @@ Route::get('/home', function () {
     $popularCourses = $enrollmentController->getPopularCourses(3);
 
     return view('home', ['popularCourses' => $popularCourses]);
-});
+})->name('home');
+
 
 
 
