@@ -32,7 +32,7 @@ class EnrollmentController extends Controller
             'selected_package' => $request->input('package', 'free')
         ]);
 
-        return redirect()->route('enroll.complete', $courseId);
+        return redirect()->route('enroll.success', $courseId);
     }
 
     public function complete(Request $request, $courseId)
@@ -42,7 +42,7 @@ class EnrollmentController extends Controller
         }
 
         $course = $this->getMockCourseData($courseId);
-        return view('courses.enroll.complete', compact('course'));
+        return view('courses.enroll.success', compact('course'));
     }
     // Process final enrollment
     public function processEnrollment(Request $request, $courseId)
@@ -57,13 +57,13 @@ class EnrollmentController extends Controller
         $enrollmentData = $request->session()->get('enrollment_data');
 
         if (!$enrollmentData || $enrollmentData['course_id'] != $courseId) {
-            return redirect()->route('enroll.show', $courseId);
+            return redirect()->route('enroll.success', $courseId);
         }
 
         // Clear session data
         $request->session()->forget('enrollment_data');
 
-        return redirect()->route('enroll.success', [
+        return redirect()->route('enroll.complete', [
             'id' => $courseId,
             'package' => $validated['package']
         ]);
@@ -72,19 +72,24 @@ class EnrollmentController extends Controller
     // Show enrollment success page
     public function success(Request $request, $courseId)
     {
-        $package = $request->input('package', 'free');
+        // Get package from either URL parameter or session
+        $package = $request->input('package') ??
+                  ($request->session()->get('enrollment_data')['selected_package'] ?? 'free');
+
+        $course = $this->getMockCourseData($courseId);
 
         $successData = [
-            'course' => [
-                'id' => $courseId,
-                'title' => $this->getMockCourseData($courseId)['title'],
-                'isFree' => $package === 'free',
-                'package' => $package
-            ],
+            'course' => $course,
             'user' => [
-                'name' => 'John Doe', // Mock user data
+                'name' => 'John Doe',
                 'email' => 'john@example.com'
-            ]
+            ],
+            'enrollment' => [
+                'id' => uniqid(),
+                'package' => $package,
+                'completed' => false
+            ],
+            'has_paid_options' => $course['has_paid_options'] // Add this line
         ];
 
         return view('courses.enroll.success', compact('successData'));
@@ -258,5 +263,37 @@ public function getPopularCourses($limit = 3)
     return array_slice($allCourses, 0, $limit);
 }
 
+
+
+//certificate method
+// Add these methods to your EnrollmentController
+
+public function showCertificate($enrollmentId)
+{
+    // In a real app, you'd fetch this from database
+    $enrollment = [
+        'id' => $enrollmentId,
+        'user' => [
+            'name' => 'John Doe',
+            'email' => 'john@example.com'
+        ],
+        'course' => $this->getMockCourseData(request()->input('course_id')),
+        'completed_at' => now()->format('M d, Y'),
+        'score' => rand(85, 100),
+        'certificate_id' => 'CER-' . rand(1000, 9999)
+    ];
+
+    return view('certificate.show', compact('enrollment'));
+}
+
+public function generateCertificate($enrollmentId)
+{
+    // Generate PDF version of certificate
+    // This is a placeholder - you'd use something like DomPDF or Laravel Snappy
+    return response()->json([
+        'success' => true,
+        'download_url' => '/certificates/download/' . $enrollmentId
+    ]);
+}
 }
 

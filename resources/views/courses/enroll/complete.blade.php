@@ -30,13 +30,23 @@
                 <i class="fas fa-check-circle text-6xl text-green-500 mb-4"></i>
                 <h2 class="text-3xl font-bold text-yellow-400 mb-2">Enrollment Complete!</h2>
                 <p class="text-white">You have successfully enrolled in <strong>{{ $course['title'] }}</strong></p>
+
+                @if($course['has_paid_options'] && session('enrollment_data.selected_package') !== 'free')
+                <p class="text-white mt-2">
+                    <i class="fas fa-certificate text-yellow-400 mr-1"></i>
+                    Certificate will be available upon course completion
+                </p>
+                @endif
             </div>
 
             <div class="flex flex-col space-y-4">
-                <a href="{{ route('enroll.success', ['courseId' => $course['id']]) }}"
-                   class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 px-6 rounded-lg transition duration-300">
-                    Continue to Course <i class="fas fa-arrow-right ml-2"></i>
-                </a>
+                <form action="{{ route('enroll.complete.submit', $course['id']) }}" method="POST">
+                    @csrf
+                    <button type="submit"
+                            class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 px-6 rounded-lg transition duration-300">
+                        Continue to Course <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </form>
 
                 <a href="{{ route('courses.publishedCourse') }}"
                    class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300">

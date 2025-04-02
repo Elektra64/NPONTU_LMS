@@ -26,49 +26,73 @@
         .user-badge:hover {
             transform: scale(1.05);
         }
+        .nav-link.active {
+    @apply text-yellow-400 border-b-2 border-yellow-400;
+}
     </style>
 </head>
 <body class="bg-gray-100 font-sans">
     <!-- Enhanced Navbar -->
     <nav class="bg-gray-900 text-white p-4 flex justify-between items-center sticky top-0 z-50 shadow-lg">
-        <div class="flex items-center space-x-8">
-            <span class="text-2xl font-bold text-yellow-400 flex items-center">
+    <div class="flex items-center space-x-8">
+        <span class="text-2xl font-bold text-yellow-400 flex items-center">
+            <a href="/home" class="cursor-pointer">
                 <i class="fas fa-graduation-cap mr-2"></i>EduVerse
-            </span>
-            <div class="hidden md:flex space-x-6">
-                <a href="{{ route('courses.publishedCourse') }}" class="hover:text-yellow-400 transition duration-300 flex items-center">
-                    <i class="fas fa-book mr-2"></i>Courses
-                </a>
-               
-                <a href="#" class="hover:text-yellow-400 transition duration-300 flex items-center">
-                    <i class="fas fa-calendar-alt mr-2"></i>Calendar
-                </a>
-                <a href="#" class="hover:text-yellow-400 transition duration-300 flex items-center">
-                    <i class="fas fa-comments mr-2"></i>Discussions
-                </a>
-            </div>
-        </div>
-        <div class="flex items-center space-x-4">
-            <!-- Search Bar -->
-            <div class="hidden md:block relative">
-                <input type="text" placeholder="Search courses..." class="bg-gray-700 text-white px-4 py-2 rounded-full focus:outline-none focus:ring-2 focus:ring-yellow-400 w-64">
-                <i class="fas fa-search absolute right-3 top-2.5 text-gray-400"></i>
-            </div>
+            </a>
+        </span>
+        <div class="hidden md:flex space-x-6">
+            <!-- Unified Courses Entry -->
+            <a href="{{ route('courses.publishedCourse') }}" class="hover:text-yellow-400 transition duration-300 flex items-center">
+                <i class="fas fa-book-open mr-2"></i>Courses
+            </a>
 
-            <!-- User Badge (visible after login) -->
-            <div class="user-badge flex items-center space-x-3 bg-gray-800 px-3 py-1 rounded-full cursor-pointer hover:bg-gray-700">
-                <div class="text-right hidden sm:block">
-                    <div class="text-sm font-medium">Sarah Johnson</div>
-                    <div class="text-xs text-gray-400">Student</div>
-                </div>
-                <div class="relative">
-                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User profile" class="w-8 h-8 rounded-full border-2 border-yellow-400">
-                    <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-gray-800"></span>
-                </div>
-                <i class="fas fa-chevron-down text-gray-400 text-xs hidden md:block"></i>
+            <!-- Learning Tools -->
+            <a href="{{ route('quizzes') }}" class="hover:text-yellow-400 transition duration-300 flex items-center">
+                <i class="fas fa-tasks mr-2"></i>Learning
+            </a>
+
+
+        </div>
+    </div>
+    <div class="flex items-center space-x-4">
+        <!-- Quick Access Dropdown -->
+        <div class="relative group">
+            <button class="hover:text-yellow-400 px-3 py-1 rounded-lg transition duration-300 flex items-center">
+                <i class="fas fa-bolt mr-2"></i> Quick Access
+                <i class="fas fa-chevron-down ml-1 text-xs"></i>
+            </button>
+            <div class="absolute hidden group-hover:block bg-gray-800 mt-2 py-2 w-48 rounded shadow-lg z-50 right-0">
+                <a href="{{ route('courses.publishedCourse') }}" class="block px-4 py-2 hover:bg-gray-700">
+                    <i class="fas fa-search mr-2"></i> Browse Catalog
+                </a>
+
+                <a href="{{ route('courses.certificate') }}" class="block px-4 py-2 hover:bg-gray-700">
+                    <i class="fas fa-certificate mr-2"></i> Certificates
+                </a>
             </div>
         </div>
-    </nav>
+
+
+    </div>
+    <div class="flex items-center space-x-4">
+        <!-- Notification Bell -->
+        <a href="#" class="p-2 rounded-full hover:bg-gray-700 relative">
+            <i class="fas fa-bell"></i>
+            <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-yellow-400"></span>
+        </a>
+
+        <!-- User Menu -->
+        <div class="user-badge flex items-center space-x-3 bg-gray-800 px-3 py-1 rounded-full cursor-pointer hover:bg-gray-700">
+            <div class="text-right hidden sm:block">
+                <div class="text-sm font-medium">John Doe</div>
+                <div class="text-xs text-gray-400">Learner</div>
+            </div>
+            <div class="relative">
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User profile" class="w-8 h-8 rounded-full border-2 border-yellow-400">
+            </div>
+        </div>
+    </div>
+</nav>
 
     <!-- Hero Section -->
     <header class="relative text-white text-center py-20">
