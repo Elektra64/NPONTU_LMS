@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\User;
 
 return new class extends Migration
 {
@@ -13,14 +14,16 @@ return new class extends Migration
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->string('title')->nullable(false);
             $table->text('description')->nullable();
-            $table->text('intro_content')->nullable();
-            $table->string('difficulty_level')->nullable();
-            $table->timestamp('duration')->nullable();
-            $table->enum('status', ['draft', 'published']);
-            $table->unsignedBigInteger('created_by')->nullable();
-            $table->foreign('created_by')->constrained()->references('id')->on('users')->onDelete('cascade');
+            $table->string('video_url')->nullable();
+            $table->enum('difficulty_level', ['Beginner', 'Intermediate', 'Advanced'])->default('Beginner');
+            $table->integer('duration')->nullable(false)->default(-1);
+            $table->integer('credit_hours')->nullable(false)->default(3);
+            $table->integer('number_of_modules')->nullable(false)->default(3);
+            $table->integer('final_exam_weight')->nullable(false);
+            $table->enum('status', ['draft', 'published'])->default('draft');
+            $table->foreignId('created_by')->constrained()->references('id')->on('users')->cascadeOnDelete();
             $table->timestamps();
         });
     }

@@ -71,7 +71,7 @@ async function handleSignup() {
 
         const data = await response.json();
 
-        if (response.ok && response.apiToken != null) {
+        if (response.ok && response.status == 100) {
             // Successful signup - redirect
             window.location.href = "/dashboard";
         } else {

@@ -128,7 +128,7 @@
                     </div>
 
                     <div class="text-sm">
-                        <a href="{{ route('login') }}" class="font-medium text-primary hover:underline">
+                        <a href="#" class="font-medium text-primary hover:underline">
                             Forgot password?
                         </a>
                     </div>

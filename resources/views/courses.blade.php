@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EduVerse - Course Management</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="{{ asset('assets/js/course.js') }}"></script>
+    <script src="{{ asset('assets/js/course.js') }}" defer></script>
     <style>
         ::-webkit-scrollbar {
             width: 8px;
@@ -147,7 +147,6 @@
                     <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
                     <select
                         class="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
-                        <option>All Categories</option>
                         <option>Web Development</option>
                         <option>Data Science</option>
                         <option>Design</option>
@@ -158,17 +157,16 @@
                     <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
                     <select
                         class="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
-                        <option>All Statuses</option>
                         <option>Published</option>
                         <option>Draft</option>
-                        <option>Archived</option>
+
                     </select>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Difficulty</label>
                     <select
                         class="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
-                        <option>All Levels</option>
+
                         <option>Beginner</option>
                         <option>Intermediate</option>
                         <option>Advanced</option>
@@ -188,34 +186,88 @@
                 class="grid grid-cols-12 gap-4 p-4 border-b border-gray-200 bg-gray-50 text-sm font-medium text-gray-600">
                 <div class="col-span-5">Course Title</div>
                 <div class="col-span-2">Category</div>
-                <div class="col-span-1">Students</div>
+                <div class="col-span-1">Instructor</div>
                 <div class="col-span-1">Status</div>
                 <div class="col-span-2">Last Updated</div>
                 <div class="col-span-1">Actions</div>
             </div>
 
             <!-- Course Items -->
-            <div id="courseList">
-                <!-- Course items will be dynamically inserted here -->
-            </div>
+            @if ($courses->count())
+                @foreach ($courses as $course)
+                    <div
+                        class="grid grid-cols-12 gap-4 p-4 border-b border-gray-200 bg-gray-50 text-sm font-medium text-gray-600">
+                        <div class="col-span-5">{{ $course->title }}</div>
+                        <div class="col-span-2">{{ $course->categories[0]->category_name }}</div>
+                        <div class="col-span-1">{{ $course->user->first_name }}</div>
+                        <div class="col-span-1">{{ strtoupper($course->status) }}</div>
+                        <div class="col-span-2">{{ $course->updated_at->diffForHumans() }}</div>
+                        @can('edit_course', $course)
+                            <div class="col-span-1">
+                                <button
+                                    class="bg-gray-500 text-white px-4 py-2 rounded-md transition-colors flex items-center"
+                                    id="addModule">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                        fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                        <path
+                                            d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                                        <path fill-rule="evenodd"
+                                            d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
+                                    </svg>
 
+                                </button>
+                                <button
+                                    class="bg-red-500 text-white px-4 py-2 rounded-md transition-colors flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                        fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                        <path
+                                            d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0" />
+                                    </svg>
+                                </button>
+                            </div>
+                        @endcan
+                    </div>
+                    <div class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center p-4" id="addModuleModal">
+                        <div class="bg-white rounded-lg shadow-xl w-full max-w-6xl max-h-[80vh] overflow-y-auto">
+                            <div class="p-6 border-b border-gray-200 flex justify-between items-center">
+                                <h2 class="text-2xl font-bold text-accent-dark">Create Module For Course</h2>
+                                <button id="closeModuleModal" class="text-gray-600 hover:text-gray-900">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
+                
+                            <form action="{{ route('store.module', $course->id) }}" method="post" class="p-6 space-y-6">
+                                @csrf
+                                <div class="border-t border-gray-200 pt-6">
+                                    <h3 class="text-lg font-medium text-accent-dark mb-4">Course Modules</h3>
+                                    <div id="modules-container" class="space-y-4">
+                                        <!-- Modules will be added here dynamically -->
+                                    </div>
+                                    <button type="button" id="add-module"
+                                        class="mt-4 text-sm text-primary hover:text-secondary flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20"
+                                            fill="currentColor">
+                                            <path fill-rule="evenodd"
+                                                d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                        Add Module
+                                    </button>
+                                    <button class="mt-4 text-sm text-primary hover:text-secondary flex items-center" type="submit">Submit</button>
+                                </div>
+                
+                            </form>
+                        </div>
+                    </div>
+                @endforeach
+            @endif
             <!-- Pagination -->
             <div class="flex justify-between items-center p-4 border-t border-gray-200">
-                <div class="text-sm text-gray-600">
-                    Showing <span class="font-medium">1</span> to <span class="font-medium">5</span> of <span
-                        class="font-medium">12</span> courses
-                </div>
-                <div class="flex space-x-2">
-                    <button
-                        class="px-3 py-1 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100">Previous</button>
-                    <button class="px-3 py-1 bg-primary text-white rounded-md hover:bg-secondary">1</button>
-                    <button
-                        class="px-3 py-1 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100">2</button>
-                    <button
-                        class="px-3 py-1 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100">3</button>
-                    <button
-                        class="px-3 py-1 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100">Next</button>
-                </div>
+                {{ $courses->links() }}
             </div>
         </div>
     </main>
@@ -233,20 +285,20 @@
                     </svg>
                 </button>
             </div>
-            <form id="courseCreationForm" class="p-6 space-y-6">
+            <form id="courseCreationForm" class="p-6 space-y-6" method="POST"
+                action="{{ route('create_course') }}">
+                @csrf
                 <!-- Basic Course Information -->
                 <div class="grid md:grid-cols-3 gap-6">
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Course Title</label>
                         <input type="text" name="title"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50"
-                            required>
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Category</label>
                         <select name="category"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50"
-                            required>
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50">
                             <option value="">Select Category</option>
                             <option value="Web Development">Web Development</option>
                             <option value="Data Science">Data Science</option>
@@ -257,9 +309,8 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Difficulty Level</label>
                         <select name="difficulty"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50"
-                            required>
-                            <option value="">Select Difficulty</option>
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50">
+                            <option value="" selected disabled>Select Difficulty</option>
                             <option value="Beginner">Beginner</option>
                             <option value="Intermediate">Intermediate</option>
                             <option value="Advanced">Advanced</option>
@@ -272,35 +323,79 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Course Duration (weeks)*</label>
                         <input type="number" name="duration_weeks" min="1"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50"
-                            required>
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Estimated Hours Per Week*</label>
-                        <input type="number" name="hours_per_week" min="1"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50"
-                            required>
+                        <label class="block text-sm font-medium text-gray-700">Credit Hours Per Week</label>
+                        <input type="number" name="credit_hours" min="1"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50">
                     </div>
                 </div>
 
                 <!-- Course Overview Video -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Course Overview Video URL*</label>
-                    <input type="url" name="video_url"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50"
-                        placeholder="https://example.com/video" required>
-                    <p class="mt-1 text-sm text-gray-500">Embed URL from YouTube, Vimeo, or your hosting platform</p>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Course Overview Video URL*</label>
+                        <input type="url" name="video_url"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50"
+                            placeholder="https://example.com/video">
+                        <p class="mt-1 text-sm text-gray-500">Embed URL from YouTube, Vimeo, or your hosting platform
+                        </p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Number of modules for the course</label>
+                        <input type="number" name="number_of_modules" min="3"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50">
+                    </div>
                 </div>
 
                 <!-- Course Description -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Course Description*</label>
                     <textarea name="description" rows="4"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50"
-                        required></textarea>
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50"></textarea>
                 </div>
 
-                <!-- Modules Section -->
+                <!-- Final Exam Section -->
+                <div class="border-t border-gray-200 pt-6">
+                    <h3 class="text-lg font-medium text-accent-dark mb-4">Final Exam Settings</h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Exam Weight (% of total
+                                grade)*</label>
+                            <input type="number" name="final_exam_weight" min="0" max="100"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50"
+                                value="30">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="flex justify-end space-x-4 pt-6 border-t border-gray-200">
+                    <button type="button" id="cancelCourse"
+                        class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">Cancel</button>
+                    <button type="submit"
+                        class="px-4 py-2 bg-primary text-white rounded-md hover:bg-secondary">Create Course</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center p-4" id="addModuleModal">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-6xl max-h-[80vh] overflow-y-auto">
+            <div class="p-6 border-b border-gray-200 flex justify-between items-center">
+                <h2 class="text-2xl font-bold text-accent-dark">Create Module For Course</h2>
+                <button id="closeModuleModal" class="text-gray-600 hover:text-gray-900">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <form action="{{ route('store.module', $course) }}" method="get" class="p-6 space-y-6">
+                
                 <div class="border-t border-gray-200 pt-6">
                     <h3 class="text-lg font-medium text-accent-dark mb-4">Course Modules</h3>
                     <div id="modules-container" class="space-y-4">
@@ -318,33 +413,6 @@
                     </button>
                 </div>
 
-                <!-- Final Exam Section -->
-                <div class="border-t border-gray-200 pt-6">
-                    <h3 class="text-lg font-medium text-accent-dark mb-4">Final Exam Settings</h3>
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Exam Weight (% of total
-                                grade)*</label>
-                            <input type="number" name="final_exam_weight" min="0" max="100"
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50"
-                                value="30" required>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Passing Score (%)*</label>
-                            <input type="number" name="passing_score" min="0" max="100"
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50"
-                                value="70" required>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Form Actions -->
-                <div class="flex justify-end space-x-4 pt-6 border-t border-gray-200">
-                    <button type="button" id="cancelCourse"
-                        class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">Cancel</button>
-                    <button type="submit"
-                        class="px-4 py-2 bg-primary text-white rounded-md hover:bg-secondary">Create Course</button>
-                </div>
             </form>
         </div>
     </div>
@@ -353,7 +421,7 @@
     <template id="module-template">
         <div class="module-item p-4 border border-gray-200 rounded-lg bg-white">
             <div class="flex justify-between items-center mb-4">
-                <h4 class="text-md font-medium text-gray-800">Module <span class="module-number">1</span></h4>
+                <h4 class="text-md font-medium text-gray-800">Module</h4>
                 <button type="button"
                     class="remove-module text-red-600 hover:text-red-800 text-sm flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20"
@@ -369,35 +437,26 @@
             <div class="grid md:grid-cols-2 gap-4 mb-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Module Title*</label>
-                    <input type="text" name="modules[][title]"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50"
-                        required>
+                    <input type="text" name="module_title[]"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Duration (days)*</label>
-                    <input type="number" name="modules[][duration_days]" min="1"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50"
-                        required>
+                    <label class="block text-sm font-medium text-gray-700">Module Number</label>
+                    <input type="number" name="module_number[]" min="1"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50">
                 </div>
             </div>
 
             <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700">Module Description*</label>
-                <textarea name="modules[][description]" rows="3"
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50"
-                    required></textarea>
+                <label class="block text-sm font-medium text-gray-700">Module Content</label>
+                <textarea name="module_content[]" rows="3"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50"></textarea>
             </div>
 
-            <!-- Module Quiz Section -->
+            {{-- <!-- Module Quiz Section -->
             <div class="module-quiz bg-gray-50 p-4 rounded-lg">
                 <div class="flex justify-between items-center mb-4">
                     <h5 class="text-md font-medium text-gray-700">Module Quiz</h5>
-                    <div class="flex items-center">
-                        <label class="block text-sm font-medium text-gray-700 mr-2">Weight (%):</label>
-                        <input type="number" name="modules[][quiz_weight]" min="0" max="100"
-                            class="w-20 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50"
-                            value="20" required>
-                    </div>
                 </div>
 
                 <div class="quiz-questions space-y-4">
@@ -414,7 +473,7 @@
                     </svg>
                     Add Question
                 </button>
-            </div>
+            </div> --}}
         </div>
     </template>
 
@@ -437,56 +496,50 @@
 
             <div class="mb-4">
                 <label class="block text-sm font-medium text-gray-700">Question Text*</label>
-                <input type="text" name="modules[][questions][][text]"
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50"
-                    required>
+                <input type="text" name="module_question[]"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50">
             </div>
 
             <div class="grid md:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Option A*</label>
                     <div class="flex items-center mt-1">
-                        <input type="text" name="modules[][questions][][options][]"
-                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50"
-                            required>
-                        <input type="radio" name="modules[][questions][][correct]" value="0"
+                        <input type="text" name="mcq_option_a[]"
+                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50">
+                        <input type="radio" name="mcq_choice[]" value="a"
                             class="ml-2 h-4 w-4 text-primary focus:ring-primary">
                     </div>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Option B*</label>
                     <div class="flex items-center mt-1">
-                        <input type="text" name="modules[][questions][][options][]"
-                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50"
-                            required>
-                        <input type="radio" name="modules[][questions][][correct]" value="1"
+                        <input type="text" name="mcq_option_b[]"
+                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50">
+                        <input type="radio" name="mcq_choice[]" value="b"
                             class="ml-2 h-4 w-4 text-primary focus:ring-primary">
                     </div>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Option C</label>
                     <div class="flex items-center mt-1">
-                        <input type="text" name="modules[][questions][][options][]"
+                        <input type="text" name="mcq_option_c[]"
                             class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50">
-                        <input type="radio" name="modules[][questions][][correct]" value="2"
+                        <input type="radio" name="mcq_choice[]" value="c"
                             class="ml-2 h-4 w-4 text-primary focus:ring-primary">
                     </div>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Option D</label>
                     <div class="flex items-center mt-1">
-                        <input type="text" name="modules[][questions][][options][]"
+                        <input type="text" name="mcq_option_d[]"
                             class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50">
-                        <input type="radio" name="modules[][questions][][correct]" value="3"
+                        <input type="radio" name="mcq_choice[]" value="d"
                             class="ml-2 h-4 w-4 text-primary focus:ring-primary">
                     </div>
                 </div>
             </div>
         </div>
     </template>
-
-
-    <script></script>
 </body>
 
 </html>

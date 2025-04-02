@@ -13,9 +13,12 @@ return new class extends Migration
     {
         Schema::create('quiz_options', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('question_id')->constrained('quiz_questions')->onDelete('cascade');
-            $table->text('option_text');
-            $table->boolean('is_correct');
+            $table->foreignId('quiz_question_id')->constrained('quiz_questions')->onDelete('cascade');
+            $table->text('option_a')->nullable(false);
+            $table->text('option_b')->nullable(false);
+            $table->text('option_c')->nullable(false);
+            $table->text('option_d')->nullable(false);
+            $table->enum('correct_option', ['a', 'b', 'c', 'd'])->nullable(false);
         });
     }
     

@@ -6,11 +6,16 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
 class AuthController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->only(['logout']);
+    }
     public function login(Request $request)
     {
         $request->validate([
@@ -21,15 +26,14 @@ class AuthController extends Controller
         try {
             $user = User::where('email', $request->email)->firstOrFail();
             if (!Hash::check($request->password, $user->password)) {
-                return back()->withErrors(['email' => 'Invalid credentials']);
+                return back()->with('error', 'Invalid credentials');
             }
-            
-            // Create session for the user
-            auth()->login($user);
-            
-            return redirect()->route('dashboard');
+            Auth::login($user);
+            return redirect(
+                route('dashboard')
+            );
         } catch (ModelNotFoundException $e) {
-            return back()->withErrors(['email' => 'Invalid credentials']);
+            return back()->with('error', 'Invalid credentials');
         }
     }
 
@@ -41,6 +45,7 @@ class AuthController extends Controller
             'role' => ['required', Rule::in(['admin', 'learner'])],
             'firstName' => ['required'],
             'lastName' => ['required'],
+            'terms' => ['required', 'accepted']
         ]);
 
         try {
@@ -53,12 +58,15 @@ class AuthController extends Controller
                 'password' => Hash::make($request->password)
             ]);
 
-            return redirect()->route('login')
-                ->with('success', 'Account created successfully! Please login.');
+            return redirect(route('login'));
         } catch (QueryException $e) {
-            return back()
-                ->withInput()
-                ->with('error', 'Registration failed. Please try again.');
+            return back()->with('error', 'unexpected error occurred');
         }
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        return redirect(route('login'));
     }
 }

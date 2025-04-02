@@ -29,8 +29,9 @@ async function handleLogin() {
 
         const data = await response.json();
 
-        if (response.ok && response.apiToken != null) {
+        if (response.ok && response.status == 100) {
             // Successful login - redirect to dashboard or home page
+            alert("successful");
             window.location.href = "/dashboard";
         } else {
             // Display error message
