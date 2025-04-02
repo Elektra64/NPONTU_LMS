@@ -62,15 +62,7 @@
                 </a>
             </span>
             <div class="hidden md:flex space-x-6">
-                <a href="{{ route('courses.publishedCourse') }}" class="hover:text-yellow-400 transition duration-300 flex items-center nav-link">
-                    <i class="fas fa-book-open mr-2"></i>Courses
-                </a>
-                <a href="#" class="hover:text-yellow-400 transition duration-300 flex items-center nav-link">
-                    <i class="fas fa-laptop-code mr-2"></i>Skill Paths
-                </a>
-                <a href="#" class="hover:text-yellow-400 transition duration-300 flex items-center nav-link">
-                    <i class="fas fa-certificate mr-2"></i>Certificates
-                </a>
+
             </div>
         </div>
         <div class="flex items-center space-x-4">
@@ -101,7 +93,7 @@
                     <a href="{{ route('signUp') }}" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-4 rounded-full transition duration-300 transform hover:scale-105 flex items-center justify-center cta-pulse">
                         <i class="fas fa-rocket mr-2"></i> Start Learning Free
                     </a>
-                    <a href="{{ route('courses.publishedCourse') }}" class="bg-transparent hover:bg-white/10 text-white font-bold px-8 py-4 rounded-full border-2 border-yellow-400 transition duration-300 transform hover:scale-105 flex items-center justify-center">
+                    <a href="{{ route('signUp') }}" class="bg-transparent hover:bg-white/10 text-white font-bold px-8 py-4 rounded-full border-2 border-yellow-400 transition duration-300 transform hover:scale-105 flex items-center justify-center">
                         <i class="fas fa-book-open mr-2"></i> Browse Courses
                     </a>
                 </div>
@@ -124,7 +116,6 @@
         <div class="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-gray-900 to-transparent z-10"></div>
     </section>
 
-    <!-- Skills Showcase Section -->
     <!-- Skills Showcase Section -->
 <section class="py-16 relative overflow-hidden">
     <!-- Dotted gradient circular background -->
