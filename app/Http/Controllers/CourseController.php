@@ -75,4 +75,9 @@ class CourseController extends Controller
 
         return back();
     }
+
+    public function published_courses()
+    {
+        return view('learner.published-courses');
+    }
 }

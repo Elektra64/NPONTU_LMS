@@ -21,6 +21,7 @@ Route::controller(AuthController::class)->group(function () {
 
 Route::controller(CourseController::class)->group(function () {
     Route::get('courses', 'index')->name('courses');
+    Route::get('published/courses', 'published_courses')->name('published.courses');
     Route::post('create/course', 'create_course')->name('create_course');
 });
 
