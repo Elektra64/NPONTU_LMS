@@ -42,7 +42,7 @@
         </span>
         <div class="hidden md:flex space-x-6">
             <!-- Unified Courses Entry -->
-            <a href="{{ route('courses.publishedCourse') }}" class="hover:text-yellow-400 transition duration-300 flex items-center">
+            <a href="{{ route('published.courses') }}" class="hover:text-yellow-400 transition duration-300 flex items-center">
                 <i class="fas fa-book-open mr-2"></i>Courses
             </a>
 
@@ -62,11 +62,11 @@
                 <i class="fas fa-chevron-down ml-1 text-xs"></i>
             </button>
             <div class="absolute hidden group-hover:block bg-gray-800 mt-2 py-2 w-48 rounded shadow-lg z-50 right-0">
-                <a href="{{ route('courses.publishedCourse') }}" class="block px-4 py-2 hover:bg-gray-700">
+                <a href="{{ route('published.courses') }}" class="block px-4 py-2 hover:bg-gray-700">
                     <i class="fas fa-search mr-2"></i> Browse Catalog
                 </a>
 
-                <a href="{{ route('courses.certificate') }}" class="block px-4 py-2 hover:bg-gray-700">
+                <a href="#" class="block px-4 py-2 hover:bg-gray-700">
                     <i class="fas fa-certificate mr-2"></i> Certificates
                 </a>
             </div>
@@ -103,7 +103,7 @@
             <p class="mt-4 text-xl max-w-3xl mx-auto">Transform your future with our cutting-edge online education platform. Learn from industry experts and earn recognized certifications.</p>
             <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
                 <button class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-3 rounded-full transition duration-300 transform hover:scale-105">
-                    <a href="{{ route('courses.publishedCourse') }}" class="flex items-center justify-center">
+                    <a href="{{ route('published.courses') }}" class="flex items-center justify-center">
                         <i class="fas fa-book-open mr-2"></i> Explore Courses
                     </a>
                 </button>
@@ -180,7 +180,7 @@
                 <h2 class="text-3xl font-bold mb-4">Popular Courses</h2>
                 <p class="text-gray-300 max-w-2xl mx-auto">Browse our most popular courses loved by thousands of students worldwide</p>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {{-- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 @foreach($popularCourses as $course)
                 <div class="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl overflow-hidden shadow-lg course-card transition duration-300">
                     <div class="relative">
@@ -209,9 +209,9 @@
                     </div>
                 </div>
                 @endforeach
-            </div>
+            </div> --}}
             <div class="text-center mt-12">
-                <a href="{{ route('courses.publishedCourse') }}" class="inline-block bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-6 py-3 rounded-full transition duration-300">
+                <a href="{{ route('published.courses') }}" class="inline-block bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-6 py-3 rounded-full transition duration-300">
                     View All Courses <i class="fas fa-arrow-right ml-2"></i>
                 </a>
             </div>
@@ -293,7 +293,7 @@
             <p class="text-xl text-gray-300 max-w-3xl mx-auto mb-8">Join thousands of students who have already started their learning journey with EduVerse University</p>
             <div class="flex flex-col sm:flex-row justify-center gap-4">
                 <button class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-3 rounded-full transition duration-300 transform hover:scale-105">
-                    <a href="{{ route('courses.publishedCourse') }}" class="flex items-center justify-center">
+                    <a href="{{ route('published.courses') }}" class="flex items-center justify-center">
                         <i class="fas fa-book-open mr-2"></i> Browse Courses
                     </a>
                 </button>
@@ -340,7 +340,7 @@
                     <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
                     <ul class="space-y-2">
                         <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">Home</a></li>
-                        <li><a href="{{ route('courses.publishedCourse') }}" class="text-gray-400 hover:text-yellow-400 transition duration-300">Courses</a></li>
+                        <li><a href="{{ route('published.courses') }}" class="text-gray-400 hover:text-yellow-400 transition duration-300">Courses</a></li>
                         <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">About Us</a></li>
                         <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">Instructors</a></li>
                         <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">Pricing</a></li>
