@@ -38,11 +38,12 @@ class EnrollmentController extends Controller
     public function complete(Request $request, $courseId)
     {
         if (!$request->session()->has('enrollment_data')) {
-            return redirect()->route('enroll.show', $courseId);
+            return redirect()->route('enroll.courseContent', ['courseId' => $courseId]);
         }
 
         $course = $this->getMockCourseData($courseId);
         return view('courses.enroll.complete', compact('course'));
+
     }
     // Process final enrollment
     public function processEnrollment(Request $request, $courseId)

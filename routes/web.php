@@ -66,6 +66,7 @@ Route::controller(EnrollmentController::class)->group(function () {
     Route::get('/enroll/{courseId}/complete', 'complete')->name('enroll.complete');
     Route::post('/enroll/{courseId}/process', 'processEnrollment')->name('enroll.process');
     Route::get('/enroll/{courseId}/success', 'success')->name('enroll.success');
+    Route::get('/enroll/{courseId}/courseContent', 'showContent')->name('enroll.courseContent');
 });
 
 

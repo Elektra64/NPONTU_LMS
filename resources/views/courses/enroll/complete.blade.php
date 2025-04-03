@@ -33,7 +33,7 @@
             </div>
 
             <div class="flex flex-col space-y-4">
-                <a href="{{ route('enroll.success', ['courseId' => $course['id']]) }}"
+                <a href="{{ route('enroll.courseContent', ['courseId' => $course->id]) }}"
                    class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 px-6 rounded-lg transition duration-300">
                     Continue to Course <i class="fas fa-arrow-right ml-2"></i>
                 </a>
