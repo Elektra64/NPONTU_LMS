@@ -33,7 +33,7 @@ class CourseController extends Controller
             }
         }
 
-        return view('courses', compact('courses'));
+        return view('admin.courses', compact('courses'));
     }
     public function create_course(Request $request)
     {

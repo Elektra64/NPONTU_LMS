@@ -5,12 +5,18 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ModuleController;
 
-Route::view('signup', 'signUp')->name('signUp')->middleware('guest');
-Route::view('login', 'login')->name('login')->middleware('guest');
+
+
 Route::view('home', 'home')->name('home');
-Route::view('dashboard', 'dashboard')->name('dashboard');
-Route::view('users', 'users')->name('users');
-Route::view('quizzes', 'quizzes')->name('quizzes');
+
+Route::group(['middleware' => 'guest'], function () {
+    Route::view('/', 'landing')->name('landing');
+    Route::view('register', 'register')->name('register');
+    Route::view('login', 'login')->name('login');
+});
+
+Route::view('dashboard', 'dashboard')->name('dashboard')->middleware('auth');
+Route::view('users', 'users')->name('users')->middleware('auth');
 
 
 Route::controller(AuthController::class)->group(function () {

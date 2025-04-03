@@ -175,7 +175,7 @@
 
             <div class="text-center text-sm text-gray-600">
                 Don't have an account?
-                <a href="{{ route('signUp') }}" class="text-primary font-medium hover:underline">Sign up</a>
+                <a href="{{ route('register') }}" class="text-primary font-medium hover:underline">Sign up</a>
             </div>
         </form>
     </div>
