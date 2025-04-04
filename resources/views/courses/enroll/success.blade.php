@@ -88,7 +88,7 @@
                         <i class="fas fa-search mr-2"></i> Browse Catalog
                     </a>
 
-                    <a href="{{ route('courses.certificate') }}" class="block px-4 py-2 hover:bg-gray-700">
+                    <a href="{{ route('certificateTemplate') }}" class="block px-4 py-2 hover:bg-gray-700">
                         <i class="fas fa-certificate mr-2"></i> Certificates
                     </a>
                 </div>
@@ -125,17 +125,26 @@
                         <p class="text-gray-300">You're almost there! Confirm your details to join the course</p>
                     </div>
 
+                 <!-- Data Container (Hidden) -->
+                    <div id="enrollmentData"
+                        data-course='@json($successData['course'])'
+                        data-user='@json($successData['user'])'
+                        data-enrollment='@json($successData['enrollment'])'
+                        data-has-paid-options='{{ $successData['has_paid_options'] ? 'true' : 'false' }}'
+                        data-complete-url='{{ route("enroll.complete", $successData["course"]["id"]) }}'>
+                    </div>
+
                     <!-- Course Info -->
                     <div class="bg-gray-700 bg-opacity-30 rounded-lg p-6 mb-8">
-                        <h3 class="text-xl font-semibold mb-2" id="courseTitle">Course Title</h3>
+                        <h3 class="text-xl font-semibold mb-2">{{ $successData['course']['title'] }}</h3>
                         <div class="flex items-center text-yellow-400 mb-2">
                             <i class="fas fa-star"></i>
-                            <span class="ml-1 text-white" id="courseRating">4.9</span>
+                            <span class="ml-1 text-white">{{ $successData['course']['rating'] }}</span>
                             <span class="mx-2 text-gray-400">|</span>
                             <i class="fas fa-user-graduate text-gray-300"></i>
-                            <span class="ml-1 text-gray-300" id="courseStudents">12,345 students</span>
+                            <span class="ml-1 text-gray-300">{{ number_format($successData['course']['students_count']) }} students</span>
                         </div>
-                        <p class="text-gray-300" id="courseDescription">Course description will appear here</p>
+                        <p class="text-gray-300">{{ $successData['course']['description'] }}</p>
                     </div>
 
                     <!-- Package Selection (Only shown if course has paid options) -->
@@ -219,7 +228,15 @@
                         </div>
                     </div>
 
-                    <!-- Terms and Submit -->
+                    <div id="enrollmentData"
+                        data-course='@json($successData['course'])'
+                        data-user='@json($successData['user'])'
+                        data-enrollment='@json($successData['enrollment'])'
+                        data-has-paid-options='{{ $successData['has_paid_options'] ? 'true' : 'false' }}'
+                        data-complete-url='{{ route("enroll.complete", $successData["course"]["id"]) }}'>
+                    </div>
+
+                    <!-- Terms and Submit Section -->
                     <div class="mb-6">
                         <div class="flex items-start mb-4">
                             <input type="checkbox" id="terms" class="mt-1 mr-3" required>

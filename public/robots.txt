@@ -1,2 +1,72 @@
 User-agent: *
 Disallow:
+
+
+ <div class="p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <div class="flex space-x-2">
+                                <span class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-xs">
+                                    {{ $content['sections'][$currentSection]['lessons'][$currentLesson]['type'] ?? 'Video' }}
+                                </span>
+                                <span class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-xs">
+                                    {{ $content['sections'][$currentSection]['lessons'][$currentLesson]['duration'] }}
+                                </span>
+                            </div>
+                            @if($content['sections'][$currentSection]['lessons'][$currentLesson]['type'] === 'video')
+                            <div class="flex space-x-2">
+                                <button id="speed-control" class="px-3 py-1 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-full text-sm">
+                                    1x Speed
+                                </button>
+                                <button id="mark-complete-btn" class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-full text-sm">
+                                    <i class="fas fa-check mr-2"></i>Mark as Complete
+                                </button>
+                            </div>
+                            @else
+                            <button id="mark-complete-btn" class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-full text-sm">
+                                <i class="fas fa-check mr-2"></i>Mark as Complete
+                            </button>
+                            @endif
+                        </div>
+
+                        <!-- Lesson Description -->
+                        <div class="prose max-w-none">
+                            <p class="font-black">This lesson covers the fundamental concepts of {{ $content['sections'][$currentSection]['lessons'][$currentLesson]['title'] }}.
+                            You'll learn through interactive examples and practical exercises.</p>
+
+                            <h3 class="text-bold text-2xl font-black animate-bounce text-2xl font-bold ">Key Take aways</h3><br>
+                            <ul class="font-medium " >
+                                <li>Understand core concepts</li>
+                                <li>Apply knowledge through exercises</li>
+                                <li>Prepare for next lesson</li>
+                            </ul>
+                        </div>
+
+
+
+ <!-- Navigation Buttons -->
+                <div class="flex justify-between">
+                    @if($navigation['prev'] ?? false)
+                    <a href="{{ route('course.lesson', ['courseId' => $course['id'], 'section' => $navigation['prev']['section'], 'lesson' => $navigation['prev']['lesson']]) }}"
+                       class="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg font-medium">
+                        <i class="fas fa-arrow-left mr-2"></i> Previous Lesson
+                    </a>
+                    @else
+                    <span></span>
+                    @endif
+
+                    @if($navigation['next'] ?? false)
+                    <a href="{{ route('course.lesson', ['courseId' => $course['id'], 'section' => $navigation['next']['section'], 'lesson' => $navigation['next']['lesson']]) }}"
+                       class="px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-medium">
+                        Next Lesson <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                    @else
+                    <!-- UPDATED COMPLETION BUTTON -->
+                    <form method="POST" action="{{ route('course.complete', $course['id']) }}">
+                        @csrf
+                        <button type="submit"
+                           class="px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium">
+                            Complete Course <i class="fas fa-trophy ml-2"></i>
+                        </button>
+                    </form>
+                    @endif
+                </div>
