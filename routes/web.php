@@ -4,9 +4,13 @@ use App\Http\Controllers\EnrollmentController;
 use Illuminate\Support\Facades\Route;
 
 // Basic routes
+Route::get('/', function () {
+    return view('landing');
+})->name('landing');
+
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->name('dashboard'); // Add ->name() to reference it later
+})->name('dashboard');
 
 Route::get('/signUp', function () {
     return view('signUp');
@@ -24,19 +28,26 @@ Route::get('/quizzes', function () {
     return view('quizzes');
 })->name('quizzes');
 
+Route::get('/certificateTemplate', function () {
+    return view('certificateTemplate');
+})->name('certificateTemplate');
+
 Route::get('/users', function () {
     return view('users');
 })->name('users');
 
-// Route::get('/home', function () {
-//     return view('home');
-// })->name('home');
+Route::get('/', function () {
+    return view('landing');
+})->name('landing');
 
-// Certificate routes
-Route::get('/courses/certificate', function () {
-    return view('courses.certificate');
-})->name('courses.certificate');
+// Home route with popular courses
+Route::get('/home', function () {
+    $enrollmentController = new EnrollmentController();
+    $popularCourses       = $enrollmentController->getPopularCourses(3);
+    return view('home', compact('popularCourses'));
+})->name('home');
 
+// Published courses
 Route::get('/publishedCourse', function () {
     $courses = app(EnrollmentController::class)->getAllCourses();
     return view('courses.publishedCourse', ['courses' => $courses]);
@@ -47,9 +58,9 @@ Route::get('/publishedCourse', function () {
 //     // Show enrollment page
 //     Route::get('/enroll/{courseId}', 'show')->name('enroll.show');
 
-    return view('home', ['popularCourses' => $popularCourses]);
-})->name('home');
-
+//     // Verification routes
+//     Route::get('/enroll/{courseId}/verify', 'showVerifyPage')->name('enroll.verify.show'); // GET - Show form
+//     Route::post('/enroll/{courseId}/verify', 'verify')->name('enroll.verify.submit');     // POST - Process form
 
 //     // Completion routes
 //     Route::get('/enroll/{courseId}/complete', 'complete')->name('enroll.complete');
@@ -73,5 +84,4 @@ Route::controller(EnrollmentController::class)->group(function () {
 
     // Success
     Route::get('/enroll/{courseId}/success', 'success')->name('enroll.success');
-    Route::get('/enroll/{courseId}/courseContent', 'showContent')->name('enroll.courseContent');
 });

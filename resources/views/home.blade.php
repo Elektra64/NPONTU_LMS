@@ -66,7 +66,7 @@
                     <i class="fas fa-search mr-2"></i> Browse Catalog
                 </a>
 
-                <a href="{{ route('courses.certificate') }}" class="block px-4 py-2 hover:bg-gray-700">
+                <a href="{{ route('certificateTemplate') }}" class="block px-4 py-2 hover:bg-gray-700">
                     <i class="fas fa-certificate mr-2"></i> Certificates
                 </a>
             </div>
