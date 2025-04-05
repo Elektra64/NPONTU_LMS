@@ -36,14 +36,10 @@ Route::get('/users', function () {
     return view('users');
 })->name('users');
 
-Route::get('/', function () {
-    return view('landing');
-})->name('landing');
-
 // Home route with popular courses
 Route::get('/home', function () {
     $enrollmentController = new EnrollmentController();
-    $popularCourses       = $enrollmentController->getPopularCourses(3);
+    $popularCourses = $enrollmentController->getPopularCourses(3);
     return view('home', compact('popularCourses'));
 })->name('home');
 
@@ -53,35 +49,34 @@ Route::get('/publishedCourse', function () {
     return view('courses.publishedCourse', ['courses' => $courses]);
 })->name('courses.publishedCourse');
 
-// // Enrollment routes
-// Route::controller(EnrollmentController::class)->group(function () {
-//     // Show enrollment page
-//     Route::get('/enroll/{courseId}', 'show')->name('enroll.show');
+// Certificate routes - Consolidated and organized
+Route::prefix('certificate')->group(function () {
+    Route::get('/{enrollmentId}', [EnrollmentController::class, 'showCertificate'])
+        ->name('certificate.show');
 
-//     // Verification routes
-//     Route::get('/enroll/{courseId}/verify', 'showVerifyPage')->name('enroll.verify.show'); // GET - Show form
-//     Route::post('/enroll/{courseId}/verify', 'verify')->name('enroll.verify.submit');     // POST - Process form
-
-//     // Completion routes
-//     Route::get('/enroll/{courseId}/complete', 'complete')->name('enroll.complete');
-//     Route::post('/enroll/{courseId}/process', 'processEnrollment')->name('enroll.process');
-
-//     // Success route
-//     Route::get('/enroll/{courseId}/success', 'success')->name('enroll.success');
-// });
-
-Route::controller(EnrollmentController::class)->group(function () {
-    // Show enrollment page
-    Route::get('/enroll/{courseId}', 'show')->name('enroll.show');
-
-    // Verification
-    Route::get('/enroll/{courseId}/verify', 'showVerifyPage')->name('enroll.verify.show');
-    Route::post('/enroll/{courseId}/verify', 'verify')->name('enroll.verify.submit');
-
-    // Completion
-    Route::get('/enroll/{courseId}/complete', 'complete')->name('enroll.complete');
-    Route::post('/enroll/{courseId}/complete', 'completeEnrollment')->name('enroll.complete.submit');
-
-    // Success
-    Route::get('/enroll/{courseId}/success', 'success')->name('enroll.success');
+    Route::get('/{enrollmentId}/download', [EnrollmentController::class, 'generateCertificate'])
+        ->name('certificate.download');
 });
+
+// Enrollment and Course Content Routes
+Route::controller(EnrollmentController::class)->group(function () {
+    // Enrollment flow
+    Route::prefix('enroll')->group(function () {
+        Route::get('/{courseId}', 'show')->name('enroll.show');
+        Route::get('/{courseId}/verify', 'showVerifyPage')->name('enroll.verify');
+        Route::post('/{courseId}/verify', 'verify')->name('enroll.verify.submit');
+        Route::get('/{courseId}/success', 'success')->name('enroll.success');
+        Route::post('/{courseId}/complete', 'complete')->name('enroll.complete');
+    });
+
+    // Course content
+    Route::prefix('course')->group(function () {
+        Route::get('/{courseId}/content', 'showCourseContent')->name('course.content');
+        Route::get('/{courseId}/section/{section}/lesson/{lesson}', 'showLesson')->name('course.lesson');
+
+        // Course completion
+        Route::post('/{courseId}/complete', 'completeCourse')->name('course.complete');
+        Route::get('/{courseId}/completion', 'completeCourse')->name('course.completion');
+    });
+});
+

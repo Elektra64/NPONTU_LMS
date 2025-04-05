@@ -18,19 +18,6 @@
             border-color: #f59e0b;
             box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.5);
         }
-<<<<<<< HEAD
-    </style>
-</head>
-<body class="bg-gray-900 text-white font-sans">
-    <!-- Navbar -->
-    <nav class="bg-gray-900 text-white p-4 flex justify-between items-center sticky top-0 z-50 shadow-lg">
-        <div class="flex items-center space-x-8">
-            <span class="text-2xl font-bold text-yellow-400 flex items-center">
-                <a href="/" class="cursor-pointer">
-                    <i class="fas fa-graduation-cap mr-2"></i>EduVerse
-                </a>
-            </span>
-=======
         body {
             position: relative;
             min-height: 100vh;
@@ -123,18 +110,13 @@
                     <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User profile" class="w-8 h-8 rounded-full border-2 border-yellow-400">
                 </div>
             </div>
->>>>>>> 92dc125f3b7ab3c6f68b248f1abcd7cd0a8d280b
         </div>
     </nav>
 
     <!-- Enrollment Section -->
     <section class="container mx-auto px-4 py-16">
         <div class="max-w-3xl mx-auto">
-<<<<<<< HEAD
-            <div class="bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg rounded-xl shadow-lg overflow-hidden mb-8">
-=======
             <div class="content-wrapper rounded-xl shadow-lg overflow-hidden mb-8">
->>>>>>> 92dc125f3b7ab3c6f68b248f1abcd7cd0a8d280b
                 <div class="p-8">
                     <div class="text-center mb-8">
                         <i class="fas fa-check-circle text-5xl text-green-500 mb-4"></i>
@@ -171,29 +153,17 @@
                             <div id="freePackage" class="package-option bg-gray-700 p-6 rounded-lg border-2 border-transparent cursor-pointer selected">
                                 <h4 class="font-bold text-lg mb-2">Free</h4>
                                 <p class="text-gray-300 mb-4">Basic course access</p>
-<<<<<<< HEAD
-                                <div class="text-yellow-400 font-bold text-xl">$0.00</div>
-=======
                                 <div class="text-yellow-400 font-bold text-xl" id="freePrice">$0.00</div>
->>>>>>> 92dc125f3b7ab3c6f68b248f1abcd7cd0a8d280b
                             </div>
                             <div id="standardPackage" class="package-option bg-gray-700 p-6 rounded-lg border-2 border-transparent cursor-pointer">
                                 <h4 class="font-bold text-lg mb-2">Standard</h4>
                                 <p class="text-gray-300 mb-4">Course + Quizzes</p>
-<<<<<<< HEAD
-                                <div class="text-yellow-400 font-bold text-xl">$49.99</div>
-=======
                                 <div class="text-yellow-400 font-bold text-xl" id="standardPrice">$49.99</div>
->>>>>>> 92dc125f3b7ab3c6f68b248f1abcd7cd0a8d280b
                             </div>
                             <div id="premiumPackage" class="package-option bg-gray-700 p-6 rounded-lg border-2 border-transparent cursor-pointer">
                                 <h4 class="font-bold text-lg mb-2">Premium</h4>
                                 <p class="text-gray-300 mb-4">Full access + Certificate</p>
-<<<<<<< HEAD
-                                <div class="text-yellow-400 font-bold text-xl">$99.99</div>
-=======
                                 <div class="text-yellow-400 font-bold text-xl" id="premiumPrice">$99.99</div>
->>>>>>> 92dc125f3b7ab3c6f68b248f1abcd7cd0a8d280b
                             </div>
                         </div>
                     </div>
@@ -282,8 +252,6 @@
         </div>
     </section>
 
-<<<<<<< HEAD
-=======
     <!-- Enhanced Footer -->
     <footer class="text-white pt-12 pb-6">
         <div class="container mx-auto px-4">
@@ -371,7 +339,6 @@
         </div>
     </footer>
 
->>>>>>> 92dc125f3b7ab3c6f68b248f1abcd7cd0a8d280b
     <script src="{{ asset('assets/js/success.js') }}"></script>
 </body>
 </html>
