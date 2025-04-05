@@ -8,8 +8,8 @@ class QuizQuestion extends Model
 {
     protected $fillable = ['module_id', 'question_text'];
 
-    public function options()
+    public function option()
     {
-        return $this->hasMany(QuizOption::class);
+        return $this->hasOne(QuizOption::class);
     }
 }

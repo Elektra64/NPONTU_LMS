@@ -91,7 +91,7 @@
         </div>
 
         <!-- Login Form -->
-        <form class="p-8 space-y-6" method="POST" action="{{ route('login.post') }}">
+        <form class="p-8 space-y-6" method="POST" action="{{ route('login') }}">
             @csrf
 
             <div class="space-y-4">

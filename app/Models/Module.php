@@ -22,6 +22,6 @@ class Module extends Model
 
     public function quiz_questions()
     {
-        return $this->hasMany(QuizQuestion::class);
+        return $this->hasMany(QuizQuestion::class)->latest();
     }
 }

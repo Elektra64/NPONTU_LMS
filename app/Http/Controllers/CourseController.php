@@ -27,7 +27,7 @@ class CourseController extends Controller
         $user = User::find(Auth::user()->id);
         $courses = null;
         if ($user) {
-            $courses = $user->courses()->with(['categories', 'user', 'modules'])->latest()->paginate(5)->onEachSide(2);
+            $courses = $user->courses()->with(['categories', 'user', 'modules'])->latest()->paginate(10)->onEachSide(2);
             foreach ($courses as $course) {
                 $course->change_status();
             }
@@ -79,5 +79,20 @@ class CourseController extends Controller
     public function published_courses()
     {
         return view('learner.published-courses');
+    }
+
+    public function delete_course(Course $course)
+    {
+        $course->delete();
+        return back();
+    }
+
+    public function course_details(Course $course)
+    {
+        // $questions = $course->quiz_questions;
+        $questions = $course->quiz_questions->load('option');
+        $course = $course->load('modules', 'categories');
+
+        return response()->json(['course' => $course, 'questions' => $questions]);
     }
 }

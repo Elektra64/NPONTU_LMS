@@ -80,7 +80,7 @@
 
         </div>
 
-        <form class="p-6 space-y-6" method="POST" action="{{ route('signUp.post') }}">
+        <form class="p-6 space-y-6" method="POST" action="{{ route('register') }}">
             @csrf
 
             @if ($errors->any())

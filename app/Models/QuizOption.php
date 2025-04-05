@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class QuizOption extends Model
 {
-    //
+    public $timestamps = false;
 
     protected $fillable = [
         'option_a',
@@ -17,7 +17,7 @@ class QuizOption extends Model
         'correct_option',
     ];
 
-    public function question()
+    public function quiz_question()
     {
         return $this->belongsTo(QuizQuestion::class);
     }
