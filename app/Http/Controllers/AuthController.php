@@ -29,10 +29,10 @@ class AuthController extends Controller
                 return back()->with('error', 'Invalid credentials');
             }
             Auth::login($user);
-            $location = $user->role === 'admin' ? 'dashboard' : 'home';
+            // $location = $user->role === 'admin' ? 'dashboard' : 'home';
 
             return redirect(
-                route($location)
+                route('dashboard')
             );
         } catch (ModelNotFoundException $e) {
             return back()->with('error', 'Invalid credentials');

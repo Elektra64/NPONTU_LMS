@@ -124,13 +124,13 @@
                             <li aria-current="page">
                                 <div class="flex items-center">
                                     <i class="fas fa-chevron-right text-gray-500 mx-1 text-xs"></i>
-                                    <span class="ml-1 text-yellow-400">Advanced Web Development</span>
+                                    <span class="ml-1 text-yellow-400">{{ $course->title }}</span>
                                 </div>
                             </li>
                         </ol>
                     </nav>
-                    <h1 class="text-3xl font-bold">Advanced Web Development</h1>
-                    <p class="text-gray-300 mt-1">Master modern web technologies and frameworks</p>
+                    <h1 class="text-3xl font-bold">{{ $course->title }}</h1>
+                    <p class="text-gray-300 mt-1">{{ $course->description }}</p>
                 </div>
                 <div class="flex items-center space-x-4">
                     <button
@@ -152,11 +152,14 @@
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="w-full md:w-3/4 mb-4 md:mb-0">
                     <div class="flex justify-between items-center mb-2">
-                        <span class="text-sm font-medium">Course Progress: 35%</span>
-                        <span class="text-sm text-gray-300">7/20 lessons completed</span>
+                        <span class="text-sm font-medium">Course Progress:
+                            {{ $enrollment->get_progress($course) }}%</span>
+                        <span
+                            class="text-sm text-gray-300">{{ "$enrollment->progress / $course->number_of_modules completed" }}</span>
                     </div>
                     <div class="w-full bg-gray-700 rounded-full h-2.5">
-                        <div class="progress-bar bg-yellow-400 rounded-full" style="width: 35%"></div>
+                        <div class="progress-bar bg-yellow-400 rounded-full"
+                            style="width: {{ $enrollment->get_progress($course) }}%"></div>
                     </div>
                 </div>
                 <div class="flex items-center space-x-2">
@@ -184,147 +187,23 @@
                     </h2>
                 </div>
                 <div class="p-4">
-                    <!-- Module 1 -->
-                    <div class="mb-4 border border-gray-200 rounded-lg overflow-hidden">
-                        <div
-                            class="module-toggle bg-gray-100 p-3 flex justify-between items-center cursor-pointer hover:bg-gray-200 transition duration-200">
-                            <div class="flex items-center">
+                    <!-- Modules -->
+                    @if ($modules->count())
+                        @foreach ($modules as $module)
+                            <div class="mb-4 border border-gray-200 rounded-lg overflow-hidden">
                                 <div
-                                    class="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center text-black font-bold mr-3">
-                                    1</div>
-                                <h3 class="font-semibold">HTML5 & CSS3 Fundamentals</h3>
+                                    class="module-toggle bg-gray-100 p-3 flex justify-between items-center cursor-pointer hover:bg-gray-200 transition duration-200">
+                                    <div class="flex items-center">
+                                        <div
+                                            class="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center text-black font-bold mr-3">
+                                            {{ $module->module_number }}</div>
+                                        <h3 class="font-semibold">{{ $module->title }}</h3>
+                                    </div>
+                                </div>
                             </div>
-                            <i class="fas fa-chevron-down transition-transform duration-200"></i>
-                        </div>
-                        <div class="module-content bg-white">
-                            <ul class="divide-y divide-gray-200">
-                                <li class="p-3 hover:bg-gray-50 cursor-pointer flex items-center">
-                                    <i class="fas fa-play-circle text-yellow-500 mr-3"></i>
-                                    <span>Introduction to HTML5</span>
-                                    <span class="ml-auto text-sm text-gray-500">12:45</span>
-                                </li>
-                                <li class="p-3 hover:bg-gray-50 cursor-pointer flex items-center">
-                                    <i class="fas fa-check-circle text-green-500 mr-3"></i>
-                                    <span class="text-gray-600">CSS3 Basics</span>
-                                    <span class="ml-auto text-sm text-gray-500">15:30</span>
-                                </li>
-                                <li class="p-3 hover:bg-gray-50 cursor-pointer flex items-center">
-                                    <i class="fas fa-check-circle text-green-500 mr-3"></i>
-                                    <span class="text-gray-600">Responsive Design</span>
-                                    <span class="ml-auto text-sm text-gray-500">18:20</span>
-                                </li>
-                                <li class="p-3 hover:bg-gray-50 cursor-pointer flex items-center">
-                                    <i class="fas fa-file-alt text-gray-400 mr-3"></i>
-                                    <span class="text-gray-600">Assignment: Portfolio Page</span>
-                                    <span class="ml-auto text-sm text-gray-500">Due: 2 days</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                        @endforeach
 
-                    <!-- Module 2 -->
-                    <div class="mb-4 border border-gray-200 rounded-lg overflow-hidden">
-                        <div
-                            class="module-toggle bg-gray-100 p-3 flex justify-between items-center cursor-pointer hover:bg-gray-200 transition duration-200">
-                            <div class="flex items-center">
-                                <div
-                                    class="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center text-black font-bold mr-3">
-                                    2</div>
-                                <h3 class="font-semibold">JavaScript Essentials</h3>
-                            </div>
-                            <i class="fas fa-chevron-down transition-transform duration-200"></i>
-                        </div>
-                        <div class="module-content bg-white">
-                            <ul class="divide-y divide-gray-200">
-                                <li class="p-3 hover:bg-gray-50 cursor-pointer flex items-center">
-                                    <i class="fas fa-check-circle text-green-500 mr-3"></i>
-                                    <span class="text-gray-600">JavaScript Basics</span>
-                                    <span class="ml-auto text-sm text-gray-500">22:15</span>
-                                </li>
-                                <li class="p-3 hover:bg-gray-50 cursor-pointer flex items-center">
-                                    <i class="fas fa-check-circle text-green-500 mr-3"></i>
-                                    <span class="text-gray-600">DOM Manipulation</span>
-                                    <span class="ml-auto text-sm text-gray-500">25:40</span>
-                                </li>
-                                <li class="p-3 hover:bg-gray-50 cursor-pointer flex items-center">
-                                    <i class="fas fa-play-circle text-yellow-500 mr-3"></i>
-                                    <span>ES6 Features</span>
-                                    <span class="ml-auto text-sm text-gray-500">19:10</span>
-                                </li>
-                                <li class="p-3 hover:bg-gray-50 cursor-pointer flex items-center">
-                                    <i class="fas fa-file-alt text-gray-400 mr-3"></i>
-                                    <span class="text-gray-600">Assignment: Interactive Quiz</span>
-                                    <span class="ml-auto text-sm text-gray-500">Due: 5 days</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- Module 3 -->
-                    <div class="mb-4 border border-gray-200 rounded-lg overflow-hidden">
-                        <div
-                            class="module-toggle bg-gray-100 p-3 flex justify-between items-center cursor-pointer hover:bg-gray-200 transition duration-200">
-                            <div class="flex items-center">
-                                <div
-                                    class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-black font-bold mr-3">
-                                    3</div>
-                                <h3 class="font-semibold text-gray-600">React Framework</h3>
-                            </div>
-                            <i class="fas fa-chevron-down transition-transform duration-200"></i>
-                        </div>
-                        <div class="module-content bg-white">
-                            <ul class="divide-y divide-gray-200">
-                                <li class="p-3 hover:bg-gray-50 cursor-pointer flex items-center">
-                                    <i class="fas fa-lock text-gray-400 mr-3"></i>
-                                    <span class="text-gray-400">Introduction to React</span>
-                                    <span class="ml-auto text-sm text-gray-400">Locked</span>
-                                </li>
-                                <li class="p-3 hover:bg-gray-50 cursor-pointer flex items-center">
-                                    <i class="fas fa-lock text-gray-400 mr-3"></i>
-                                    <span class="text-gray-400">Components & Props</span>
-                                    <span class="ml-auto text-sm text-gray-400">Locked</span>
-                                </li>
-                                <li class="p-3 hover:bg-gray-50 cursor-pointer flex items-center">
-                                    <i class="fas fa-lock text-gray-400 mr-3"></i>
-                                    <span class="text-gray-400">State Management</span>
-                                    <span class="ml-auto text-sm text-gray-400">Locked</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- Module 4 -->
-                    <div class="border border-gray-200 rounded-lg overflow-hidden">
-                        <div
-                            class="module-toggle bg-gray-100 p-3 flex justify-between items-center cursor-pointer hover:bg-gray-200 transition duration-200">
-                            <div class="flex items-center">
-                                <div
-                                    class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-black font-bold mr-3">
-                                    4</div>
-                                <h3 class="font-semibold text-gray-600">Backend Integration</h3>
-                            </div>
-                            <i class="fas fa-chevron-down transition-transform duration-200"></i>
-                        </div>
-                        <div class="module-content bg-white">
-                            <ul class="divide-y divide-gray-200">
-                                <li class="p-3 hover:bg-gray-50 cursor-pointer flex items-center">
-                                    <i class="fas fa-lock text-gray-400 mr-3"></i>
-                                    <span class="text-gray-400">RESTful APIs</span>
-                                    <span class="ml-auto text-sm text-gray-400">Locked</span>
-                                </li>
-                                <li class="p-3 hover:bg-gray-50 cursor-pointer flex items-center">
-                                    <i class="fas fa-lock text-gray-400 mr-3"></i>
-                                    <span class="text-gray-400">Authentication</span>
-                                    <span class="ml-auto text-sm text-gray-400">Locked</span>
-                                </li>
-                                <li class="p-3 hover:bg-gray-50 cursor-pointer flex items-center">
-                                    <i class="fas fa-lock text-gray-400 mr-3"></i>
-                                    <span class="text-gray-400">Final Project</span>
-                                    <span class="ml-auto text-sm text-gray-400">Locked</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                    @endif
                 </div>
             </div>
 
@@ -363,8 +242,7 @@
             <!-- Current Lesson -->
             <div class="bg-white rounded-lg shadow-md overflow-hidden mb-8">
                 <div class="bg-gray-900 text-white p-4">
-                    <h2 class="text-xl font-bold">Current Lesson: ES6 Features</h2>
-                    <p class="text-gray-300 text-sm">Module 2: JavaScript Essentials</p>
+                    <h2 class="text-xl font-bold">Current Lesson: {{ $currentModule->title }}</h2>
                 </div>
                 <div class="p-6">
                     <!-- Video Player -->
@@ -377,215 +255,67 @@
 
                     <!-- Lesson Navigation -->
                     <div class="flex justify-between items-center mb-6">
-                        <button
-                            class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold px-4 py-2 rounded flex items-center">
-                            <i class="fas fa-arrow-left mr-2"></i> Previous Lesson
-                        </button>
-                        <div class="text-sm text-gray-600">Lesson 3 of 4 in this module</div>
-                        <button
-                            class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-4 py-2 rounded flex items-center">
-                            Next Lesson <i class="fas fa-arrow-right ml-2"></i>
-                        </button>
+                        @if ($currentModule->module_number != 1)
+                            <a href="{{ route('previous_module', [$course->id, $currentModule->module_number]) }}">
+                                <button
+                                    class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold px-4 py-2 rounded flex items-center">
+                                    <i class="fas fa-arrow-left mr-2"></i> Previous Lesson
+                                </button>
+                            </a>
+                        @endif
+                        <div class="text-sm text-gray-600">
+                            {{ "Lesson $currentModule->module_number of $course->number_of_modules in this course" }}
+                        </div>
+                        @if (!($currentModule->module_number === $course->number_of_modules))
+                            <a href="{{ route('next_module', [$course->id, $currentModule->module_number]) }}">
+                                <button
+                                    class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-4 py-2 rounded flex items-center">
+                                    Next Lesson <i class="fas fa-arrow-right ml-2"></i>
+                                </button>
+                            </a>
+                        @endif
                     </div>
 
                     <!-- Lesson Content -->
                     <div class="prose max-w-none">
-                        <h3 class="text-2xl font-bold mb-4">ES6 Features Overview</h3>
-                        <p class="mb-4">ECMAScript 2015 (ES6) introduced many new features that have become
-                            fundamental to modern JavaScript development. In this lesson, we'll cover the most important
-                            ones you should know.</p>
-
-                        <div class="bg-gray-50 p-4 rounded-lg mb-4">
-                            <h4 class="font-bold text-lg mb-2 flex items-center">
-                                <i class="fas fa-lightbulb text-yellow-500 mr-2"></i> Learning Objectives
-                            </h4>
-                            <ul class="list-disc pl-5 space-y-1">
-                                <li>Understand and use let and const for variable declarations</li>
-                                <li>Work with arrow functions and their lexical this</li>
-                                <li>Utilize template literals for string interpolation</li>
-                                <li>Implement destructuring for objects and arrays</li>
-                                <li>Use spread and rest operators effectively</li>
-                            </ul>
-                        </div>
-
-                        <h4 class="font-bold text-xl mt-6 mb-3">1. let and const</h4>
-                        <p class="mb-4">ES6 introduced two new ways to declare variables:</p>
-                        <pre class="bg-gray-800 text-gray-100 p-4 rounded-lg mb-4 overflow-x-auto">
-<code>// Block-scoped variables
-let count = 10;
-if (true) {
-    let count = 20; // Different variable
-    console.log(count); // 20
-}
-console.log(count); // 10
-
-// Constants
-const PI = 3.14159;
-// PI = 3.14; // Error: Assignment to constant variable</code></pre>
-
-                        <h4 class="font-bold text-xl mt-6 mb-3">2. Arrow Functions</h4>
-                        <p class="mb-4">Arrow functions provide a concise syntax and lexical this binding:</p>
-                        <pre class="bg-gray-800 text-gray-100 p-4 rounded-lg mb-4 overflow-x-auto">
-<code>// Traditional function
-function add(a, b) {
-    return a + b;
-}
-
-// Arrow function equivalent
-const add = (a, b) => a + b;
-
-// Lexical this
-function Timer() {
-    this.seconds = 0;
-    setInterval(() => {
-        this.seconds++; // 'this' refers to Timer instance
-    }, 1000);
-}</code></pre>
-
-                        <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6">
-                            <div class="flex">
-                                <div class="flex-shrink-0">
-                                    <i class="fas fa-info-circle text-blue-400 text-xl"></i>
-                                </div>
-                                <div class="ml-3">
-                                    <h4 class="text-sm font-bold text-blue-800">PRO TIP</h4>
-                                    <div class="mt-1 text-sm text-blue-700">
-                                        <p>While arrow functions are great for concise code, they can't be used as
-                                            constructors and don't have their own arguments object.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <h4 class="font-bold text-xl mt-6 mb-3">Practice Exercise</h4>
-                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg mb-4">
-                            <p class="mb-3">Convert the following code to use ES6 features:</p>
-                            <pre class="bg-gray-800 text-gray-100 p-4 rounded-lg mb-3 overflow-x-auto">
-<code>var numbers = [1, 2, 3, 4, 5];
-var doubled = numbers.map(function(n) {
-    return n * 2;
-});
-console.log("Doubled numbers: " + doubled);</code></pre>
-                            <button
-                                class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-4 py-2 rounded flex items-center">
-                                <i class="fas fa-lightbulb mr-2"></i> Show Solution
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Lesson Completion -->
-                <div class="bg-gray-50 p-4 border-t border-gray-200 flex justify-between items-center">
-                    <div class="flex items-center">
-                        <input type="checkbox" id="complete-lesson"
-                            class="h-5 w-5 text-yellow-500 rounded border-gray-300 focus:ring-yellow-500">
-                        <label for="complete-lesson" class="ml-2 text-gray-700">Mark as complete</label>
-                    </div>
-                    <div class="flex space-x-3">
-                        <button class="text-gray-500 hover:text-gray-700">
-                            <i class="fas fa-flag"></i>
-                        </button>
-                        <button class="text-gray-500 hover:text-gray-700">
-                            <i class="fas fa-bookmark"></i>
-                        </button>
-                        <button class="text-gray-500 hover:text-gray-700">
-                            <i class="fas fa-share-alt"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Discussion Section -->
-            <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                <div class="bg-gray-900 text-white p-4">
-                    <h2 class="text-xl font-bold flex items-center">
-                        <i class="fas fa-comments mr-2"></i> Lesson Discussion
-                    </h2>
-                </div>
-                <div class="p-6">
-                    <div class="mb-6">
-                        <textarea
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
-                            rows="3" placeholder="Have a question or comment about this lesson?"></textarea>
-                        <div class="flex justify-between items-center mt-2">
-                            <div class="text-sm text-gray-500">
-                                <i class="fas fa-paperclip mr-1"></i> Attach files
-                            </div>
-                            <button class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-4 py-2 rounded">
-                                Post Comment
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="space-y-6">
-                        <!-- Comment 1 -->
-                        <div class="flex space-x-4">
-                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User"
-                                class="w-10 h-10 rounded-full">
-                            <div class="flex-1">
-                                <div class="bg-gray-50 p-4 rounded-lg">
-                                    <div class="flex justify-between items-center mb-2">
-                                        <span class="font-bold">Michael Chen</span>
-                                        <span class="text-sm text-gray-500">2 hours ago</span>
-                                    </div>
-                                    <p class="text-gray-700 mb-2">Can someone explain why arrow functions don't have
-                                        their own 'this' context? I'm still a bit confused about when to use them vs
-                                        regular functions.</p>
-                                    <div class="flex space-x-4 text-sm text-gray-500">
-                                        <button class="hover:text-yellow-500"><i class="fas fa-thumbs-up mr-1"></i>
-                                            Like (5)</button>
-                                        <button class="hover:text-yellow-500"><i class="fas fa-reply mr-1"></i>
-                                            Reply</button>
-                                    </div>
-                                </div>
-
-                                <!-- Reply -->
-                                <div class="flex space-x-4 mt-4 ml-10">
-                                    <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="User"
-                                        class="w-8 h-8 rounded-full">
-                                    <div class="flex-1">
-                                        <div class="bg-gray-100 p-3 rounded-lg">
-                                            <div class="flex justify-between items-center mb-1">
-                                                <span class="font-bold text-sm">Sarah Johnson (Instructor)</span>
-                                                <span class="text-xs text-gray-500">1 hour ago</span>
-                                            </div>
-                                            <p class="text-gray-700 text-sm mb-1">Great question! Arrow functions
-                                                inherit 'this' from their surrounding (lexical) context. This makes them
-                                                ideal for callbacks where you want to preserve the 'this' from the outer
-                                                scope. Regular functions have their own 'this', which is useful when you
-                                                need dynamic context (like in methods).</p>
-                                            <div class="flex space-x-3 text-xs text-gray-500">
-                                                <button class="hover:text-yellow-500"><i
-                                                        class="fas fa-thumbs-up mr-1"></i> Like (8)</button>
-                                            </div>
+                        <h3 class="text-2xl font-bold mb-4">{{ $currentModule->title }} Overview</h3>
+                        <p class="mb-4">{{ $currentModule->content }}</p>
+                        <h4 class="font-bold text-xl mt-6 mb-3">Module
+                            {{ Str::plural('Quiz', $currentModule->quiz_questions->count()) }}</h4>
+                        @foreach ($currentModule->quiz_questions as $quiz)
+                            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg mb-4">
+                                <p class="mb-3">{{ $quiz->question_text }}</p>
+                                <form action="{{ route('submit_quiz', [$quiz->id, $enrollment->id]) }}"
+                                    class="" method="post">
+                                    @csrf
+                                    <div
+                                        class="flex flex-col justify-center bg-gray-800 text-gray-100 p-4 rounded-lg mb-3 overflow-x-auto space-y-2">
+                                        <div class="flex space-x-4"><input type="radio" class="text-blue-500"
+                                                name="option"
+                                                value="{{ old('option') ?: 'c' }}"><label>{{ $quiz->option->option_a }}</label>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                                        <div class="flex space-x-4"> <input type="radio" class="text-blue-500"
+                                                name="option"
+                                                value="old('option') ?: 'b' }}"><label>{{ $quiz->option->option_b }}</label>
+                                        </div>
+                                        <div class="flex space-x-4"><input type="radio" class="text-blue-500"
+                                                name="option"
+                                                value="old('option') ?: 'c' }}"><label>{{ $quiz->option->option_c }}</label>
+                                        </div>
+                                        <div class="flex space-x-4"><input type="radio" class="text-blue-500"
+                                                name="option"
+                                                value="old('option') ?: 'd' }}"><label>{{ $quiz->option->option_d }}</label>
+                                        </div>
 
-                        <!-- Comment 2 -->
-                        <div class="flex space-x-4">
-                            <img src="https://randomuser.me/api/portraits/women/28.jpg" alt="User"
-                                class="w-10 h-10 rounded-full">
-                            <div class="flex-1">
-                                <div class="bg-gray-50 p-4 rounded-lg">
-                                    <div class="flex justify-between items-center mb-2">
-                                        <span class="font-bold">Jessica Park</span>
-                                        <span class="text-sm text-gray-500">45 minutes ago</span>
                                     </div>
-                                    <p class="text-gray-700 mb-2">The template literals example was really helpful! I
-                                        didn't realize you could do multi-line strings so easily without concatenation.
-                                    </p>
-                                    <div class="flex space-x-4 text-sm text-gray-500">
-                                        <button class="hover:text-yellow-500"><i class="fas fa-thumbs-up mr-1"></i>
-                                            Like (3)</button>
-                                        <button class="hover:text-yellow-500"><i class="fas fa-reply mr-1"></i>
-                                            Reply</button>
-                                    </div>
-                                </div>
+                                    <button type="submit"
+                                        class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-4 py-2 rounded flex items-center">
+                                        <i class="fas fa-lightbulb mr-2"></i> Submit
+                                    </button>
+
+                                </form>
                             </div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
             </div>

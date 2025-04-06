@@ -91,4 +91,19 @@ class Course extends Model
     {
         return $this->hasManyThrough(QuizQuestion::class, Module::class);
     }
+
+    public function course_image()
+    {
+        return 'https://www.globalfocusmagazine.com/wp-content/uploads/2020/02/Engaging_with_technology-scaled.jpg';
+    }
+
+    public function enrollments()
+    {
+        return $this->hasMany(Enrollment::class)->latest();
+    }
+
+    public function is_popular()
+    {
+        return $this->enrollments()->count() >= 1 ? True : False;
+    }
 }

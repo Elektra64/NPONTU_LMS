@@ -124,25 +124,62 @@
         <!-- Course Grid - Will be populated by JavaScript -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="courseGrid">
             <!-- Courses will be dynamically inserted here -->
+            @if ($courses->count())
+                @foreach ($courses as $course)
+                    <div
+                        class="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl overflow-hidden shadow-lg course-card transition duration-300">
+                        <div class="relative">
+                            <img src="{{ $course->course_image() }}" alt="{{ $course->title }}"
+                                class="w-full h-48 object-cover">
+                            <div class="absolute top-2 right-2 bg-blue-100 text-xs font-bold px-2 py-1 rounded">
+                                <?php
+                                $arr = ['New', 'Popular', 'Best Seller'];
+                                $key = array_rand($arr);
+                                echo $arr[$key];
+                                ?>
+                            </div>
+                            <span class="bg-red-200 text-xs font-bold px-2 py-1 rounded absolute top-2 left-2">
+                                {{ $course->difficulty_level }}
+                            </span>
+                        </div>
+                        <div class="p-6 bg-gray-500">
+                            <div class="flex justify-between items-start mb-2">
+                                <span
+                                    class="text-yellow-400 text-sm font-semibold">{{ $course->categories[0]->category_name }}</span>
+                                <div class="flex items-center text-yellow-400">
+                                    <i class="fas fa-star"></i>
+                                    <span class="ml-1 text-white">5.6</span>
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">{{ $course->title }}</h3>
+                            <p class="text-white text-sm mb-4">{{ $course->description }}</p>
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center text-sm text-white">
+                                    <i class="fas fa-user-graduate mr-1"></i>
+                                    <span>{{ $course->enrollments->count() }}{{  Str::plural(' Student', $course->enrollments->count())}}</span>
+                                </div>
+                                @if ($user->enrolled($course))
+                                    <a href="{{ route('enrolled_course_content', $course->id) }}"
+                                        class="text-yellow-400 hover:text-yellow-300 text-sm font-semibold">
+                                        Continue Learning <i class="fas fa-arrow-right ml-1"></i>
+                                    </a>
+                                @else
+                                    <a href="{{ route('verfiy_enrollment', $course->id) }}"
+                                        class="text-yellow-400 hover:text-yellow-300 text-sm font-semibold">
+                                        Enroll Now <i class="fas fa-arrow-right ml-1"></i>
+                                    </a>
+                                @endif
+                            </div>
+                        </div>
+
+                    </div>
+                @endforeach
+            @endif
         </div>
 
         <!-- Pagination -->
-        <div class="mt-12 flex justify-center">
-            <nav class="inline-flex rounded-md shadow">
-                <a href="#"
-                    class="px-3 py-2 rounded-l-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50">
-                    <i class="fas fa-chevron-left"></i>
-                </a>
-                <a href="#"
-                    class="px-3 py-2 border-t border-b border-gray-300 bg-white text-gray-500 hover:bg-gray-50">1</a>
-                <a href="#" class="px-3 py-2 border border-gray-300 bg-yellow-500 text-black font-medium">2</a>
-                <a href="#"
-                    class="px-3 py-2 border-t border-b border-gray-300 bg-white text-gray-500 hover:bg-gray-50">3</a>
-                <a href="#"
-                    class="px-3 py-2 rounded-r-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50">
-                    <i class="fas fa-chevron-right"></i>
-                </a>
-            </nav>
+        <div class="mt-12 flex justify-around">
+            {{ $courses->links() }}
         </div>
     </div>
 
@@ -175,7 +212,8 @@
                                 class="text-gray-400 hover:text-yellow-400 transition duration-300">Home</a></li>
                         <li><a href="#"
                                 class="text-gray-400 hover:text-yellow-400 transition duration-300">Courses</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">About
+                        <li><a href="#"
+                                class="text-gray-400 hover:text-yellow-400 transition duration-300">About
                                 Us</a></li>
                         <li><a href="#"
                                 class="text-gray-400 hover:text-yellow-400 transition duration-300">Contact</a></li>
@@ -208,9 +246,7 @@
         </div>
     </footer>
 
-    <!-- Link to external JavaScript file -->
-    <!-- Add this right before your script tag -->
-    {{-- <div id="courseData" data-courses='@json($courses)'></div> --}}
+
     <script src="{{ asset('assets/js/publishedCourse.js') }}"></script>
 </body>
 

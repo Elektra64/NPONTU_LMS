@@ -48,7 +48,7 @@
                 <p class="text-gray-300">Prove you're human to continue enrollment in <strong>Course Title</strong></p>
 
                 <div class="mt-8">
-                    <form method="POST" action="#" class="mt-8">
+                    <form method="POST" action="{{ route('verfiy_enrollment', $course) }}" class="mt-8">
                         @csrf
                         <div class="mb-6">
                             <p class="text-gray-400 mb-4">Drag the pieces to reconstruct the puzzle in the correct order

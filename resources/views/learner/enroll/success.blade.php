@@ -55,13 +55,6 @@
 
 <body class="text-white font-sans">
 
-    <!-- Data Container (Hidden) -->
-    {{-- <div id="enrollmentData" data-course='{{ json_encode($successData['course']) }}'
-        data-user='{{ json_encode($successData['user']) }}'
-        data-enrollment='{{ json_encode($successData['enrollment']) }}'
-        data-has-paid-options='{{ $successData['has_paid_options'] ? 'true' : 'false' }}'
-        data-complete-url='{{ route('enroll.complete', $successData['course']['id']) }}'>
-    </div> --}}
 
     <!-- Navbar -->
     <nav class="text-white p-4 flex justify-between items-center sticky top-0 z-50 shadow-lg">
@@ -77,11 +70,6 @@
                     class="hover:text-yellow-400 transition duration-300 flex items-center">
                     <i class="fas fa-book-open mr-2"></i>Courses
                 </a>
-
-                <!-- Learning Tools -->
-                {{-- <a href="{{ route('quizzes') }}" class="hover:text-yellow-400 transition duration-300 flex items-center">
-                    <i class="fas fa-tasks mr-2"></i>Learning
-                </a> --}}
             </div>
         </div>
         <div class="flex items-center space-x-4">
@@ -142,7 +130,7 @@
 
                         <!-- Course Info -->
                         <div class="bg-gray-700 bg-opacity-30 rounded-lg p-6 mb-8">
-                            <h3 class="text-xl font-semibold mb-2" id="courseTitle">Course Title</h3>
+                            <h3 class="text-xl font-semibold mb-2" id="courseTitle">{{ $course->title }}</h3>
                             <div class="flex items-center text-yellow-400 mb-2">
                                 <i class="fas fa-star"></i>
                                 <span class="ml-1 text-white" id="courseRating">4.9</span>
@@ -150,137 +138,32 @@
                                 <i class="fas fa-user-graduate text-gray-300"></i>
                                 <span class="ml-1 text-gray-300" id="courseStudents">12,345 students</span>
                             </div>
-                            <p class="text-gray-300" id="courseDescription">Course description will appear here</p>
+                            <p class="text-gray-300" id="courseDescription">{{ $course->description }}</p>
                         </div>
-
-                        <!-- Package Selection (Only shown if course has paid options) -->
-                        <div id="packageSelection" class="hidden mb-8">
-                            <h3 class="text-xl font-semibold mb-4">Select Your Package</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div id="freePackage"
-                                    class="package-option bg-gray-700 p-6 rounded-lg border-2 border-transparent cursor-pointer selected">
-                                    <h4 class="font-bold text-lg mb-2">Free</h4>
-                                    <p class="text-gray-300 mb-4">Basic course access</p>
-                                    <<<<<<< HEAD <div class="text-yellow-400 font-bold text-xl">$0.00
-                                </div>
-
-                                <div class="text-yellow-400 font-bold text-xl" id="freePrice">$0.00</div>
-
-                            </div>
-                            <div id="standardPackage"
-                                class="package-option bg-gray-700 p-6 rounded-lg border-2 border-transparent cursor-pointer">
-                                <h4 class="font-bold text-lg mb-2">Standard</h4>
-                                <p class="text-gray-300 mb-4">Course + Quizzes</p>
-                                <<<<<<< HEAD <div class="text-yellow-400 font-bold text-xl">$49.99
-                            </div>
-
-                            <div class="text-yellow-400 font-bold text-xl" id="standardPrice">$49.99</div>
-
-                        </div>
-                        <div id="premiumPackage"
-                            class="package-option bg-gray-700 p-6 rounded-lg border-2 border-transparent cursor-pointer">
-                            <h4 class="font-bold text-lg mb-2">Premium</h4>
-                            <p class="text-gray-300 mb-4">Full access + Certificate</p>
-                            <<<<<<< HEAD <div class="text-yellow-400 font-bold text-xl">$99.99
-                        </div>
-
-                        <div class="text-yellow-400 font-bold text-xl" id="premiumPrice">$99.99</div>
-
                     </div>
+                </div>
+                <!-- Terms and Submit -->
+                <div class="mb-6 opacity-100">
+                    <form action="{{ route('enroll', $course->id) }}" class="" method="post">
+                        @csrf
+                        <div class="flex items-start mb-4 justify-center">
+                            <input type="checkbox" id="terms" class="mt-1 mr-3" name="terms">
+                            <label for="terms" class="text-gray-300 text-sm">
+                                I agree to the <a href="#" class="text-yellow-400 hover:underline">Terms of Service</a>
+                                and
+                                <a href="#" class="text-yellow-400 hover:underline">Privacy Policy</a>.
+                            </label>
+                        </div>
+                        <button type="submit"
+                            class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 px-6 rounded-lg transition duration-300">
+                            Complete Enrollment <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </form>
                 </div>
             </div>
 
-            <!-- Payment Section (Hidden by default) -->
-            <div id="paymentSection" class="hidden">
-                <!-- Payment Methods -->
-                <div class="mb-8">
-                    <h3 class="text-xl font-semibold mb-4">Select Payment Method</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div
-                            class="payment-method bg-gray-700 p-4 rounded-lg border-2 border-transparent cursor-pointer">
-                            <div class="flex items-center">
-                                <i class="fab fa-cc-visa text-3xl text-blue-500 mr-3"></i>
-                                <span class="font-medium">Credit/Debit Card</span>
-                            </div>
-                        </div>
-                        <div
-                            class="payment-method bg-gray-700 p-4 rounded-lg border-2 border-transparent cursor-pointer">
-                            <div class="flex items-center">
-                                <i class="fab fa-paypal text-3xl text-blue-400 mr-3"></i>
-                                <span class="font-medium">PayPal</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Payment Form -->
-                <div id="paymentForm" class="bg-gray-700 bg-opacity-30 rounded-lg p-6 mb-8">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                        <div>
-                            <label class="block text-gray-300 mb-2">Card Number</label>
-                            <input type="text"
-                                class="w-full bg-gray-600 border border-gray-500 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                                placeholder="1234 5678 9012 3456">
-                        </div>
-                        <div>
-                            <label class="block text-gray-300 mb-2">Card Holder</label>
-                            <input type="text"
-                                class="w-full bg-gray-600 border border-gray-500 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                                placeholder="John Doe">
-                        </div>
-                        <div>
-                            <label class="block text-gray-300 mb-2">Expiry Date</label>
-                            <input type="text"
-                                class="w-full bg-gray-600 border border-gray-500 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                                placeholder="MM/YY">
-                        </div>
-                        <div>
-                            <label class="block text-gray-300 mb-2">CVV</label>
-                            <input type="text"
-                                class="w-full bg-gray-600 border border-gray-500 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                                placeholder="123">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- User Details -->
-            <div class="mb-6 text-left">
-                <h3 class="text-xl font-semibold mb-4">Confirm Your Details</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <div>
-                        <label class="block text-gray-300 mb-2">Full Name</label>
-                        <input type="text"
-                            class="w-full bg-gray-600 border border-gray-500 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                            value="John Doe" readonly>
-                    </div>
-                    <div>
-                        <label class="block text-gray-300 mb-2">Email</label>
-                        <input type="email"
-                            class="w-full bg-gray-600 border border-gray-500 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                            value="john@example.com" readonly>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Terms and Submit -->
-            <div class="mb-6">
-                <div class="flex items-start mb-4">
-                    <input type="checkbox" id="terms" class="mt-1 mr-3" required>
-                    <label for="terms" class="text-gray-300 text-sm">
-                        I agree to the <a href="#" class="text-yellow-400 hover:underline">Terms of Service</a>
-                        and
-                        <a href="#" class="text-yellow-400 hover:underline">Privacy Policy</a>.
-                    </label>
-                </div>
-                <button id="completeEnrollment"
-                    class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 px-6 rounded-lg transition duration-300">
-                    Complete Enrollment <i class="fas fa-arrow-right ml-2"></i>
-                </button>
-            </div>
         </div>
-        </div>
-        </div>
+       
     </section>
 
     <!-- Enhanced Footer -->

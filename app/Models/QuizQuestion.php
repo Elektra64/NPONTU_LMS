@@ -12,4 +12,9 @@ class QuizQuestion extends Model
     {
         return $this->hasOne(QuizOption::class);
     }
+
+    public function quiz_attempts()
+    {
+        return $this->hasMany(QuizAttempt::class);
+    }
 }

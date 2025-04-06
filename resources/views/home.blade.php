@@ -1,4 +1,5 @@
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,103 +12,119 @@
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
         }
+
         @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
         }
+
         .course-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
+
         .user-badge {
             transition: all 0.3s ease;
         }
+
         .user-badge:hover {
             transform: scale(1.05);
         }
+
         .nav-link.active {
-    @apply text-yellow-400 border-b-2 border-yellow-400;
-}
+            @apply text-yellow-400 border-b-2 border-yellow-400;
+        }
     </style>
 </head>
+
 <body class="bg-gray-100 font-sans">
     <!-- Enhanced Navbar -->
     <nav class="bg-gray-900 text-white p-4 flex justify-between items-center sticky top-0 z-50 shadow-lg">
-    <div class="flex items-center space-x-8">
-        <span class="text-2xl font-bold text-yellow-400 flex items-center">
-            <a href="/home" class="cursor-pointer">
-                <i class="fas fa-graduation-cap mr-2"></i>EduVerse
-            </a>
-        </span>
-        <div class="hidden md:flex space-x-6">
-            <!-- Unified Courses Entry -->
-            <a href="{{ route('published.courses') }}" class="hover:text-yellow-400 transition duration-300 flex items-center">
-                <i class="fas fa-book-open mr-2"></i>Courses
-            </a>
-
-            <!-- Learning Tools -->
-            {{-- <a href="{{ route('quizzes') }}" class="hover:text-yellow-400 transition duration-300 flex items-center">
-                <i class="fas fa-tasks mr-2"></i>Learning
-            </a> --}}
-
-
-        </div>
-    </div>
-    <div class="flex items-center space-x-4">
-        <!-- Quick Access Dropdown -->
-        <div class="relative group">
-            <button class="hover:text-yellow-400 px-3 py-1 rounded-lg transition duration-300 flex items-center">
-                <i class="fas fa-bolt mr-2"></i> Quick Access
-                <i class="fas fa-chevron-down ml-1 text-xs"></i>
-            </button>
-            <div class="absolute hidden group-hover:block bg-gray-800 mt-2 py-2 w-48 rounded shadow-lg z-50 right-0">
-                <a href="{{ route('published.courses') }}" class="block px-4 py-2 hover:bg-gray-700">
-                    <i class="fas fa-search mr-2"></i> Browse Catalog
+        <div class="flex items-center space-x-8">
+            <span class="text-2xl font-bold text-yellow-400 flex items-center">
+                <a href="/home" class="cursor-pointer">
+                    <i class="fas fa-graduation-cap mr-2"></i>EduVerse
                 </a>
-
-                <a href="#" class="block px-4 py-2 hover:bg-gray-700">
-                    <i class="fas fa-certificate mr-2"></i> Certificates
+            </span>
+            <div class="hidden md:flex space-x-6">
+                <!-- Unified Courses Entry -->
+                <a href="{{ route('published.courses') }}"
+                    class="hover:text-yellow-400 transition duration-300 flex items-center">
+                    <i class="fas fa-book-open mr-2"></i>Courses
                 </a>
             </div>
         </div>
+        <div class="flex items-center space-x-4">
+            <!-- Quick Access Dropdown -->
+            <div class="relative group">
+                <button class="hover:text-yellow-400 px-3 py-1 rounded-lg transition duration-300 flex items-center">
+                    <i class="fas fa-bolt mr-2"></i> Quick Access
+                    <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                </button>
+                <div
+                    class="absolute hidden group-hover:block bg-gray-800 mt-2 py-2 w-48 rounded shadow-lg z-50 right-0">
+                    <a href="{{ route('published.courses') }}" class="block px-4 py-2 hover:bg-gray-700">
+                        <i class="fas fa-search mr-2"></i> Browse Catalog
+                    </a>
 
-
-    </div>
-    <div class="flex items-center space-x-4">
-        <!-- Notification Bell -->
-        <a href="#" class="p-2 rounded-full hover:bg-gray-700 relative">
-            <i class="fas fa-bell"></i>
-            <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-yellow-400"></span>
-        </a>
-
-        <!-- User Menu -->
-        <div class="user-badge flex items-center space-x-3 bg-gray-800 px-3 py-1 rounded-full cursor-pointer hover:bg-gray-700">
-            <div class="text-right hidden sm:block">
-                <div class="text-sm font-medium">John Doe</div>
-                <div class="text-xs text-gray-400">Learner</div>
+                    <a href="#" class="block px-4 py-2 hover:bg-gray-700">
+                        <i class="fas fa-certificate mr-2"></i> Certificates
+                    </a>
+                </div>
             </div>
-            <div class="relative">
-                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User profile" class="w-8 h-8 rounded-full border-2 border-yellow-400">
+
+
+        </div>
+        <div class="flex items-center space-x-4">
+            <!-- Notification Bell -->
+            <a href="#" class="p-2 rounded-full hover:bg-gray-700 relative">
+                <i class="fas fa-bell"></i>
+                <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-yellow-400"></span>
+            </a>
+
+            <!-- User Menu -->
+            <div
+                class="user-badge flex items-center space-x-3 bg-gray-800 px-3 py-1 rounded-full cursor-pointer hover:bg-gray-700">
+                <div class="text-right hidden sm:block">
+                    <div class="text-sm font-medium">John Doe</div>
+                    <div class="text-xs text-gray-400">Learner</div>
+                </div>
+                <div class="relative">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User profile"
+                        class="w-8 h-8 rounded-full border-2 border-yellow-400">
+                </div>
             </div>
         </div>
-    </div>
-</nav>
+    </nav>
 
     <!-- Hero Section -->
     <header class="relative text-white text-center py-20">
         <div class="absolute inset-0 w-full h-full bg-black opacity-60 z-0"></div>
-        <img alt="Students learning together" class="absolute inset-0 w-full h-full object-cover z-0" height="600" src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTh8fHRlY2glMjBsZWFybmluZ3xlbnwwfHwwfHx8MA%3D%3D" width="1920"/>
+        <img alt="Students learning together" class="absolute inset-0 w-full h-full object-cover z-0" height="600"
+            src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTh8fHRlY2glMjBsZWFybmluZ3xlbnwwfHwwfHx8MA%3D%3D"
+            width="1920" />
         <div class="relative z-10 container mx-auto px-4">
             <h1 class="text-5xl font-bold mb-6">Welcome to EduVerse Learning Platform</h1>
-            <p class="mt-4 text-xl max-w-3xl mx-auto">Transform your future with our cutting-edge online education platform. Learn from industry experts and earn recognized certifications.</p>
+            <p class="mt-4 text-xl max-w-3xl mx-auto">Transform your future with our cutting-edge online education
+                platform. Learn from industry experts and earn recognized certifications.</p>
             <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-                <button class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-3 rounded-full transition duration-300 transform hover:scale-105">
+                <button
+                    class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-3 rounded-full transition duration-300 transform hover:scale-105">
                     <a href="{{ route('published.courses') }}" class="flex items-center justify-center">
                         <i class="fas fa-book-open mr-2"></i> Explore Courses
                     </a>
                 </button>
-                <button class="bg-transparent hover:bg-white hover:text-gray-900 text-white font-bold px-8 py-3 rounded-full border-2 border-white transition duration-300 transform hover:scale-105">
+                <button
+                    class="bg-transparent hover:bg-white hover:text-gray-900 text-white font-bold px-8 py-3 rounded-full border-2 border-white transition duration-300 transform hover:scale-105">
                     <a href="#" class="flex items-center justify-center">
                         <i class="fas fa-play-circle mr-2"></i> Watch Demo
                     </a>
@@ -145,29 +162,36 @@
         <div class="container mx-auto px-4">
             <div class="text-center mb-12">
                 <h2 class="text-3xl font-bold text-gray-900 mb-4">Why Choose EduVerse?</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">We provide the best online learning experience with innovative technologies and comprehensive support</p>
+                <p class="text-gray-600 max-w-2xl mx-auto">We provide the best online learning experience with
+                    innovative technologies and comprehensive support</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 border-l-4 border-yellow-400">
+                <div
+                    class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 border-l-4 border-yellow-400">
                     <div class="text-yellow-400 mb-4">
                         <i class="fas fa-clock text-3xl"></i>
                     </div>
                     <h3 class="text-xl font-bold mb-2 text-gray-800">Flexible Learning</h3>
-                    <p class="text-gray-600">Study at your own pace with our flexible online learning platform. Access course materials 24/7 from anywhere in the world with our mobile-friendly interface.</p>
+                    <p class="text-gray-600">Study at your own pace with our flexible online learning platform. Access
+                        course materials 24/7 from anywhere in the world with our mobile-friendly interface.</p>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 border-l-4 border-yellow-400">
+                <div
+                    class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 border-l-4 border-yellow-400">
                     <div class="text-yellow-400 mb-4">
                         <i class="fas fa-chalkboard-teacher text-3xl"></i>
                     </div>
                     <h3 class="text-xl font-bold mb-2 text-gray-800">Expert Instructors</h3>
-                    <p class="text-gray-600">Learn from industry professionals and academic experts who bring real-world experience to your education through interactive video lectures and live Q&A sessions.</p>
+                    <p class="text-gray-600">Learn from industry professionals and academic experts who bring real-world
+                        experience to your education through interactive video lectures and live Q&A sessions.</p>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 border-l-4 border-yellow-400">
+                <div
+                    class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 border-l-4 border-yellow-400">
                     <div class="text-yellow-400 mb-4">
                         <i class="fas fa-certificate text-3xl"></i>
                     </div>
                     <h3 class="text-xl font-bold mb-2 text-gray-800">Recognized Certificates</h3>
-                    <p class="text-gray-600">Earn globally recognized certificates upon completion of your courses and boost your career prospects with our career services and job placement assistance.</p>
+                    <p class="text-gray-600">Earn globally recognized certificates upon completion of your courses and
+                        boost your career prospects with our career services and job placement assistance.</p>
                 </div>
             </div>
         </div>
@@ -178,40 +202,59 @@
         <div class="container mx-auto px-4">
             <div class="text-center mb-12">
                 <h2 class="text-3xl font-bold mb-4">Popular Courses</h2>
-                <p class="text-gray-300 max-w-2xl mx-auto">Browse our most popular courses loved by thousands of students worldwide</p>
+                <p class="text-gray-300 max-w-2xl mx-auto">Browse our most popular courses loved by thousands of
+                    students worldwide</p>
             </div>
-            {{-- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                @foreach($popularCourses as $course)
-                <div class="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl overflow-hidden shadow-lg course-card transition duration-300">
-                    <div class="relative">
-                        <img src="{{ $course['image'] }}" alt="{{ $course['title'] }}" class="w-full h-48 object-cover">
-                        @if(isset($course['badge']))
-                        <div class="absolute top-2 right-2 {{ $course['badgeColor'] }} text-xs font-bold px-2 py-1 rounded">{{ $course['badge'] }}</div>
-                        @endif
-                    </div>
-                    <div class="p-6">
-                        <div class="flex justify-between items-start mb-2">
-                            <span class="text-yellow-400 text-sm font-semibold">{{ $course['category'] }}</span>
-                            <div class="flex items-center text-yellow-400">
-                                <i class="fas fa-star"></i>
-                                <span class="ml-1 text-white">{{ $course['rating'] }}</span>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                @foreach ($courses as $course)
+                    @if ($course->is_popular())
+                        <div
+                            class="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl overflow-hidden shadow-lg course-card transition duration-300">
+                            <div class="relative">
+                                <img src="{{ $course->course_image() }}" alt="{{ $course->title }}"
+                                    class="w-full h-48 object-cover">
+
+                                <div
+                                    class="absolute top-2 right-2 {{ $course->setColor($course->categories[0]->category_name, 'badge') }} text-xs font-bold px-2 py-1 rounded">
+                                    Best Seller</div>
+
+                            </div>
+                            <div class="p-6">
+                                <div class="flex justify-between items-start mb-2">
+                                    <span
+                                        class="text-yellow-400 text-sm font-semibold">{{ $course->categories[0]->category_name }}</span>
+                                    <div class="flex items-center text-yellow-400">
+                                        <i class="fas fa-star"></i>
+                                        <span class="ml-1 text-white">5</span>
+                                    </div>
+                                </div>
+                                <h3 class="text-xl font-bold mb-2">{{ $course->title }}</h3>
+                                <p class="text-gray-300 text-sm mb-4">{{ $course->description }}</p>
+                                <div class="flex justify-between items-center">
+                                    <div class="flex items-center text-sm text-gray-300">
+                                        <i class="fas fa-user-graduate mr-1"></i>
+                                        <span>{{ $course->enrollments->count() }}{{ Str::plural(' Student', $course->enrollments->count()) }}</span>
+                                    </div>
+                                    @if ($user->enrolled($course))
+                                        <a href="{{ route('enrolled_course_content', $course->id) }}"
+                                            class="text-yellow-400 hover:text-yellow-300 text-sm font-semibold">
+                                            Continue Learning <i class="fas fa-arrow-right ml-1"></i>
+                                        </a>
+                                    @else
+                                        <a href="{{ route('verfiy_enrollment', $course->id) }}"
+                                            class="text-yellow-400 hover:text-yellow-300 text-sm font-semibold">
+                                            Enroll Now <i class="fas fa-arrow-right ml-1"></i>
+                                        </a>
+                                    @endif
+                                </div>
                             </div>
                         </div>
-                        <h3 class="text-xl font-bold mb-2">{{ $course['title'] }}</h3>
-                        <p class="text-gray-300 text-sm mb-4">{{ $course['description'] }}</p>
-                        <div class="flex justify-between items-center">
-                            <div class="flex items-center text-sm text-gray-300">
-                                <i class="fas fa-user-graduate mr-1"></i>
-                                <span>{{ number_format($course['students_count']) }} students</span>
-                            </div>
-                            <a href="{{ route('enroll.show', $course['id']) }}" class="text-yellow-400 hover:text-yellow-300 text-sm font-semibold">Enroll Now <i class="fas fa-arrow-right ml-1"></i></a>
-                        </div>
-                    </div>
-                </div>
+                    @endif
                 @endforeach
-            </div> --}}
+            </div>
             <div class="text-center mt-12">
-                <a href="{{ route('published.courses') }}" class="inline-block bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-6 py-3 rounded-full transition duration-300">
+                <a href="{{ route('published.courses') }}"
+                    class="inline-block bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-6 py-3 rounded-full transition duration-300">
                     View All Courses <i class="fas fa-arrow-right ml-2"></i>
                 </a>
             </div>
@@ -223,19 +266,23 @@
         <div class="container mx-auto px-4">
             <div class="text-center mb-12">
                 <h2 class="text-3xl font-bold text-gray-900 mb-4">What Our Students Say</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">Hear from our successful students who transformed their careers with EduVerse</p>
+                <p class="text-gray-600 max-w-2xl mx-auto">Hear from our successful students who transformed their
+                    careers with EduVerse</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Testimonial 1 -->
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <div class="flex items-center mb-4">
-                        <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Student" class="w-12 h-12 rounded-full mr-4">
+                        <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Student"
+                            class="w-12 h-12 rounded-full mr-4">
                         <div>
                             <h4 class="font-bold">Jessica Chen</h4>
                             <p class="text-yellow-500 text-sm">Web Development Student</p>
                         </div>
                     </div>
-                    <p class="text-gray-600">"The Web Development Bootcamp completely changed my career trajectory. Within 6 months of completing the course, I landed my first developer job with a 50% salary increase!"</p>
+                    <p class="text-gray-600">"The Web Development Bootcamp completely changed my career trajectory.
+                        Within 6 months of completing the course, I landed my first developer job with a 50% salary
+                        increase!"</p>
                     <div class="flex mt-4 text-yellow-400">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -248,13 +295,16 @@
                 <!-- Testimonial 2 -->
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <div class="flex items-center mb-4">
-                        <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Student" class="w-12 h-12 rounded-full mr-4">
+                        <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Student"
+                            class="w-12 h-12 rounded-full mr-4">
                         <div>
                             <h4 class="font-bold">Michael Rodriguez</h4>
                             <p class="text-yellow-500 text-sm">Data Science Student</p>
                         </div>
                     </div>
-                    <p class="text-gray-600">"The instructors are incredibly knowledgeable and the course materials are top-notch. The hands-on projects gave me the practical experience I needed to transition into data science."</p>
+                    <p class="text-gray-600">"The instructors are incredibly knowledgeable and the course materials are
+                        top-notch. The hands-on projects gave me the practical experience I needed to transition into
+                        data science."</p>
                     <div class="flex mt-4 text-yellow-400">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -267,13 +317,15 @@
                 <!-- Testimonial 3 -->
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <div class="flex items-center mb-4">
-                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Student" class="w-12 h-12 rounded-full mr-4">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Student"
+                            class="w-12 h-12 rounded-full mr-4">
                         <div>
                             <h4 class="font-bold">Sarah Johnson</h4>
                             <p class="text-yellow-500 text-sm">Digital Marketing Student</p>
                         </div>
                     </div>
-                    <p class="text-gray-600">"I was able to apply what I learned immediately to grow my small business. The course paid for itself within the first month through improved marketing strategies."</p>
+                    <p class="text-gray-600">"I was able to apply what I learned immediately to grow my small business.
+                        The course paid for itself within the first month through improved marketing strategies."</p>
                     <div class="flex mt-4 text-yellow-400">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -290,14 +342,17 @@
     <section class="py-16 bg-gray-900 text-white">
         <div class="container mx-auto px-4 text-center">
             <h2 class="text-3xl font-bold mb-6">Ready to Transform Your Career?</h2>
-            <p class="text-xl text-gray-300 max-w-3xl mx-auto mb-8">Join thousands of students who have already started their learning journey with EduVerse University</p>
+            <p class="text-xl text-gray-300 max-w-3xl mx-auto mb-8">Join thousands of students who have already started
+                their learning journey with EduVerse University</p>
             <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <button class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-3 rounded-full transition duration-300 transform hover:scale-105">
+                <button
+                    class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-3 rounded-full transition duration-300 transform hover:scale-105">
                     <a href="{{ route('published.courses') }}" class="flex items-center justify-center">
                         <i class="fas fa-book-open mr-2"></i> Browse Courses
                     </a>
                 </button>
-                <button class="bg-transparent hover:bg-white hover:text-gray-900 text-white font-bold px-8 py-3 rounded-full border-2 border-white transition duration-300 transform hover:scale-105">
+                <button
+                    class="bg-transparent hover:bg-white hover:text-gray-900 text-white font-bold px-8 py-3 rounded-full border-2 border-white transition duration-300 transform hover:scale-105">
                     <a href="#" class="flex items-center justify-center">
                         <i class="fas fa-question-circle mr-2"></i> Get More Info
                     </a>
@@ -315,7 +370,8 @@
                     <h3 class="text-xl font-bold text-yellow-400 mb-4 flex items-center">
                         <i class="fas fa-graduation-cap mr-2"></i> EduVerse
                     </h3>
-                    <p class="text-gray-400 mb-4">Empowering learners worldwide with accessible, high-quality education since 2015.</p>
+                    <p class="text-gray-400 mb-4">Empowering learners worldwide with accessible, high-quality education
+                        since 2015.</p>
                     <div class="flex space-x-4">
                         <a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">
                             <i class="fab fa-facebook-f"></i>
@@ -339,12 +395,19 @@
                 <div>
                     <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
                     <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">Home</a></li>
-                        <li><a href="{{ route('published.courses') }}" class="text-gray-400 hover:text-yellow-400 transition duration-300">Courses</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">About Us</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">Instructors</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">Pricing</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">Blog</a></li>
+                        <li><a href="#"
+                                class="text-gray-400 hover:text-yellow-400 transition duration-300">Home</a></li>
+                        <li><a href="{{ route('published.courses') }}"
+                                class="text-gray-400 hover:text-yellow-400 transition duration-300">Courses</a></li>
+                        <li><a href="#"
+                                class="text-gray-400 hover:text-yellow-400 transition duration-300">About Us</a></li>
+                        <li><a href="#"
+                                class="text-gray-400 hover:text-yellow-400 transition duration-300">Instructors</a>
+                        </li>
+                        <li><a href="#"
+                                class="text-gray-400 hover:text-yellow-400 transition duration-300">Pricing</a></li>
+                        <li><a href="#"
+                                class="text-gray-400 hover:text-yellow-400 transition duration-300">Blog</a></li>
                     </ul>
                 </div>
 
@@ -352,22 +415,34 @@
                 <div>
                     <h4 class="text-lg font-semibold mb-4">Support</h4>
                     <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">Help Center</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">FAQs</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">Terms of Service</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">Privacy Policy</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">Cookie Policy</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">Contact Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">Help
+                                Center</a></li>
+                        <li><a href="#"
+                                class="text-gray-400 hover:text-yellow-400 transition duration-300">FAQs</a></li>
+                        <li><a href="#"
+                                class="text-gray-400 hover:text-yellow-400 transition duration-300">Terms of
+                                Service</a></li>
+                        <li><a href="#"
+                                class="text-gray-400 hover:text-yellow-400 transition duration-300">Privacy Policy</a>
+                        </li>
+                        <li><a href="#"
+                                class="text-gray-400 hover:text-yellow-400 transition duration-300">Cookie Policy</a>
+                        </li>
+                        <li><a href="#"
+                                class="text-gray-400 hover:text-yellow-400 transition duration-300">Contact Us</a></li>
                     </ul>
                 </div>
 
                 <!-- Column 4 -->
                 <div>
                     <h4 class="text-lg font-semibold mb-4">Newsletter</h4>
-                    <p class="text-gray-400 mb-4">Subscribe to get updates on new courses, discounts and special offers.</p>
+                    <p class="text-gray-400 mb-4">Subscribe to get updates on new courses, discounts and special
+                        offers.</p>
                     <form class="flex">
-                        <input type="email" placeholder="Your email" class="bg-gray-700 text-white px-4 py-2 rounded-l focus:outline-none focus:ring-2 focus:ring-yellow-400 w-full">
-                        <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-black px-4 py-2 rounded-r transition duration-300">
+                        <input type="email" placeholder="Your email"
+                            class="bg-gray-700 text-white px-4 py-2 rounded-l focus:outline-none focus:ring-2 focus:ring-yellow-400 w-full">
+                        <button type="submit"
+                            class="bg-yellow-500 hover:bg-yellow-600 text-black px-4 py-2 rounded-r transition duration-300">
                             <i class="fas fa-paper-plane"></i>
                         </button>
                     </form>
@@ -385,12 +460,17 @@
             <div class="border-t border-gray-700 pt-6 flex flex-col md:flex-row justify-between items-center">
                 <p class="text-gray-400 text-sm mb-4 md:mb-0">© 2023 EduVerse University. All rights reserved.</p>
                 <div class="flex space-x-6">
-                    <a href="#" class="text-gray-400 hover:text-yellow-400 text-sm transition duration-300">Privacy Policy</a>
-                    <a href="#" class="text-gray-400 hover:text-yellow-400 text-sm transition duration-300">Terms of Service</a>
-                    <a href="#" class="text-gray-400 hover:text-yellow-400 text-sm transition duration-300">Sitemap</a>
+                    <a href="#"
+                        class="text-gray-400 hover:text-yellow-400 text-sm transition duration-300">Privacy Policy</a>
+                    <a href="#"
+                        class="text-gray-400 hover:text-yellow-400 text-sm transition duration-300">Terms of
+                        Service</a>
+                    <a href="#"
+                        class="text-gray-400 hover:text-yellow-400 text-sm transition duration-300">Sitemap</a>
                 </div>
             </div>
         </div>
     </footer>
 </body>
+
 </html>

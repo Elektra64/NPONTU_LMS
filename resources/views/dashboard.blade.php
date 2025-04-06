@@ -88,7 +88,7 @@
 
                     <!-- Mobile menu button and logout -->
                     <div class="flex items-center">
-                        <a href="{{ route('login') }}"
+                        <a href="{{ route('logout') }}"
                             class="flex items-center px-3 py-2 text-red-600 hover:bg-red-100 rounded-md transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20"
                                 fill="currentColor">
@@ -127,8 +127,8 @@
                         </svg>
                         <h2 class="text-lg font-semibold text-gray-600">Total Courses</h2>
                     </div>
-                    <p class="text-3xl font-bold text-primary" id="totalCourses">42</p>
-                    <p class="text-sm text-green-600 mt-2">+5 this month</p>
+                    <p class="text-3xl font-bold text-primary">{{ $user->courses->count() }}</p>
+                    <p class="text-sm text-green-600 mt-2">{{ $user->monthly_courses_published() }}+ this month</p>
                 </div>
 
                 <!-- Active Users Card -->
@@ -162,7 +162,7 @@
                         </svg>
                         <h2 class="text-lg font-semibold text-gray-600">Course Enrollments</h2>
                     </div>
-                    <p class="text-3xl font-bold text-primary" id="courseEnrollments">587</p>
+                    <p class="text-3xl font-bold text-primary">{{ $user->course_enrollments->count() }}</p>
                     <div class="flex justify-between mt-2">
                         <span class="text-sm text-green-600">Completion rate: 20%</span>
                         <span class="text-sm text-yellow-600">Ongoing: 87</span>
@@ -179,8 +179,8 @@
                         </svg>
                         <h2 class="text-lg font-semibold text-gray-600">Total Quizzes</h2>
                     </div>
-                    <p class="text-3xl font-bold text-primary" id="totalQuizzes">25</p>
-                    <p class="text-sm text-green-600 mt-2">25 Assessments created</p>
+                    <p class="text-3xl font-bold text-primary">{{ $user->quizzes_set() }}</p>
+                    <p class="text-sm text-green-600 mt-2">{{ $user->quizzes_set() }}{{ Str::plural(' Assessment', $user->quizzes_set()) }} created</p>
                 </div>
             </div>
 
@@ -194,7 +194,6 @@
                         <a href="{{ route('courses') }}" class="text-green-600 hover:underline">View All</a>
                     </div>
                     <div id="courseGrid" class="grid md:grid-cols-2 gap-6 p-6">
-                        <!-- Course cards will be dynamically inserted here -->
                         @if ($courses->count())
 
                             @foreach ($courses as $course)
@@ -216,7 +215,7 @@
                                                 class="{{ $course->setColor($course->difficulty, 'badge', true) }} px-2 py-1 rounded-full text-xs">{{ $course->difficulty_level }}</span>
                                         </div>
                                         <div class="flex justify-between items-center text-sm">
-                                            <span class="text-gray-600">100 enrollments</span>
+                                            <span class="text-gray-600">{{ $course->enrollments->count() }}{{ Str::plural(' Enrollment', $course->enrollments->count()) }}</span>
                                             <span
                                                 class="text-gray-500">{{ $course->updated_at->diffForHumans() }}</span>
                                         </div>

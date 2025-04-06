@@ -82,7 +82,7 @@
 
                 <!-- Mobile menu button and logout -->
                 <div class="flex items-center">
-                    <a href="{{ route('login') }}"
+                    <a href="{{ route('logout') }}"
                         class="flex items-center px-3 py-2 text-red-600 hover:bg-red-100 rounded-md transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20"
                             fill="currentColor">
@@ -210,7 +210,7 @@
                                     class="{{ $course->setColor($course->categories[0]->category_name, 'badge') }} px-2 py-1 rounded-full text-xs">{{ $course->categories[0]->category_name }}
                                 </span>
                             </div>
-                            <div class="col-span-1 flex items-center text-gray-700">1000</div>
+                            <div class="col-span-1 flex items-center text-gray-700">{{ $course->enrollments->count() }}</div>
                             <div class="col-span-1 flex items-center">
                                 <span
                                     class="px-2 py-1 rounded-full text-xs {{ $course->status === 'draft' ? 'bg-gray-100 text-gray-800' : 'bg-blue-100 text-blue-800' }}">
