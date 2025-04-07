@@ -117,6 +117,24 @@ class CourseController extends Controller
                 'price' => 0,
                 'standard_price' => 49.99,
                 'premium_price' => 89.99
+            ],
+            7=> [
+                'id'=> 7,
+                'title'=> 'Introduction to Artificial Intelligence',
+                'instructor'=> 'John Doe',
+                'category'=> 'Technology',
+                'description'=> 'Learn the basics of artificial intelligence, machine learning, and deep learning.',
+                'image'=> 'https://images.unsplash.com/photo-1558640190-256970210c74',
+                'rating'=> 4.5,
+                'students_count'=> 9876,
+                'difficulty'=> 'intermediate',
+                'badge'=> 'NEW',
+                'badgeColor'=> 'bg-blue-500 text-white',
+                'is_free'=> false,
+                'has_paid_options'=> true,
+                'price'=> 49.99,
+               'standard_price'=> 49.99,
+               'premium_price'=> 87.99,
             ]
         ];
 
@@ -166,6 +184,12 @@ public function getPopularCourses($limit = 3)
     return array_slice($allCourses, 0, $limit);
 }
 
+public function showLandingPage()
+{
+    $popularCourses = $this->getPopularCourses(6); // Get 6 popular courses
+    return view('landing', compact('popularCourses'));
+}
+
 //............... getMockCourseContent......................//
 private function getMockCourseContent($courseId)
 {
@@ -198,6 +222,10 @@ private function getMockCourseContent($courseId)
         ],
         6 => [ // Flutter Development
             'https://sample-videos.com/video123/mp4/240/big_buck_bunny_240p_1mb.mp4',
+            'https://sample-videos.com/video123/mp4/240/big_buck_bunny_240p_2mb.mp4',
+            'https://sample-videos.com/video123/mp4/240/big_buck_bunny_240p_5mb.mp4'
+        ],
+        7=> [ 'https://sample-videos.com/video123/mp4/240/big_buck_bunny_240p_1mb.mp4',
             'https://sample-videos.com/video123/mp4/240/big_buck_bunny_240p_2mb.mp4',
             'https://sample-videos.com/video123/mp4/240/big_buck_bunny_240p_5mb.mp4'
         ]
