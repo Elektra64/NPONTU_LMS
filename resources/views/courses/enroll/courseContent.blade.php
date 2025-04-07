@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,12 +7,17 @@
     <title>{{ $course['title'] }} | EduVerse</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
     <style>
+        /* Progress bar styles */
         .progress-bar {
             height: 6px;
             transition: width 0.3s ease;
         }
+
+        /* Lesson item styles */
         .lesson-item:hover {
             background-color: #f3f4f6;
         }
@@ -22,6 +28,8 @@
         .lesson-item.completed {
             border-left: 4px solid #10b981;
         }
+
+        /* Video container styles */
         .video-container {
             aspect-ratio: 16/9;
         }
@@ -34,6 +42,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
         }
+
         /* Quiz styles */
         .quiz-container {
             background-color: #f8fafc;
@@ -121,6 +130,51 @@
             border-radius: 3px;
             transition: width 0.3s ease;
         }
+
+        /* Lesson content styles */
+        .lesson-content {
+            background-color: #f9fafb;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .explanation-item {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .explanation-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .method-item {
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+        .method-step {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .method-step:before {
+            content: counter(step);
+            counter-increment: step;
+            position: absolute;
+            left: 0;
+            background-color: #3b82f6;
+            color: white;
+            width: 1.25rem;
+            height: 1.25rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+        }
     </style>
 </head>
 <body class="bg-gray-50 font-sans">
@@ -134,12 +188,11 @@
             <span class="hidden md:block">Course Content</span>
         </div>
         <div class="flex items-center space-x-4">
-                <button id="save-progress-btn" class="bg-yellow-500 hover:bg-yellow-600 text-black px-4 py-2 rounded-full text-sm font-medium transition"
-                onclick="saveProgress()">
-            <i class="fas fa-save mr-2"></i>Save Progress
+            <button id="save-progress-btn" class="bg-yellow-500 hover:bg-yellow-600 text-black px-4 py-2 rounded-full text-sm font-medium transition">
+                <i class="fas fa-save mr-2"></i>Save Progress
             </button>
             <div class="flex items-center space-x-2">
-                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" class="w-8 h-8 rounded-full border-2 border-yellow-400">
+                <img src="{{ $user['avatar'] ?? 'https://randomuser.me/api/portraits/men/32.jpg' }}" alt="User" class="w-8 h-8 rounded-full border-2 border-yellow-400">
                 <span class="hidden md:inline text-sm">{{ $user['name'] ?? 'Guest' }}</span>
             </div>
         </div>
@@ -161,10 +214,10 @@
                 <div class="mt-4">
                     <div class="flex justify-between text-sm mb-1">
                         <span>Course Progress</span>
-                        <span id="progress-percent">25%</span>
+                        <span id="progress-percent">0%</span>
                     </div>
                     <div class="w-full bg-gray-200 rounded-full h-2.5">
-                        <div id="progress-bar" class="progress-bar bg-yellow-500 rounded-full" style="width: 25%"></div>
+                        <div id="progress-bar" class="progress-bar bg-yellow-500 rounded-full" style="width: 0%"></div>
                     </div>
                 </div>
             </div>
@@ -187,12 +240,14 @@
                         <a href="{{ route('course.lesson', ['courseId' => $course['id'], 'section' => $sectionIndex, 'lesson' => $lessonIndex]) }}"
                            class="block px-3 py-2 text-sm rounded lesson-item
                                   {{ $currentSection == $sectionIndex && $currentLesson == $lessonIndex ? 'active' : '' }}
-                                  {{ isset($lesson['completed']) && $lesson['completed'] ? 'completed' : '' }}">
+                                  {{ $lesson['completed'] ?? false ? 'completed' : '' }}"
+                           data-section-index="{{ $sectionIndex }}"
+                           data-lesson-index="{{ $lessonIndex }}">
                             <div class="flex items-center">
-                                @if(isset($lesson['completed']) && $lesson['completed'])
-                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
-                                @elseif($currentSection == $sectionIndex && $currentLesson == $lessonIndex)
+                                @if($currentSection == $sectionIndex && $currentLesson == $lessonIndex)
                                 <i class="fas fa-play-circle text-yellow-500 mr-2"></i>
+                                @elseif($lesson['completed'] ?? false)
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
                                 @else
                                 <i class="far fa-circle text-gray-400 mr-2"></i>
                                 @endif
@@ -222,10 +277,14 @@
                     </h1>
                 </div>
 
+                @php
+                    $currentLessonData = $content['sections'][$currentSection]['lessons'][$currentLesson];
+                @endphp
+
                 <!-- Lesson Content -->
                 <div class="bg-white rounded-lg shadow-md overflow-hidden mb-6">
                     <!-- Video Player -->
-                    @if($content['sections'][$currentSection]['lessons'][$currentLesson]['type'] === 'video')
+                    @if($currentLessonData['type'] === 'video')
                     <div class="video-container">
                         <video
                             id="lesson-video"
@@ -234,7 +293,7 @@
                             preload="auto"
                             data-setup='{}'
                         >
-                            <source src="{{ $content['sections'][$currentSection]['lessons'][$currentLesson]['video_url'] }}" type="video/mp4">
+                            <source src="{{ $currentLessonData['video_url'] }}" type="video/mp4">
                             <p class="vjs-no-js">
                                 To view this video please enable JavaScript, and consider upgrading to a
                                 web browser that <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
@@ -256,56 +315,78 @@
                         <div class="flex justify-between items-center mb-4">
                             <div class="flex space-x-2">
                                 <span class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-xs">
-                                    {{ $content['sections'][$currentSection]['lessons'][$currentLesson]['type'] ?? 'Video' }}
+                                    {{ $currentLessonData['type'] ?? 'Video' }}
                                 </span>
                                 <span class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-xs">
-                                    {{ $content['sections'][$currentSection]['lessons'][$currentLesson]['duration'] }}
+                                    {{ $currentLessonData['duration'] }}
                                 </span>
                             </div>
-                            @if($content['sections'][$currentSection]['lessons'][$currentLesson]['type'] === 'video')
                             <div class="flex space-x-2">
+                                @if($currentLessonData['type'] === 'video')
                                 <button id="speed-control" class="px-3 py-1 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-full text-sm">
                                     1x Speed
                                 </button>
+                                @endif
                                 <button id="mark-complete-btn" class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-full text-sm">
                                     <i class="fas fa-check mr-2"></i>Mark as Complete
                                 </button>
                             </div>
-                            @else
-                            <button id="mark-complete-btn" class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-full text-sm">
-                                <i class="fas fa-check mr-2"></i>Mark as Complete
-                            </button>
+                        </div>
+
+                        <!-- Lesson Content Sections -->
+                        <div class="space-y-6">
+                            <!-- Lesson Overview -->
+                            @if(isset($currentLessonData['content']['overview']))
+                            <div class="lesson-content">
+                                <h3 class="text-lg font-bold mb-3">Lesson Overview</h3>
+                                <p class="text-gray-700">{{ $currentLessonData['content']['overview'] }}</p>
+                            </div>
+                            @endif
+
+                            <!-- Explanations -->
+                            @if(isset($currentLessonData['content']['explanations']) && count($currentLessonData['content']['explanations']) > 0)
+                            <div class="lesson-content">
+                                <h3 class="text-lg font-bold mb-3">Key Concepts</h3>
+                                @foreach($currentLessonData['content']['explanations'] as $explanation)
+                                <div class="explanation-item">
+                                    <h4 class="font-semibold text-gray-800 mb-2">{{ $explanation['title'] }}</h4>
+                                    <p class="text-gray-700">{{ $explanation['content'] }}</p>
+                                </div>
+                                @endforeach
+                            </div>
+                            @endif
+
+                            <!-- Methods -->
+                            @if(isset($currentLessonData['content']['methods']) && count($currentLessonData['content']['methods']) > 0)
+                            <div class="lesson-content">
+                                <h3 class="text-lg font-bold mb-3">Methods & Procedures</h3>
+                                @foreach($currentLessonData['content']['methods'] as $method)
+                                <div class="method-item">
+                                    <h4 class="font-semibold text-gray-800 mb-2">{{ $method['name'] }}</h4>
+                                    <div class="space-y-2" style="counter-reset: step;">
+                                        @foreach($method['steps'] as $step)
+                                        <div class="method-step text-gray-700">{{ $step }}</div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
                             @endif
                         </div>
 
-                        <!-- Lesson Description -->
-                        <div class="prose max-w-none">
-                            <p class="font-black">This lesson covers the fundamental concepts of {{ $content['sections'][$currentSection]['lessons'][$currentLesson]['title'] }}.
-                            You'll learn through interactive examples and practical exercises.</p>
-
-                            <h3 class="text-bold text-2xl font-black animate-bounce text-2xl font-bold ">Key Take aways</h3><br>
-                            <ul class="font-medium " >
-                                <li>Understand core concepts</li>
-                                <li>Apply knowledge through exercises</li>
-                                <li>Prepare for next lesson</li>
-                            </ul>
-                        </div>
-
                         <!-- Resources -->
-                        @if(isset($content['sections'][$currentSection]['lessons'][$currentLesson]['resources']))
+                        @if(isset($currentLessonData['resources']) && count($currentLessonData['resources']) > 0)
                         <div class="mt-6 pt-4 border-t">
                             <h4 class="font-medium text-gray-900 mb-3">Lesson Resources</h4>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                @foreach($content['sections'][$currentSection]['lessons'][$currentLesson]['resources'] as $resource)
-                                <a href="#" class="flex items-center p-3 border rounded-lg hover:bg-gray-50">
+                                @foreach($currentLessonData['resources'] as $resource)
+                                <a href="{{ $resource['url'] ?? '#' }}" class="flex items-center p-3 border rounded-lg hover:bg-gray-50" target="_blank">
                                     @if($resource['type'] == 'pdf')
                                     <i class="fas fa-file-pdf text-red-500 text-xl mr-3"></i>
                                     @elseif($resource['type'] == 'exercise')
                                     <i class="fas fa-code text-blue-500 text-xl mr-3"></i>
                                     @elseif($resource['type'] == 'dataset')
                                     <i class="fas fa-database text-purple-500 text-xl mr-3"></i>
-                                    @elseif($resource['type'] == 'template')
-                                    <i class="fas fa-file-word text-blue-600 text-xl mr-3"></i>
                                     @else
                                     <i class="fas fa-link text-gray-500 text-xl mr-3"></i>
                                     @endif
@@ -318,18 +399,18 @@
                     </div>
                 </div>
 
-                <!-- Quiz Section (Only shown on last lesson) -->
-                @if(!($navigation['next'] ?? false) && isset($content['final_quiz']))
+                <!-- Lesson Quiz (if exists) -->
+                @if(isset($currentLessonData['quiz']))
                 <div id="quiz-container" class="quiz-container">
-                    <h2 class="text-xl font-bold mb-4">Course Final Quiz</h2>
-                    <p class="text-gray-600 mb-6">Test your knowledge before completing the course. You need to score at least {{ $content['final_quiz']['passing_score'] }}% to pass.</p>
+                    <h2 class="text-xl font-bold mb-4">{{ $currentLessonData['quiz']['title'] }}</h2>
+                    <p class="text-gray-600 mb-6">{{ $currentLessonData['quiz']['instructions'] ?? 'Test your understanding of this lesson' }}</p>
 
                     <div id="quiz-progress">
                         <div id="quiz-progress-bar"></div>
                     </div>
 
                     <form id="quiz-form">
-                        @foreach($content['final_quiz']['questions'] as $index => $question)
+                        @foreach($currentLessonData['quiz']['questions'] as $index => $question)
                         <div class="quiz-question" data-question-index="{{ $index }}">
                             <h3 class="font-medium mb-3">{{ $index + 1 }}. {{ $question['question'] }}</h3>
                             <div class="space-y-2">
@@ -353,13 +434,61 @@
                                 <i class="fas fa-redo mr-2"></i>Try Again
                             </button>
                             <button type="button" id="quiz-continue-btn" class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded hidden">
-                                Continue to Completion <i class="fas fa-arrow-right ml-2"></i>
+                                Continue <i class="fas fa-arrow-right ml-2"></i>
                             </button>
                         </div>
 
                         <div class="mt-6 text-right">
                             <button type="submit" id="quiz-submit-btn" class="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium">
                                 Submit Quiz <i class="fas fa-paper-plane ml-2"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                @endif
+
+                <!-- Final Quiz (Only shown on last lesson) -->
+                @if(!($navigation['next'] ?? false) && isset($content['final_quiz']))
+                <div id="final-quiz-container" class="quiz-container mt-8">
+                    <h2 class="text-2xl font-bold mb-4">Course Final Assessment</h2>
+                    <p class="text-gray-600 mb-6">Test your knowledge before completing the course. You need to score at least {{ $content['final_quiz']['passing_score'] }}% to pass.</p>
+
+                    <div id="final-quiz-progress">
+                        <div id="final-quiz-progress-bar"></div>
+                    </div>
+
+                    <form id="final-quiz-form">
+                        @foreach($content['final_quiz']['questions'] as $index => $question)
+                        <div class="quiz-question" data-question-index="{{ $index }}">
+                            <h3 class="font-medium mb-3">{{ $index + 1 }}. {{ $question['question'] }}</h3>
+                            <div class="space-y-2">
+                                @foreach($question['options'] as $optionIndex => $option)
+                                <label class="quiz-option">
+                                    <input type="radio" name="question_{{ $index }}" value="{{ $optionIndex }}" class="hidden">
+                                    <span>{{ $option }}</span>
+                                </label>
+                                @endforeach
+                            </div>
+                            <div class="quiz-feedback" data-correct="{{ $question['correct'] }}">
+                                <p>{{ $question['explanation'] }}</p>
+                            </div>
+                        </div>
+                        @endforeach
+
+                        <div id="final-quiz-results" class="quiz-results">
+                            <h3 class="text-xl font-bold mb-2"></h3>
+                            <p class="mb-4"></p>
+                            <button type="button" id="final-quiz-retry-btn" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded mr-2 hidden">
+                                <i class="fas fa-redo mr-2"></i>Try Again
+                            </button>
+                            <button type="button" id="final-quiz-continue-btn" class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded hidden">
+                                Complete Course <i class="fas fa-trophy ml-2"></i>
+                            </button>
+                        </div>
+
+                        <div class="mt-6 text-right">
+                            <button type="submit" id="final-quiz-submit-btn" class="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium">
+                                Submit Final Quiz <i class="fas fa-paper-plane ml-2"></i>
                             </button>
                         </div>
                     </form>
@@ -383,11 +512,11 @@
                         Next Lesson <i class="fas fa-arrow-right ml-2"></i>
                     </a>
                     @else
-                    <!-- UPDATED COMPLETION BUTTON -->
                     <form method="POST" action="{{ route('course.complete', $course['id']) }}" id="course-completion-form">
                         @csrf
                         <button type="submit"
-                           class="px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium" id="complete-course-btn" @if(isset($content['final_quiz'])) disabled @endif>
+                        class="px-6 py-3 text-white rounded-lg font-medium bg-green-500 hover:bg-green-600"
+                        id="complete-course-btn">
                             Complete Course <i class="fas fa-trophy ml-2"></i>
                         </button>
                     </form>
@@ -396,6 +525,9 @@
             </div>
         </div>
     </div>
+
+
+    <!-- Enhanced Footer -->
     <footer class="bg-gray-800 text-white pt-12 pb-6">
         <div class="container mx-auto px-4">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
@@ -482,162 +614,48 @@
         </div>
     </footer>
 
-    <!-- Data passing elements -->
-    <div id="course-data"
-         data-is-video="{{ $content['sections'][$currentSection]['lessons'][$currentLesson]['type'] === 'video' ? 'true' : 'false' }}"
-         data-video-url="{{ $content['sections'][$currentSection]['lessons'][$currentLesson]['video_url'] ?? '' }}"
-    ></div>
-
-    <!-- JavaScript configuration -->
-    <script>
-        window.courseSettings = {
-            totalLessons: {{ count($content['sections'][$currentSection]['lessons']) }},
-            currentSection: {{ $currentSection }},
-            currentLesson: {{ $currentLesson }},
-            isVideo: {{ $content['sections'][$currentSection]['lessons'][$currentLesson]['type'] === 'video' ? 'true' : 'false' }},
-            videoUrl: "{{ $content['sections'][$currentSection]['lessons'][$currentLesson]['video_url'] ?? '' }}",
-            baseUrl: "{{ url('/') }}",
-            hasFinalQuiz: {{ !($navigation['next'] ?? false) && isset($content['final_quiz']) ? 'true' : 'false' }},
-            passingScore: {{ isset($content['final_quiz']) ? $content['final_quiz']['passing_score'] : 0 }}
-        };
-    </script>
 
     <!-- JavaScript libraries -->
     <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
     <script src="{{ asset('assets/js/courseContents.js') }}"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Video player initialization
-            if (window.courseSettings.isVideo) {
-                const player = videojs('lesson-video', {
-                    controls: true,
-                    autoplay: false,
-                    preload: 'auto',
-                    fluid: true
-                });
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize course progress
+          // Initialize course progress
+          const courseProgress = new CourseProgress(
+        {{ $course['id'] }},
+        {{ $currentSection }},
+        {{ $currentLesson }},
+        {{ array_reduce($content['sections'], function($carry, $section) {
+            return $carry + count($section['lessons']);
+        }, 0) }},
+        {{ isset($content['final_quiz']) ? 'true' : 'false' }},
+        {{ isset($content['final_quiz']) ? $content['final_quiz']['passing_score'] : 0 }},
+        @json($content) // Make sure this is passing the full course content
+    );
 
-                // Speed control button
-                const speedControl = document.getElementById('speed-control');
-                if (speedControl) {
-                    const speeds = [0.5, 0.75, 1, 1.25, 1.5, 2];
-                    let currentSpeed = 2;
-                    speedControl.addEventListener('click', function() {
-                        currentSpeed = (currentSpeed + 1) % speeds.length;
-                        player.playbackRate(speeds[currentSpeed]);
-                        this.textContent = speeds[currentSpeed] + 'x Speed';
-                    });
-                }
-            }
+        // Initialize video player if needed
+        if ({{ $content['sections'][$currentSection]['lessons'][$currentLesson]['type'] === 'video' ? 'true' : 'false' }}) {
+            const player = videojs('lesson-video', {
+                controls: true,
+                autoplay: false,
+                preload: 'auto',
+                fluid: true
+            });
 
-            // Save Progress Function
-            function saveProgress() {
-                // Get the current lesson completion status
-                const markCompleteBtn = document.getElementById('mark-complete-btn');
-                const isCompleted = markCompleteBtn ? markCompleteBtn.disabled : false;
-
-                // Prepare the data to save
-                const progressData = {
-                    courseId: {{ $course['id'] }},
-                    sectionIndex: {{ $currentSection }},
-                    lessonIndex: {{ $currentLesson }},
-                    completed: isCompleted,
-                    timestamp: new Date().toISOString()
-                };
-
-                // Show loading state
-                const saveBtn = document.getElementById('save-progress-btn');
-                const originalBtnHTML = saveBtn.innerHTML;
-                const originalBtnClasses = saveBtn.className;
-
-                saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Saving...';
-                saveBtn.className = originalBtnClasses.replace('bg-yellow-500', 'bg-blue-500').replace('hover:bg-yellow-600', 'hover:bg-blue-600');
-                saveBtn.disabled = true;
-
-                // Send the data to the server
-                fetch(window.courseSettings.saveProgressUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': window.courseSettings.csrfToken,
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify(progressData)
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.success) {
-                        // Update button to show success
-                        saveBtn.innerHTML = '<i class="fas fa-check mr-2"></i>Progress Saved';
-                        saveBtn.className = originalBtnClasses.replace('bg-yellow-500', 'bg-green-500').replace('hover:bg-yellow-600', 'hover:bg-green-600');
-
-                        // Update progress bar if needed
-                        if (data.progress) {
-                            document.getElementById('progress-bar').style.width = `${data.progress}%`;
-                            document.getElementById('progress-percent').textContent = `${data.progress}%`;
-                        }
-
-                        // Reset button after 3 seconds
-                        setTimeout(() => {
-                            saveBtn.innerHTML = originalBtnHTML;
-                            saveBtn.className = originalBtnClasses;
-                            saveBtn.disabled = false;
-                        }, 3000);
-                    } else {
-                        throw new Error(data.message || 'Failed to save progress');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    saveBtn.innerHTML = '<i class="fas fa-exclamation-triangle mr-2"></i>Error';
-                    saveBtn.className = originalBtnClasses.replace('bg-yellow-500', 'bg-red-500').replace('hover:bg-yellow-600', 'hover:bg-red-600');
-
-                    // Reset button after 3 seconds
-                    setTimeout(() => {
-                        saveBtn.innerHTML = originalBtnHTML;
-                        saveBtn.className = originalBtnClasses;
-                        saveBtn.disabled = false;
-                    }, 3000);
+            const speedControl = document.getElementById('speed-control');
+            if (speedControl) {
+                const speeds = [0.5, 0.75, 1, 1.25, 1.5, 2];
+                let currentSpeed = 2;
+                speedControl.addEventListener('click', function() {
+                    currentSpeed = (currentSpeed + 1) % speeds.length;
+                    player.playbackRate(speeds[currentSpeed]);
+                    this.textContent = speeds[currentSpeed] + 'x Speed';
                 });
             }
-
-            // Add event listener to save progress button
-            document.getElementById('save-progress-btn').addEventListener('click', saveProgress);
-
-            // Mark as complete button
-            const markCompleteBtn = document.getElementById('mark-complete-btn');
-            if (markCompleteBtn) {
-                markCompleteBtn.addEventListener('click', function() {
-                    this.innerHTML = '<i class="fas fa-check-circle mr-2"></i>Completed';
-                    this.classList.remove('bg-green-500', 'hover:bg-green-600');
-                    this.classList.add('bg-gray-400', 'cursor-not-allowed');
-                    this.disabled = true;
-
-                    // Update progress in sidebar
-                    const activeLesson = document.querySelector('.lesson-item.active');
-                    if (activeLesson) {
-                        activeLesson.classList.add('completed');
-                        const icon = activeLesson.querySelector('i');
-                        if (icon) {
-                            icon.classList.remove('fa-play-circle', 'text-yellow-500');
-                            icon.classList.add('fa-check-circle', 'text-green-500');
-                        }
-                    }
-
-                    // Auto-save progress
-                    saveProgress();
-                });
-            }
-
-            // ... (keep all your existing quiz functionality code) ...
-        });
-    </script>
-
-
+        }
+    });
+</script>
 
 </body>
 </html>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\EnrollmentController;
 use Illuminate\Support\Facades\Route;
 
@@ -38,18 +39,17 @@ Route::get('/users', function () {
 
 // Home route with popular courses
 Route::get('/home', function () {
-    $enrollmentController = new EnrollmentController();
-    $popularCourses = $enrollmentController->getPopularCourses(3);
+    $popularCourses = app(CourseController::class)->getPopularCourses(3);
     return view('home', compact('popularCourses'));
 })->name('home');
 
 // Published courses
 Route::get('/publishedCourse', function () {
-    $courses = app(EnrollmentController::class)->getAllCourses();
+    $courses = app(CourseController::class)->getAllCourses();
     return view('courses.publishedCourse', ['courses' => $courses]);
 })->name('courses.publishedCourse');
 
-// Certificate routes - Consolidated and organized
+// Certificate routes
 Route::prefix('certificate')->group(function () {
     Route::get('/{enrollmentId}', [EnrollmentController::class, 'showCertificate'])
         ->name('certificate.show');
@@ -58,7 +58,7 @@ Route::prefix('certificate')->group(function () {
         ->name('certificate.download');
 });
 
-// Enrollment and Course Content Routes
+// Enrollment Routes
 Route::controller(EnrollmentController::class)->group(function () {
     // Enrollment flow
     Route::prefix('enroll')->group(function () {
@@ -69,14 +69,21 @@ Route::controller(EnrollmentController::class)->group(function () {
         Route::post('/{courseId}/complete', 'complete')->name('enroll.complete');
     });
 
-    // Course content
+    // Course completion
+    Route::post('/{courseId}/complete', 'completeCourse')->name('course.complete');
+    Route::get('/{courseId}/completion', 'completeCourse')->name('course.completion');
+});
+
+// Course Content Routes
+Route::controller(CourseController::class)->group(function () {
     Route::prefix('course')->group(function () {
         Route::get('/{courseId}/content', 'showCourseContent')->name('course.content');
         Route::get('/{courseId}/section/{section}/lesson/{lesson}', 'showLesson')->name('course.lesson');
-
-        // Course completion
-        Route::post('/{courseId}/complete', 'completeCourse')->name('course.complete');
-        Route::get('/{courseId}/completion', 'completeCourse')->name('course.completion');
     });
 });
 
+Route::post('/course/{courseId}/complete', [EnrollmentController::class, 'completeCourse'])
+    ->name('course.complete');
+
+// Route::get('/certificate/{enrollmentId}', [EnrollmentController::class, 'showCertificate'])
+//     ->name('certificate.show');
