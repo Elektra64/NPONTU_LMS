@@ -40,7 +40,7 @@ class CourseController extends Controller
                 'difficulty' => "intermediate",
                 'badge' => "NEW",
                 'badgeColor' => "bg-blue-500 text-white",
-                'is_free' => false,
+                'is_free' => true,
                 'has_paid_options' => true,
                 'price' => 79.99,
                 'standard_price' => 79.99,
@@ -76,7 +76,7 @@ class CourseController extends Controller
                 'difficulty' => "beginner",
                 'badge' => "BESTSELLER",
                 'badgeColor' => "bg-yellow-500 text-black",
-                'is_free' => false,
+                'is_free' => true,
                 'has_paid_options' => true,
                 'price' => 59.99,
                 'standard_price' => 59.99,
@@ -130,7 +130,7 @@ class CourseController extends Controller
                 'difficulty'=> 'intermediate',
                 'badge'=> 'NEW',
                 'badgeColor'=> 'bg-blue-500 text-white',
-                'is_free'=> false,
+                'is_free'=> true,
                 'has_paid_options'=> true,
                 'price'=> 49.99,
                'standard_price'=> 49.99,
@@ -954,7 +954,7 @@ public function previewCourse($courseId)
 {
     $course = $this->getMockCourseData($courseId);
     $content = $this->getMockCourseContent($courseId);
-    
+
     return view('courses.preview', [
         'course' => $course,
         'content' => $content

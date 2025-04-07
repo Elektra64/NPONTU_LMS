@@ -9,9 +9,22 @@ Route::get('/', function () {
     return view('landing');
 })->name('landing');
 
+Route::get('/courses', function () {
+    return view('dashboard.courses');
+})->name('courses');
+
+Route::get('/quizzes', function () {
+    return view('dashboard.quizzes');
+})->name('quizzes');
+
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('dashboard.dashboard');
 })->name('dashboard');
+
+Route::get('/users', function () {
+    return view('dashboard.users');
+})->name('users');
+
 
 Route::get('/signUp', function () {
     return view('signUp');
@@ -21,21 +34,13 @@ Route::get('/login', function () {
     return view('login');
 })->name('login');
 
-Route::get('/courses', function () {
-    return view('courses');
-})->name('courses');
 
-Route::get('/quizzes', function () {
-    return view('quizzes');
-})->name('quizzes');
 
 Route::get('/certificateTemplate', function () {
     return view('certificateTemplate');
 })->name('certificateTemplate');
 
-Route::get('/users', function () {
-    return view('users');
-})->name('users');
+
 
 // Home route with popular courses
 Route::get('/home', function () {

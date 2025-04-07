@@ -92,16 +92,16 @@
                     <h2 class="text-2xl font-bold mb-4">About This Course</h2>
                     <div class="prose max-w-none">
                         <p>This preview gives you an overview of what you'll learn in this course.</p>
-                        
+
                         <h3 class="text-xl font-semibold mt-6 mb-3">What You'll Learn</h3>
                         <ul class="list-disc pl-5 space-y-2">
                             @foreach($content['sections'] as $section)
                                 <li>{{ $section['title'] }}</li>
                             @endforeach
                         </ul>
-                        
-                        <h3 class="text-xl font-semibold mt-6 mb-3">Course Content</h3>
-                        <div class="border rounded-lg overflow-hidden">
+
+                        <!-- <h3 class="text-xl font-semibold mt-6 mb-3">Course Content</h3> -->
+                        <!-- <div class="border rounded-lg overflow-hidden">
                             @foreach($content['sections'] as $index => $section)
                                 <div class="border-b last:border-b-0">
                                     <div class="p-4 bg-gray-50 font-medium">
@@ -119,7 +119,7 @@
                                     </div>
                                 </div>
                             @endforeach
-                        </div>
+                        </div> -->
                     </div>
                 </div>
 
@@ -159,17 +159,17 @@
                                 @endif
                             @endif
                         </div>
-                        
+
                         <a href="/enroll/{{ $course['id'] }}/verify" class="block w-full bg-yellow-500 hover:bg-yellow-600 text-center text-white font-bold py-3 px-4 rounded-lg transition duration-200">
                             Enroll Now
                         </a>
-                        
+
                         @if($course['has_paid_options'])
                             <p class="text-sm text-gray-600 mt-2 text-center">
                                 Premium options available after enrollment
                             </p>
                         @endif
-                        
+
                         <div class="mt-4 text-sm">
                             <div class="flex items-center mb-2">
                                 <i class="fas fa-check-circle text-green-500 mr-2"></i>
