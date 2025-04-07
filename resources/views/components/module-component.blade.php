@@ -42,7 +42,7 @@
                                             <label class="block text-sm font-medium text-gray-700">Module Title*</label>
                                             <input type="text"
                                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50"
-                                                placeholder="{{ $module->title }}">
+                                                placeholder="{{ $module->title }}" disabled>
                                         </div>
                                     </div>
 
@@ -51,24 +51,24 @@
                                             Description*</label>
                                         <textarea name="module_content[]" rows="3"
                                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50"
-                                            placeholder='{{ $module->content }}'></textarea>
+                                            placeholder='{{ $module->content }}' disabled></textarea>
                                     </div>
 
                                     <!-- Module Quiz Section -->
                                     @if ($module->quiz_questions->count())
-                                        @foreach ($module->quiz_questions as $quiz)
+                                        <div class="flex justify-between items-center mb-4">
+                                            <h5 class="text-md font-medium text-gray-700">
+                                                {{ "$module->title Quiz" }}</h5>
+                                        </div>
+                                        @foreach ($module->quiz_questions as $index => $quiz)
                                             <div class="module-quiz bg-gray-50 p-4 rounded-lg">
-                                                <div class="flex justify-between items-center mb-4">
-                                                    <h5 class="text-md font-medium text-gray-700">
-                                                        {{ "$module->title Quiz" }}</h5>
-                                                </div>
 
-                                                <div class="quiz-questions space-y-4">
+                                                <div class="space-y-4">
 
                                                     <div
                                                         class="question-item p-4 border border-gray-200 rounded-lg bg-white">
                                                         <div class="flex justify-between items-center mb-3">
-                                                            <h6 class="text-sm font-medium text-gray-700">Question <span
+                                                            <h6 class="text-sm font-medium text-gray-700">Question {{ ++$index }}<span
                                                                     class="question-number"></span></h6>
                                                             <button type="button"
                                                                 class="remove-question text-red-600 hover:text-red-800 text-xs flex items-center">
@@ -89,7 +89,7 @@
                                                                 Text*</label>
                                                             <input type="text" name="question_text[]"
                                                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50"
-                                                                placeholder="{{ $quiz->question_text }}">
+                                                                placeholder="{{ $quiz->question_text }}" disabled>
                                                         </div>
 
                                                         <div class="grid md:grid-cols-2 gap-4">
@@ -100,11 +100,13 @@
                                                                 <div class="flex items-center mt-1">
                                                                     <input type="text" name="option_a[]"
                                                                         class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50"
-                                                                        placeholder="{{ $quiz->option->option_a }}">
-                                                                    <input type="radio" name="correct_option[]"
+                                                                        placeholder="{{ $quiz->option->option_a }}"
+                                                                        disabled>
+                                                                    <input type="checkbox" name="correct_option[]"
                                                                         {{ $quiz->option->correct_option == 'a' ? 'checked' : '' }}
                                                                         value="a"
-                                                                        class="ml-2 h-4 w-4 text-primary focus:ring-primary">
+                                                                        class="ml-2 h-4 w-4 text-primary focus:ring-primary"
+                                                                        disabled>
                                                                 </div>
                                                             </div>
                                                             <div>
@@ -114,11 +116,13 @@
                                                                 <div class="flex items-center mt-1">
                                                                     <input type="text" name="option_b[]"
                                                                         placeholder="{{ $quiz->option->option_b }}"
-                                                                        class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50">
-                                                                    <input type="radio" name="correct_option[]"
+                                                                        class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50"
+                                                                        disabled>
+                                                                    <input type="checkbox" name="correct_option[]"
                                                                         {{ $quiz->option->correct_option == 'b' ? 'checked' : '' }}
                                                                         value="b"
-                                                                        class="ml-2 h-4 w-4 text-primary focus:ring-primary">
+                                                                        class="ml-2 h-4 w-4 text-primary focus:ring-primary"
+                                                                        disabled>
                                                                 </div>
                                                             </div>
                                                             <div>
@@ -128,11 +132,13 @@
                                                                 <div class="flex items-center mt-1">
                                                                     <input type="text" name="option_c[]"
                                                                         placeholder="{{ $quiz->option->option_c }}"
-                                                                        class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50">
-                                                                    <input type="radio" name="correct_option[]"
+                                                                        class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50"
+                                                                        disabled>
+                                                                    <input type="checkbox" name="correct_option[]"
                                                                         {{ $quiz->option->correct_option == 'c' ? 'checked' : '' }}
                                                                         value="c"
-                                                                        class="ml-2 h-4 w-4 text-primary focus:ring-primary">
+                                                                        class="ml-2 h-4 w-4 text-primary focus:ring-primary"
+                                                                        disabled>
                                                                 </div>
                                                             </div>
                                                             <div>
@@ -142,11 +148,13 @@
                                                                 <div class="flex items-center mt-1">
                                                                     <input type="text" name="option_d[]"
                                                                         placeholder="{{ $quiz->option->option_d }}"
-                                                                        class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50">
-                                                                    <input type="radio" name="correct_option[]"
+                                                                        class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50"
+                                                                        disabled>
+                                                                    <input type="checkbox" name="correct_option[]"
                                                                         {{ $quiz->option->correct_option == 'd' ? 'checked' : '' }}
                                                                         value="d"
-                                                                        class="ml-2 h-4 w-4 text-primary focus:ring-primary">
+                                                                        class="ml-2 h-4 w-4 text-primary focus:ring-primary"
+                                                                        disabled>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -190,7 +198,7 @@
     <template id="module-template">
         <div class="module-item p-4 border border-gray-200 rounded-lg bg-white">
             <div class="flex justify-between items-center mb-4">
-                <h4 class="text-md font-medium text-gray-800">Module <span class="module-number">1</span></h4>
+                <h4 class="text-md font-medium text-gray-800">Module</h4>
                 <button type="button"
                     class="remove-module text-red-600 hover:text-red-800 text-sm flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20"
@@ -275,7 +283,7 @@
                     <div class="flex items-center mt-1">
                         <input type="text" name="option_a[]"
                             class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50">
-                        <input type="radio" name="correct_option[]" value="a"
+                        <input type="checkbox" name="correct_option[]" value="a"
                             class="ml-2 h-4 w-4 text-primary focus:ring-primary">
                     </div>
                 </div>
@@ -284,7 +292,7 @@
                     <div class="flex items-center mt-1">
                         <input type="text" name="option_b[]"
                             class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50">
-                        <input type="radio" name="correct_option[]" value="b"
+                        <input type="checkbox" name="correct_option[]" value="b"
                             class="ml-2 h-4 w-4 text-primary focus:ring-primary">
                     </div>
                 </div>
@@ -293,7 +301,7 @@
                     <div class="flex items-center mt-1">
                         <input type="text" name="option_c[]"
                             class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50">
-                        <input type="radio" name="correct_option[]" value="c"
+                        <input type="checkbox" name="correct_option[]" value="c"
                             class="ml-2 h-4 w-4 text-primary focus:ring-primary">
                     </div>
                 </div>
@@ -302,7 +310,7 @@
                     <div class="flex items-center mt-1">
                         <input type="text" name="option_d[]"
                             class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50">
-                        <input type="radio" name="correct_option[]" value="d"
+                        <input type="checkbox" name="correct_option[]" value="d"
                             class="ml-2 h-4 w-4 text-primary focus:ring-primary">
                     </div>
                 </div>

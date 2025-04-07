@@ -80,22 +80,25 @@ class EnrollmentController extends Controller
     public function submit_quiz(Request $request, QuizQuestion $quizQuestion, Enrollment $enrollment)
     {
         $request->validate([
-            'option' => 'required'
+            'option' => 'required',
         ]);
+
         if ($quizQuestion->option->correct_option == $request->option) {
             $quizQuestion->quiz_attempts()->create([
                 'enrollment_id' => $enrollment->id,
                 'score' => 100,
-                'time_taken' => 1
+                'time_taken' => 0
+            ]);
+        } else {
+            $quizQuestion->quiz_attempts()->create([
+                'enrollment_id' => $enrollment->id,
+                'score' => 0,
+                'time_taken' => 0
             ]);
         }
-        $quizQuestion->quiz_attempts()->create([
-            'enrollment_id' => $enrollment->id,
-            'score' => 0,
-            'time_taken' => 1
-        ]);
 
-        return back();
+
+        return back()->withInput()->with('index', $request->query('index'));
     }
 }
 

@@ -68,7 +68,7 @@ function closeModal() {
 function closeAddModuleModal() {
     addModuleModal.classList.add("hidden");
     document.body.style.overflow = "";
-    modulesContainer.innerHTML = "";
+    // modulesContainer.innerHTML = "";
 }
 
 // Initialize the page

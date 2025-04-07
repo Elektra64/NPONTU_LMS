@@ -282,29 +282,29 @@
                         <p class="mb-4">{{ $currentModule->content }}</p>
                         <h4 class="font-bold text-xl mt-6 mb-3">Module
                             {{ Str::plural('Quiz', $currentModule->quiz_questions->count()) }}</h4>
-                        @foreach ($currentModule->quiz_questions as $quiz)
+                        @foreach ($currentModule->quiz_questions as $index => $quiz)
                             <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg mb-4">
                                 <p class="mb-3">{{ $quiz->question_text }}</p>
-                                <form action="{{ route('submit_quiz', [$quiz->id, $enrollment->id]) }}"
+                                <form action="{{ route('submit_quiz', [$quiz->id, $enrollment->id]) }}?index={{ $index }}"
                                     class="" method="post">
                                     @csrf
                                     <div
                                         class="flex flex-col justify-center bg-gray-800 text-gray-100 p-4 rounded-lg mb-3 overflow-x-auto space-y-2">
                                         <div class="flex space-x-4"><input type="radio" class="text-blue-500"
-                                                name="option"
-                                                value="{{ old('option') ?: 'c' }}"><label>{{ $quiz->option->option_a }}</label>
+                                                name="option" {{ old('option') == 'a' && session('index') == $index ? 'checked' : '' }}
+                                                value="a"><label>{{ $quiz->option->option_a }}</label>
                                         </div>
                                         <div class="flex space-x-4"> <input type="radio" class="text-blue-500"
-                                                name="option"
-                                                value="old('option') ?: 'b' }}"><label>{{ $quiz->option->option_b }}</label>
+                                                name="option" {{ old('option') == 'b' && session('index') == $index ? 'checked' : '' }}
+                                                value="b"><label>{{ $quiz->option->option_b }}</label>
                                         </div>
                                         <div class="flex space-x-4"><input type="radio" class="text-blue-500"
-                                                name="option"
-                                                value="old('option') ?: 'c' }}"><label>{{ $quiz->option->option_c }}</label>
+                                                name="option" {{ old('option') == 'c' && session('index') == $index ? 'checked' : '' }}
+                                                value="c"><label>{{ $quiz->option->option_c }}</label>
                                         </div>
                                         <div class="flex space-x-4"><input type="radio" class="text-blue-500"
-                                                name="option"
-                                                value="old('option') ?: 'd' }}"><label>{{ $quiz->option->option_d }}</label>
+                                                name="option" {{ old('option') == 'd' && session('index') == $index ? 'checked' : '' }}
+                                                value="d"><label>{{ $quiz->option->option_d }}</label>
                                         </div>
 
                                     </div>

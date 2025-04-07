@@ -100,7 +100,7 @@ function setCourseDetails(course, questions) {
             .map(
                 (module, index) => `
             <div class="mb-6 border-b pb-4">
-                <h3 class="text-xl font-semibold mb-2">${module.title}</h3>
+                <h3 class="text-xl font-semibold mb-2 ">${module.title}</h3>
                 <div class="flex items-center text-sm text-gray-600 mb-3">
                     <span class="mr-4">Module Number: ${
                         module.module_number
@@ -111,17 +111,15 @@ function setCourseDetails(course, questions) {
                 ${
                     questions.length > 0
                         ? `
+                        <h4 class="font-medium mb-2">Quiz Questions:</h4>
                     ${questions
                         .map((question, qIndex) =>
                             question.module_id == module.id
                                 ? `
-                                 <h4 class="font-medium mb-2">Quiz Questions:</h4>
                 <div class="space-y-3">
                              <div class="bg-gray-50 p-3 rounded">
-                        <p class="font-medium">Question ${qIndex + 1}: ${
-                                      question.question_text
-                                  }</p>
-                        <div class="mt-2">
+                        <p class="font-medium">${question.question_text}</p>
+                        <div class="mt-2 mb-2">
                             
                             <div class="flex flex-col justify-center space-y-2">
                                 <span class="${checkAndStyle(
@@ -147,7 +145,7 @@ function setCourseDetails(course, questions) {
                     </div>
                    
                     `
-                                : '<p class="text-gray-500">No quiz questions for this module</p>'
+                                : ""
                         )
                         .join("")}
                 </div>
