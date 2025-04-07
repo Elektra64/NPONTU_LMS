@@ -613,7 +613,7 @@
             </div>
         </div>
     </footer>
-    
+
 
     <!-- JavaScript libraries -->
     <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>

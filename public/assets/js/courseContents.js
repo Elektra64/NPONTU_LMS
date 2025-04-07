@@ -63,42 +63,27 @@ class CourseProgress {
         return index === -1;
     }
 
+    // Simplified requirement check - just check progress percentage and final quiz if applicable
     checkAllRequirementsMet() {
-        console.group("Checking course completion requirements");
+        console.group("Checking course completion requirements (simplified)");
 
-        // Check if all lessons are completed
-        for (let sectionIndex = 0; sectionIndex < this.courseContent.sections.length; sectionIndex++) {
-            const section = this.courseContent.sections[sectionIndex];
-            for (let lessonIndex = 0; lessonIndex < section.lessons.length; lessonIndex++) {
-                const lessonCompleted = this.isLessonCompleted(sectionIndex, lessonIndex);
-                console.log(`Section ${sectionIndex} Lesson ${lessonIndex} completed:`, lessonCompleted);
+        // Check if progress is at least 80%
+        const progressPercent = this.getProgressPercentage();
+        console.log(`Progress percentage: ${progressPercent}%`);
 
-                if (!lessonCompleted) {
-                    console.groupEnd();
-                    return false;
-                }
-
-                // Check if lesson has quiz
-                const lesson = section.lessons[lessonIndex];
-                if (lesson.quiz) {
-                    const quizId = `section-${sectionIndex}-lesson-${lessonIndex}`;
-                    const quizPassed = this.isQuizPassed(quizId);
-                    console.log(`Quiz ${quizId} passed:`, quizPassed);
-
-                    if (!quizPassed) {
-                        console.groupEnd();
-                        return false;
-                    }
-                }
-            }
+        if (progressPercent < 80) {
+            console.log("Progress below 80% - requirements not met");
+            console.groupEnd();
+            return false;
         }
 
-        // Check final quiz if course has one
+        // If course has final quiz, check if it's passed
         if (this.hasFinalQuiz) {
-            const finalQuizPassed = this.isQuizPassed('final-quiz');
+            const finalQuizPassed = this.isQuizPassed('final-quiz-container');
             console.log("Final quiz passed:", finalQuizPassed);
 
             if (!finalQuizPassed) {
+                console.log("Final quiz not passed - requirements not met");
                 console.groupEnd();
                 return false;
             }
@@ -108,7 +93,6 @@ class CourseProgress {
         console.groupEnd();
         return true;
     }
-
 
     updateProgressDisplay() {
         const progressPercent = this.getProgressPercentage();
