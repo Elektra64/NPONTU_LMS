@@ -61,6 +61,12 @@
                     <i class="fas fa-graduation-cap mr-2"></i>EduVerse
                 </a>
             </span>
+            <span class="text-1xl font-bold text-white flex items-center hover-grow">
+                <a href="{{ route('courses.publishedCourse') }}" class="cursor-pointer">
+                    <i class="fas fa-book mr-2"></i>Courses
+                </a>
+            </span>
+
             <div class="hidden md:flex space-x-6">
 
             </div>
