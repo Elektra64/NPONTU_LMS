@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ModuleController;
+use App\Http\Controllers\UserController;
 
 
 Route::get('home', [HomeController::class, 'index'])->name('home')->middleware('auth');
@@ -53,3 +54,7 @@ Route::controller(EnrollmentController::class)->group(function () {
     Route::post('enroll/{course}', 'validate_enrollment');
     Route::post('submit/quiz/{quizQuestion}/{enrollment}', 'submit_quiz')->name('submit_quiz');
 });
+
+// routes/web.php
+Route::get('/users', [UserController::class, 'index'])->name('users');
+Route::get('/active-users', [UserController::class, 'getUsers']);

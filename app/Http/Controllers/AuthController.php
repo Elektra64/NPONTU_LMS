@@ -17,27 +17,31 @@ class AuthController extends Controller
         $this->middleware('auth')->only(['logout']);
     }
     public function login(Request $request)
-    {
-        $request->validate([
-            'email' => ["bail", 'required', 'email', 'exists:users'],
-            'password' => ['required']
-        ]);
+        {
+            $request->validate([
+                'email' => ["bail", 'required', 'email', 'exists:users,email'],
+                'password' => ['required']
+            ]);
 
-        try {
-            $user = User::where('email', $request->email)->firstOrFail();
-            if (!Hash::check($request->password, $user->password)) {
+            try {
+                $user = User::where('email', $request->email)->firstOrFail();
+                
+                // Check if the password is correct
+                if (!Hash::check($request->password, $user->password)) {
+                    return back()->with('error', 'Invalid credentials');
+                }
+
+                // Log the user in
+                Auth::login($user);
+
+                // Redirect based on user role
+                $location = $user->role === 'admin' ? 'dashboard' : 'home';
+
+                return redirect()->route($location); // Use the variable $location to redirect
+            } catch (ModelNotFoundException $e) {
                 return back()->with('error', 'Invalid credentials');
             }
-            Auth::login($user);
-            // $location = $user->role === 'admin' ? 'dashboard' : 'home';
-
-            return redirect(
-                route('dashboard')
-            );
-        } catch (ModelNotFoundException $e) {
-            return back()->with('error', 'Invalid credentials');
         }
-    }
 
     public function register(Request $request)
     {

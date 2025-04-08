@@ -111,13 +111,32 @@
                 <div class="col-span-1">Session</div>
             </div>
 
-            <!-- User Items -->
-            <div id="userList">
-                <!-- Active users will be loaded here dynamically -->
+             <!-- User Items -->
+             <div id="userList">
+                @if($users->isEmpty())
+                    <!-- Empty State -->
+                    <div class="p-8 text-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                        </svg>
+                        <h3 class="mt-2 text-lg font-medium text-gray-900">No active users</h3>
+                        <p class="mt-1 text-gray-500">There are currently no logged-in users.</p>
+                    </div>
+                @else
+                    @foreach($users as $user)
+                        <div class="grid grid-cols-12 gap-4 p-4 border-b border-gray-200 text-sm text-gray-600">
+                            <div class="col-span-4">{{ $user->first_name }} {{ $user->last_name }}</div>
+                            <div class="col-span-3">{{ $user->email }}</div>
+                            <div class="col-span-2">{{ $user->role }}</div>
+                            <div class="col-span-2">{{ $user->last_login_time }}</div> <!-- Adjust according to your database -->
+                            <div class="col-span-1">{{ $user->session_status }}</div> <!-- Adjust according to your database -->
+                        </div>
+                    @endforeach
+                @endif
             </div>
 
             <!-- Loading State -->
-            <div id="loadingIndicator" class="p-8 text-center">
+            <div id="loadingIndicator" class="hidden p-8 text-center">
                 <div class="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
                 <p class="mt-2 text-gray-600">Loading active users...</p>
             </div>

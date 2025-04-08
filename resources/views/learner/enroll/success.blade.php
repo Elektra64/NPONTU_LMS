@@ -102,8 +102,8 @@
             <div
                 class="user-badge flex items-center space-x-3 bg-gray-800 px-3 py-1 rounded-full cursor-pointer hover:bg-gray-700">
                 <div class="text-right hidden sm:block">
-                    <div class="text-sm font-medium">John Doe</div>
-                    <div class="text-xs text-gray-400">Learner</div>
+                    <div class="text-sm font-medium">{{ Auth::user()->first_name }}</div> <!-- Display the user's name -->
+                    <div class="text-xs text-gray-400">{{ Auth::user()->role }}</div> <!-- Display the user's role -->
                 </div>
                 <div class="relative">
                     <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User profile"

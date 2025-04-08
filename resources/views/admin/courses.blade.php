@@ -277,8 +277,8 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Category</label>
                         <select name="category"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50"
-                            x <option value="" selected disabled>Select Category</option>
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary/50">
+                            <option value="" selected disabled>Select Category</option>
                             <option value="Web Development">Web Development</option>
                             <option value="Data Science">Data Science</option>
                             <option value="Design">Design</option>
@@ -337,7 +337,7 @@
                 </div>
 
                 <!-- Modules Section -->
-                {{-- <div class="border-t border-gray-200 pt-6">
+                <div class="border-t border-gray-200 pt-6">
                     <h3 class="text-lg font-medium text-accent-dark mb-4">Course Modules</h3>
                     <div id="modules-container" class="space-y-4">
                         <!-- Modules will be added here dynamically -->
@@ -352,7 +352,7 @@
                         </svg>
                         Add Module
                     </button>
-                </div> --}}
+                </div>
 
                 <!-- Final Exam Section -->
                 <div class="border-t border-gray-200 pt-6">

@@ -132,23 +132,23 @@
                 </div>
 
                 <!-- Active Users Card -->
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <div class="flex items-center mb-4">
-                        <svg class="w-8 h-8 text-primary mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <line x1="12" y1="2" x2="12" y2="12"></line>
-                            <line x1="12" y1="12" x2="16" y2="8"></line>
-                        </svg>
-                        <h2 class="text-lg font-semibold text-gray-600">Active Users</h2>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <div class="flex items-center mb-4">
+                            <svg class="w-8 h-8 text-primary mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="2" x2="12" y2="12"></line>
+                                <line x1="12" y1="12" x2="16" y2="8"></line>
+                            </svg>
+                            <h2 class="text-lg font-semibold text-gray-600">Total Users</h2>
+                        </div>
+                        <p class="text-3xl font-bold text-primary" id="totalUsers">{{ $user->courses->count() }}</p>
+                        <div class="flex items-center mt-2">
+                            <span class="text-sm text-green-600 mr-2">+12% growth</span>
+                            <span class="text-xs text-gray-500">(24h)</span>
+                        </div>
                     </div>
-                    <p class="text-3xl font-bold text-primary" id="activeUsers">1,256</p>
-                    <div class="flex items-center mt-2">
-                        <span class="text-sm text-green-600 mr-2">+12% growth</span>
-                        <span class="text-xs text-gray-500">(24h)</span>
-                    </div>
-                </div>
 
                 <!-- Course Enrollments Card -->
                 <div class="bg-white p-6 rounded-lg shadow-md">
