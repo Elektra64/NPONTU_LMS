@@ -33,35 +33,36 @@ document.addEventListener('DOMContentLoaded', function() {
             // Generate enroll URL
             const enrollUrl = `/enroll/${course.id}/verify`;
 
-            courseCard.innerHTML = `
-                <div class="relative">
-                    <img src="${course.image}" alt="${course.title}" class="w-full h-48 object-cover">
-                    ${course.badge ? `<div class="absolute top-2 right-2 ${course.badgeColor} text-xs font-bold px-2 py-1 rounded">${course.badge}</div>` : ''}
-                    <span class="difficulty-${course.difficulty} text-xs font-bold px-2 py-1 rounded absolute top-2 left-2">
-                        ${course.difficulty.charAt(0).toUpperCase() + course.difficulty.slice(1)}
-                    </span>
-                </div>
-                <div class="p-6 bg-blue-400">
-                    <div class="flex justify-between items-start mb-2">
-                        <span class="text-yellow-400 text-sm font-semibold">${course.category}</span>
-                        <div class="flex items-center text-yellow-400">
-                            <i class="fas fa-star"></i>
-                            <span class="ml-1 text-white">${course.rating}</span>
-                        </div>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">${course.title}</h3>
-                    <p class="text-white text-sm mb-4">${course.description}</p>
-                    <div class="flex justify-between items-center">
-                        <div class="flex items-center text-sm text-white">
-                            <i class="fas fa-user-graduate mr-1"></i>
-                            <span>${course.students_count.toLocaleString()} students</span>
-                        </div>
-                        <a href="${enrollUrl}" class="text-yellow-400 hover:text-yellow-300 text-sm font-semibold">
-                            Enroll Now <i class="fas fa-arrow-right ml-1"></i>
-                        </a>
-                    </div>
-                </div>
-            `;
+          // In your publishedCourse.js file, update the courseCard.innerHTML section:
+courseCard.innerHTML = `
+<div class="relative">
+    <img src="${course.image}" alt="${course.title}" class="w-full h-48 object-cover">
+    ${course.badge ? `<div class="absolute top-2 right-2 ${course.badgeColor} text-xs font-bold px-2 py-1 rounded">${course.badge}</div>` : ''}
+    <span class="difficulty-${course.difficulty} text-xs font-bold px-2 py-1 rounded absolute top-2 left-2">
+        ${course.difficulty.charAt(0).toUpperCase() + course.difficulty.slice(1)}
+    </span>
+</div>
+<div class="p-6 bg-blue-400">
+    <div class="flex justify-between items-start mb-2">
+        <span class="text-yellow-400 text-sm font-semibold">${course.category}</span>
+        <div class="flex items-center text-yellow-400">
+            <i class="fas fa-star"></i>
+            <span class="ml-1 text-white">${course.rating}</span>
+        </div>
+    </div>
+    <h3 class="text-xl font-bold mb-2">${course.title}</h3>
+    <p class="text-white text-sm mb-4">${course.description}</p>
+    <div class="flex justify-between items-center">
+        <div class="flex items-center text-sm text-white">
+            <i class="fas fa-user-graduate mr-1"></i>
+            <span>${course.students_count.toLocaleString()} students</span>
+        </div>
+        <a href="/courses/${course.id}/preview" class="text-yellow-400 hover:text-yellow-300 text-sm font-semibold">
+            Preview Course <i class="fas fa-eye ml-1"></i>
+        </a>
+    </div>
+</div>
+`;
 
             courseGrid.appendChild(courseCard);
         });

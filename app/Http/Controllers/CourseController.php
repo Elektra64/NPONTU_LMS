@@ -920,4 +920,16 @@ private function getMockUserData()
         'avatar' => 'https://randomuser.me/api/portraits/men/32.jpg'
     ];
 }
+
+// This method is used to preview a course before enrollment
+public function previewCourse($courseId)
+{
+    $course = $this->getMockCourseData($courseId);
+    $content = $this->getMockCourseContent($courseId);
+    
+    return view('courses.preview', [
+        'course' => $course,
+        'content' => $content
+    ]);
+}
 }

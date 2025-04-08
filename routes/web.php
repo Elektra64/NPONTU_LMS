@@ -81,6 +81,7 @@ Route::controller(CourseController::class)->group(function () {
         Route::get('/{courseId}/section/{section}/lesson/{lesson}', 'showLesson')->name('course.lesson');
     });
 });
+Route::get('/courses/{course}/preview', [CourseController::class, 'previewCourse'])->name('courses.preview');
 
 Route::post('/course/{courseId}/complete', [EnrollmentController::class, 'completeCourse'])
     ->name('course.complete');

@@ -181,34 +181,36 @@
                 <p class="text-gray-300 max-w-2xl mx-auto">Browse our most popular courses loved by thousands of students worldwide</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                @foreach($popularCourses as $course)
-                <div class="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl overflow-hidden shadow-lg course-card transition duration-300">
-                    <div class="relative">
-                        <img src="{{ $course['image'] }}" alt="{{ $course['title'] }}" class="w-full h-48 object-cover">
-                        @if(isset($course['badge']))
-                        <div class="absolute top-2 right-2 {{ $course['badgeColor'] }} text-xs font-bold px-2 py-1 rounded">{{ $course['badge'] }}</div>
-                        @endif
+                <!-- In your home.blade.php, find the popular courses section and update the button -->
+            @foreach($popularCourses as $course)
+            <div class="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl overflow-hidden shadow-lg course-card transition duration-300">
+                <div class="relative">
+                    <img src="{{ $course['image'] }}" alt="{{ $course['title'] }}" class="w-full h-48 object-cover">
+                    @if(isset($course['badge']))
+                    <div class="absolute top-2 right-2 {{ $course['badgeColor'] }} text-xs font-bold px-2 py-1 rounded">{{ $course['badge'] }}</div>
+                    @endif
+                </div>
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-yellow-400 text-sm font-semibold">{{ $course['category'] }}</span>
+                        <div class="flex items-center text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <span class="ml-1 text-white">{{ $course['rating'] }}</span>            </div>
                     </div>
-                    <div class="p-6">
-                        <div class="flex justify-between items-start mb-2">
-                            <span class="text-yellow-400 text-sm font-semibold">{{ $course['category'] }}</span>
-                            <div class="flex items-center text-yellow-400">
-                                <i class="fas fa-star"></i>
-                                <span class="ml-1 text-white">{{ $course['rating'] }}</span>
-                            </div>
+                    <h3 class="text-xl font-bold mb-2">{{ $course['title'] }}</h3>
+                    <p class="text-gray-300 text-sm mb-4">{{ $course['description'] }}</p>
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center text-sm text-gray-300">
+                            <i class="fas fa-user-graduate mr-1"></i>
+                            <span>{{ number_format($course['students_count']) }} students</span>
                         </div>
-                        <h3 class="text-xl font-bold mb-2">{{ $course['title'] }}</h3>
-                        <p class="text-gray-300 text-sm mb-4">{{ $course['description'] }}</p>
-                        <div class="flex justify-between items-center">
-                            <div class="flex items-center text-sm text-gray-300">
-                                <i class="fas fa-user-graduate mr-1"></i>
-                                <span>{{ number_format($course['students_count']) }} students</span>
-                            </div>
-                            <a href="{{ route('enroll.show', $course['id']) }}" class="text-yellow-400 hover:text-yellow-300 text-sm font-semibold">Enroll Now <i class="fas fa-arrow-right ml-1"></i></a>
-                        </div>
+                        <a href="/courses/{{ $course['id'] }}/preview" class="text-yellow-400 hover:text-yellow-300 text-sm font-semibold">
+                            Preview Course <i class="fas fa-eye ml-1"></i>
+                        </a>
                     </div>
                 </div>
-                @endforeach
+            </div>
+            @endforeach
             </div>
             <div class="text-center mt-12">
                 <a href="{{ route('courses.publishedCourse') }}" class="inline-block bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-6 py-3 rounded-full transition duration-300">

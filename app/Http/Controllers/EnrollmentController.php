@@ -281,4 +281,6 @@ class EnrollmentController extends Controller
             'avatar' => 'https://randomuser.me/api/portraits/men/32.jpg'
         ];
     }
+
+    
 }
