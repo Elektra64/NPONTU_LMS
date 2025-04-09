@@ -53,3 +53,10 @@ Route::controller(EnrollmentController::class)->group(function () {
     Route::post('enroll/{course}', 'validate_enrollment');
     Route::post('submit/quiz/{quizQuestion}/{enrollment}', 'submit_quiz')->name('submit_quiz');
 });
+
+
+Route::controller(CertificateController::class)->group(function () {
+    Route::post('/generate-certificate', [CertificateController::class, 'generate']);
+});
+
+
