@@ -56,7 +56,7 @@ Route::controller(EnrollmentController::class)->group(function () {
 
 
 Route::controller(CertificateController::class)->group(function () {
-    Route::post('/generate-certificate', [CertificateController::class, 'generate']);
+    Route::post('/generate-certificate', 'generate')->name('generate_certificate');
 });
 
 
