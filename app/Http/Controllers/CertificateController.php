@@ -9,22 +9,16 @@ use App\Models\Course;
 
 class CertificateController extends Controller
 {
-    public function generate(Request $request)
+    public function generate($user_id, $course_id)
     {
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'course_id' => 'required|exists:courses,id'
-        ]);
+        $user = User::findOrFail($user_id);
+        $course = Course::findOrFail($course_id);
 
-        $user = User::find($request->user_id);
-        $course = Course::find($request->course_id);
-
-        $pdf = Pdf::loadView('certificate', [
+        return view('certificateTemplate', [
             'name' => $user->name,
             'course' => $course->title
         ]);
-
-        return $pdf->download("certificate_{$user->id}_{$course->id}.pdf");
     }
+
 }
 

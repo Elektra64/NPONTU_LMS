@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ModuleController;
+use App\Http\Controllers\CertificateController;
 
 
 Route::get('home', [HomeController::class, 'index'])->name('home')->middleware('auth');
@@ -56,7 +57,7 @@ Route::controller(EnrollmentController::class)->group(function () {
 
 
 Route::controller(CertificateController::class)->group(function () {
-    Route::post('/generate-certificate', 'generate')->name('generate_certificate');
+    Route::get('/generate-certificate/{user_id}/{course_id}', 'generate')->name('generate-certificate');
 });
 
 
