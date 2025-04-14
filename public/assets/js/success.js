@@ -1,87 +1,95 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Get the enrollment button and form elements
-    const completeBtn = document.getElementById('completeEnrollment');
-    const termsCheckbox = document.getElementById('terms');
+    // Safely get enrollment data with null checks
     const enrollmentData = document.getElementById('enrollmentData');
+    if (!enrollmentData) {
+        console.error('Enrollment data container not found');
+        return;
+    }
 
-    // Parse the course data from the data attributes
-    const courseData = JSON.parse(enrollmentData.dataset.course);
-    const userData = JSON.parse(enrollmentData.dataset.user);
-    const completeUrl = enrollmentData.dataset.completeUrl;
+    try {
+        const courseData = JSON.parse(enrollmentData.dataset.course || 'null');
+        const userData = JSON.parse(enrollmentData.dataset.user || 'null');
+        const completeUrl = enrollmentData.dataset.completeUrl;
 
-    // Set up the enrollment button click handler
-    completeBtn.addEventListener('click', async function(e) {
-        e.preventDefault();
-
-        // Validate terms checkbox
-        if (!termsCheckbox.checked) {
-            alert('Please agree to the terms and conditions');
-            return;
+        if (!courseData || !userData || !completeUrl) {
+            throw new Error('Missing required enrollment data');
         }
 
-        // Get selected package (default to free)
-        let selectedPackage = 'free';
-        const selectedOption = document.querySelector('.package-option.selected');
-        if (selectedOption) {
-            selectedPackage = selectedOption.id.replace('Package', '').toLowerCase();
+        const completeBtn = document.getElementById('completeEnrollment');
+        const termsCheckbox = document.getElementById('terms');
+
+        if (!completeBtn || !termsCheckbox) {
+            throw new Error('Required form elements not found');
         }
 
-        // Show loading state
-        completeBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Processing...';
-        completeBtn.disabled = true;
+        completeBtn.addEventListener('click', async function(e) {
+            e.preventDefault();
 
-        try {
-            // Submit enrollment data
-            const response = await fetch(completeUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                },
-                body: JSON.stringify({
-                    package: selectedPackage,
-                    terms: true,
-                    name: userData.name,
-                    email: userData.email,
-                    course_id: courseData.id
-                })
-            });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.error || 'Enrollment failed');
+            if (!termsCheckbox.checked) {
+                alert('Please agree to the terms and conditions');
+                return;
             }
 
-            // Redirect to course content on success
-            if (data.redirect) {
-                window.location.href = data.redirect;
+            let selectedPackage = 'free';
+            const selectedOption = document.querySelector('.package-option.selected');
+            if (selectedOption) {
+                selectedPackage = selectedOption.id.replace('Package', '').toLowerCase();
             }
-        } catch (error) {
-            console.error('Enrollment error:', error);
-            alert(error.message || 'There was an error processing your enrollment. Please try again.');
 
-            // Reset button state
-            completeBtn.innerHTML = 'Complete Enrollment <i class="fas fa-arrow-right ml-2"></i>';
-            completeBtn.disabled = false;
-        }
-    });
+            completeBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Processing...';
+            completeBtn.disabled = true;
 
-    // Package selection functionality (if applicable)
-    const packageOptions = document.querySelectorAll('.package-option');
-    if (packageOptions.length > 0) {
-        packageOptions.forEach(option => {
-            option.addEventListener('click', function() {
-                packageOptions.forEach(opt => opt.classList.remove('selected'));
-                this.classList.add('selected');
+            try {
+                const response = await fetch(completeUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
+                    },
+                    body: JSON.stringify({
+                        package: selectedPackage,
+                        terms: true,
+                        name: userData.name,
+                        email: userData.email,
+                        course_id: courseData.id
+                    })
+                });
 
-                // Show/hide payment section based on selection
-                const paymentSection = document.getElementById('paymentSection');
-                if (paymentSection) {
-                    paymentSection.classList.toggle('hidden', this.id === 'freePackage');
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Enrollment failed');
                 }
-            });
+
+                if (data.redirect) {
+                    window.location.href = data.redirect;
+                }
+            } catch (error) {
+                console.error('Enrollment error:', error);
+                alert(error.message || 'There was an error processing your enrollment. Please try again.');
+                completeBtn.innerHTML = 'Complete Enrollment <i class="fas fa-arrow-right ml-2"></i>';
+                completeBtn.disabled = false;
+            }
         });
+
+        // Package selection functionality
+        const packageOptions = document.querySelectorAll('.package-option');
+        if (packageOptions.length > 0) {
+            packageOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    packageOptions.forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+
+                    const paymentSection = document.getElementById('paymentSection');
+                    if (paymentSection) {
+                        paymentSection.classList.toggle('hidden', this.id === 'freePackage');
+                    }
+                });
+            });
+        }
+    } catch (error) {
+        console.error('Initialization error:', error);
+        alert('There was an error loading the enrollment page. Please refresh and try again.');
     }
 });

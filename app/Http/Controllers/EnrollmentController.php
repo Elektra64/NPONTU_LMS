@@ -191,7 +191,8 @@ class EnrollmentController extends Controller
             ],
             'instructor' => [
                 'name' => app(CourseController::class)->getMockCourseData($courseId)['instructor'],
-                'title' => 'Senior Instructor'
+                'title' => 'Senior Instructor',
+                
             ],
             'institution' => [
                 'name' => 'EduVerse Learning Platform',
@@ -282,5 +283,5 @@ class EnrollmentController extends Controller
         ];
     }
 
-    
+
 }

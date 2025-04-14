@@ -25,15 +25,8 @@
 </head>
 <body class="bg-gray-900 text-white font-sans">
     <!-- Navigation -->
-    <nav class="bg-gray-900 text-white p-4 flex justify-between items-center sticky top-0 z-50 shadow-lg">
-        <div class="flex items-center space-x-8">
-            <span class="text-2xl font-bold text-yellow-400 flex items-center">
-                <a href="/home" class="cursor-pointer">
-                    <i class="fas fa-graduation-cap mr-2"></i>EduVerse
-                </a>
-            </span>
-        </div>
-    </nav>
+    <x-navbar/>
+
 
     <!-- Verification Content -->
     <section class="container mx-auto px-4 py-16">
@@ -61,6 +54,8 @@
             </div>
         </div>
     </section>
+        <!-- Enhanced Footer  -->
+        <x-footer/>
 
     <script src="{{ asset('assets/js/verify.js') }}"></script>
 </body>

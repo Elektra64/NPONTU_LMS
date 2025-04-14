@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate of Completion</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        /* Navigation and footer styles */
+        nav {
+            background-color: #1a472a;
+            color: white;
+            padding: 1rem 2rem;
+            margin-bottom: 2rem;
+        }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        .logo i {
+            color: #fdd835;
+            margin-right: 0.5rem;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover {
+            color: #fdd835;
+        }
+        /* Main certificate styles */
+        .certificate-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .certificate-container {
+            background-color: white;
+            border: 4px solid #2e7d32;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        .certificate-bg {
+            position: relative;
+            z-index: 1;
+        }
+        /* Blob decorations */
+        .blob-top-right {
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 300px;
+            height: 300px;
+            background-color: #2e7d32;
+            border-radius: 50% 30% 70% 50%;
+            z-index: 0;
+            opacity: 0.8;
+        }
+        .blob-bottom-left {
+            position: absolute;
+            bottom: -100px;
+            left: -100px;
+            width: 300px;
+            height: 300px;
+            background-color: #2e7d32;
+            border-radius: 70% 50% 50% 30%;
+            z-index: 0;
+            opacity: 0.8;
+        }
+        /* Certificate header */
+        .certificate-header {
+            background: linear-gradient(to right, #2e7d32, #388e3c);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        .certificate-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        /* Certificate body */
+        .certificate-body {
+            padding: 2rem 3rem;
+            position: relative;
+            z-index: 1;
+        }
+        /* Student info */
+        .student-info {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+        .student-name-display {
+            position: relative;
+            min-height: 72px;
+            margin-bottom: 1rem;
+        }
+        .student-name {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+        .divider {
+            width: 100px;
+            height: 4px;
+            background-color: #2e7d32;
+            margin: 1rem auto;
+        }
+        /* Course info */
+        .course-info {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .course-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2e7d32;
+            margin-bottom: 0.5rem;
+        }
+        /* Signatures section */
+        .signatures {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e0e0e0;
+        }
+        .signature-box {
+            text-align: center;
+            width: 30%;
+        }
+        .signature-placeholder {
+            height: 60px;
+            margin-bottom: 1rem;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="60" viewBox="0 0 200 60"><path d="M10,30 Q50,10 90,30 T170,30" stroke="%232e7d32" fill="none" stroke-width="2" stroke-dasharray="5,3"/></svg>') no-repeat center;
+        }
+        /* Certificate seal */
+        .certificate-seal {
+            margin: 0 auto;
+            width: 80px;
+            height: 80px;
+        }
+        /* Action buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+        .btn-primary {
+            background-color: #2e7d32;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #1b5e20;
+        }
+        .btn-secondary {
+            background-color: #f5f5f5;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+        .btn-secondary:hover {
+            background-color: #e0e0e0;
+        }
+        /* Footer */
+        footer {
+            background-color: #1a472a;
+            color: white;
+            padding: 3rem 2rem 1rem;
+            margin-top: 3rem;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .footer-column h4 {
+            color: #fdd835;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        .footer-column ul {
+            list-style: none;
+        }
+        .footer-column ul li {
+            margin-bottom: 0.5rem;
+        }
+        .footer-column a {
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .footer-column a:hover {
+            color: #fdd835;
+        }
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .social-icons a {
+            color: #aaa;
+            transition: color 0.3s;
+        }
+        .social-icons a:hover {
+            color: #fdd835;
+        }
+        .footer-bottom {
+            border-top: 1px solid #2c3e50;
+            padding-top: 1rem;
+            display: flex;
+            justify-content: space-between;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        .footer-bottom-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+        .verification-footer {
+            background-color: #f0f0f0;
+            border-top: 1px solid #ddd;
+            padding: 1rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        /* Molecule styles */
+        .molecule-left {
+            position: absolute;
+            top: 120px;
+            left: 50px;
+            z-index: 0;
+        }
+        .molecule-right {
+            position: absolute;
+            bottom: 80px;
+            right: 50px;
+            z-index: 0;
+        }
+
+        /* Media print styles */
+        @media print {
+            body {
+                padding: 0;
+                margin: 0;
+            }
+            nav, footer, .action-buttons {
+                display: none !important;
+            }
+            .certificate-container {
+                box-shadow: none;
+                border: 1px solid #2e7d32;
+                margin: 0 auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="nav-container container">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>EcoLearn</span>
+            </div>
+            <div class="nav-links">
+                <a href="#"><i class="fas fa-book"></i> Courses</a>
+                <a href="#"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="#"><i class="fas fa-user"></i> Profile</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Certificate Content -->
+    <div class="container">
+        <div class="certificate-wrapper">
+            <!-- Certificate -->
+            <div class="certificate-container">
+                <div class="blob-top-right"></div>
+                <div class="blob-bottom-left"></div>
+
+                <!-- Molecule graphic left -->
+                <div class="molecule-left">
+                    <svg width="100" height="80" viewBox="0 0 100 80">
+                        <circle cx="30" cy="30" r="20" fill="#2e7d32" />
+                        <circle cx="60" cy="15" r="12" fill="#fdd835" />
+                        <circle cx="15" cy="50" r="8" fill="#e53935" />
+                    </svg>
+                </div>
+
+                <!-- Certificate Header -->
+                <div class="certificate-header">
+                    <h1>CERTIFICATE</h1>
+                    <p>OF COMPLETION</p>
+                </div>
+
+                <!-- Certificate Body -->
+                <div class="certificate-body certificate-bg">
+                    <!-- Student Info -->
+                    <div class="student-info">
+                        <p>PRESENTED TO:</p>
+                        <div class="student-name-display">
+                            <h2 class="student-name">[RECIPIENT NAME]</h2>
+                        </div>
+                        <div class="divider"></div>
+                        <p>WHO HAVE COMPLETED A TRAINING PROGRAM, INDICATING THAT THEY<br>
+                           HAVE MET THE REQUIRED STANDARDS OF KNOWLEDGE AND SKILLS.</p>
+                    </div>
+
+                    <!-- Course Info -->
+                    <div class="course-info">
+                        <h3 class="course-title">Advanced Environmental Science</h3>
+                        <p>with distinction, achieving a score of <strong>95%</strong> (Grade: A)</p>
+                        <p>Completed on: April 10, 2025</p>
+                    </div>
+
+                    <!-- Medal SVG -->
+                    <div style="text-align: center; margin: 2rem 0;">
+                        <svg width="70" height="70" viewBox="0 0 70 70">
+                            <circle cx="35" cy="35" r="25" fill="none" stroke="#2e7d32" stroke-width="2" />
+                            <circle cx="35" cy="35" r="20" fill="none" stroke="#2e7d32" stroke-width="2" />
+                            <path d="M35 50 L35 70" stroke="#2e7d32" stroke-width="2" />
+                            <path d="M30 55 L40 55" stroke="#2e7d32" stroke-width="2" />
+                            <path d="M25 65 L45 65" stroke="#2e7d32" stroke-width="2" />
+                        </svg>
+                    </div>
+
+                    <!-- Signatures -->
+                    <div class="signatures">
+                        <div class="signature-box">
+                            <div class="signature-placeholder"></div>
+                            <p><strong>Dr. Emma Lawrence</strong></p>
+                            <p>Course Facilitator</p>
+                        </div>
+
+                        <div class="signature-box">
+                            <div class="certificate-seal">
+                                <svg viewBox="0 0 100 100">
+                                    <circle cx="50" cy="50" r="45" fill="none" stroke="#2e7d32" stroke-width="2" />
+                                    <circle cx="50" cy="50" r="35" fill="none" stroke="#2e7d32" stroke-width="2" />
+                                    <path d="M30,50 L70,50" stroke="#2e7d32" stroke-width="2" />
+                                    <path d="M50,30 L50,70" stroke="#2e7d32" stroke-width="2" />
+                                    <circle cx="50" cy="50" r="10" fill="#fdd835" />
+                                </svg>
+                            </div>
+                            <p><strong>EcoLearn Academy</strong></p>
+                            <p>Issuing Authority</p>
+                        </div>
+
+                        <div class="signature-box">
+                            <div class="signature-placeholder"></div>
+                            <p><strong>Prof. James Morgan</strong></p>
+                            <p>College President</p>
+                        </div>
+                    </div>
+
+                    <!-- Molecule graphic right -->
+                    <div class="molecule-right">
+                        <svg width="80" height="60" viewBox="0 0 80 60">
+                            <circle cx="40" cy="30" r="18" fill="#2e7d32" />
+                            <circle cx="65" cy="15" r="10" fill="#fdd835" />
+                            <circle cx="20" cy="15" r="7" fill="#e53935" />
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Verification Footer -->
+                <div class="verification-footer">
+                    <p>
+                        Verify authenticity at:
+                        <span style="font-family: monospace; color: #2e7d32;">ecolearn.edu/verify/</span>
+                        <span>CERT-2025-04-14-00783</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="btn btn-primary">
+                    <i class="fas fa-download"></i> Download Certificate
+                </button>
+                <button class="btn btn-secondary">
+                    <i class="fas fa-share-alt"></i> Share Achievement
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <!-- Column 1 -->
+                <div class="footer-column">
+                    <h4><i class="fas fa-graduation-cap"></i> EcoLearn</h4>
+                    <p>Empowering environmental education since 2018.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <!-- Column 2 -->
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Courses</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Instructors</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 3 -->
+                <div class="footer-column">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 4 -->
+                <div class="footer-column">
+                    <h4>Newsletter</h4>
+                    <p>Subscribe for updates on new courses and events.</p>
+                    <div style="display: flex; margin-top: 1rem;">
+                        <input type="email" placeholder="Your email" style="padding: 0.5rem; border: none; width: 70%; border-radius: 4px 0 0 4px;">
+                        <button style="background: #fdd835; border: none; padding: 0.5rem; border-radius: 0 4px 4px 0;">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2025 EcoLearn Academy. All rights reserved.</p>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy</a>
+                    <a href="#">Terms</a>
+                    <a href="#">Sitemap</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple script to make the download button functional
+        document.addEventListener('DOMContentLoaded', function() {
+            const downloadBtn = document.querySelector('.btn-primary');
+
+            downloadBtn.addEventListener('click', function() {
+                window.print();
+            });
+        });
+    </script>
+</body>
+</html>

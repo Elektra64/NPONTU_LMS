@@ -38,66 +38,9 @@
 </head>
 <body class="bg-gray-100 font-sans">
       <!-- Enhanced Navbar -->
-      <nav class="bg-gray-900 text-white p-4 flex justify-between items-center sticky top-0 z-50 shadow-lg">
-    <div class="flex items-center space-x-8">
-        <span class="text-2xl font-bold text-yellow-400 flex items-center">
-            <a href="/home" class="cursor-pointer">
-                <i class="fas fa-graduation-cap mr-2"></i>EduVerse
-            </a>
-        </span>
-        <div class="hidden md:flex space-x-6">
-            <!-- Unified Courses Entry -->
-            <a href="{{ route('courses.publishedCourse') }}" class="hover:text-yellow-400 transition duration-300 flex items-center">
-                <i class="fas fa-book-open mr-2"></i>Courses
-            </a>
-
-            <!-- Learning Tools -->
-            <a href="{{ route('quizzes') }}" class="hover:text-yellow-400 transition duration-300 flex items-center">
-                <i class="fas fa-tasks mr-2"></i>Learning
-            </a>
+      <x-navbar />
 
 
-        </div>
-    </div>
-    <div class="flex items-center space-x-4">
-        <!-- Quick Access Dropdown -->
-        <div class="relative group">
-            <button class="hover:text-yellow-400 px-3 py-1 rounded-lg transition duration-300 flex items-center">
-                <i class="fas fa-bolt mr-2"></i> Quick Access
-                <i class="fas fa-chevron-down ml-1 text-xs"></i>
-            </button>
-            <div class="absolute hidden group-hover:block bg-gray-800 mt-2 py-2 w-48 rounded shadow-lg z-50 right-0">
-                <a href="{{ route('courses.publishedCourse') }}" class="block px-4 py-2 hover:bg-gray-700">
-                    <i class="fas fa-search mr-2"></i> Browse Catalog
-                </a>
-
-                <a href="{{ route('certificateTemplate') }}" class="block px-4 py-2 hover:bg-gray-700">
-                    <i class="fas fa-certificate mr-2"></i> Certificates
-                </a>
-            </div>
-        </div>
-
-
-    </div>
-    <div class="flex items-center space-x-4">
-        <!-- Notification Bell -->
-        <a href="#" class="p-2 rounded-full hover:bg-gray-700 relative">
-            <i class="fas fa-bell"></i>
-            <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-yellow-400"></span>
-        </a>
-
-        <!-- User Menu -->
-        <div class="user-badge flex items-center space-x-3 bg-gray-800 px-3 py-1 rounded-full cursor-pointer hover:bg-gray-700">
-            <div class="text-right hidden sm:block">
-                <div class="text-sm font-medium">John Doe</div>
-                <div class="text-xs text-gray-400">Learner</div>
-            </div>
-            <div class="relative">
-                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User profile" class="w-8 h-8 rounded-full border-2 border-yellow-400">
-            </div>
-        </div>
-    </div>
-</nav>
     <div class="container mx-auto px-4 py-8">
         <div class="max-w-4xl mx-auto">
             <div class="certificate-bg border-4 border-yellow-500 rounded-xl shadow-2xl overflow-hidden certificate-container">
@@ -181,91 +124,8 @@
     </div>
 
     <!-- Enhanced Footer -->
-    <footer class="bg-gray-800 text-white pt-12 pb-6">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-                <!-- Column 1 -->
-                <div>
-                    <h3 class="text-xl font-bold text-yellow-400 mb-4 flex items-center">
-                        <i class="fas fa-graduation-cap mr-2"></i> EduVerse
-                    </h3>
-                    <p class="text-gray-400 mb-4">Empowering learners worldwide with accessible, high-quality education since 2015.</p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">
-                            <i class="fab fa-youtube"></i>
-                        </a>
-                    </div>
-                </div>
+       <x-footer/>
 
-                <!-- Column 2 -->
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">Home</a></li>
-                        <li><a href="{{ route('courses.publishedCourse') }}" class="text-gray-400 hover:text-yellow-400 transition duration-300">Courses</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">About Us</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">Instructors</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">Pricing</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">Blog</a></li>
-                    </ul>
-                </div>
-
-                <!-- Column 3 -->
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Support</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">Help Center</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">FAQs</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">Terms of Service</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">Privacy Policy</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">Cookie Policy</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">Contact Us</a></li>
-                    </ul>
-                </div>
-
-                <!-- Column 4 -->
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Newsletter</h4>
-                    <p class="text-gray-400 mb-4">Subscribe to get updates on new courses, discounts and special offers.</p>
-                    <form class="flex">
-                        <input type="email" placeholder="Your email" class="bg-gray-700 text-white px-4 py-2 rounded-l focus:outline-none focus:ring-2 focus:ring-yellow-400 w-full">
-                        <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-black px-4 py-2 rounded-r transition duration-300">
-                            <i class="fas fa-paper-plane"></i>
-                        </button>
-                    </form>
-                    <div class="mt-4 flex items-center text-gray-400">
-                        <i class="fas fa-phone-alt mr-2"></i>
-                        <span>+1 (555) 123-4567</span>
-                    </div>
-                    <div class="mt-2 flex items-center text-gray-400">
-                        <i class="fas fa-envelope mr-2"></i>
-                        <span>support@eduverse.com</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="border-t border-gray-700 pt-6 flex flex-col md:flex-row justify-between items-center">
-                <p class="text-gray-400 text-sm mb-4 md:mb-0">© 2023 EduVerse University. All rights reserved.</p>
-                <div class="flex space-x-6">
-                    <a href="#" class="text-gray-400 hover:text-yellow-400 text-sm transition duration-300">Privacy Policy</a>
-                    <a href="#" class="text-gray-400 hover:text-yellow-400 text-sm transition duration-300">Terms of Service</a>
-                    <a href="#" class="text-gray-400 hover:text-yellow-400 text-sm transition duration-300">Sitemap</a>
-                </div>
-            </div>
-        </div>
-    </footer>
     <script>
         // Simple share functionality
         document.getElementById('shareBtn').addEventListener('click', function() {

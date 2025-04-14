@@ -8,60 +8,146 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
-        @media print {
-            body {
-                padding: 0;
-                margin: 0;
-                background: white !important;
-            }
-            nav, footer, .no-print, #puzzleModal, .name-form, .edit-name-btn {
-                display: none !important;
-            }
-            .certificate-container {
-                box-shadow: none !important;
-                border: none !important;
-                margin: 0 auto;
-            }
-            .certificate-bg {
-                background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.95) 100%) !important;
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-            }
-        }
-        .signature-placeholder {
-            height: 80px;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="80" viewBox="0 0 200 80"><path d="M10,40 Q50,10 90,40 T170,40" stroke="%23d1d5db" fill="none" stroke-width="2" stroke-dasharray="5,3"/></svg>') no-repeat center;
+        /* --- Base styles (Keep your original styles here or adapt as needed) --- */
+        .certificate-container {
+            background-color: white;
+            border: 4px solid #2e7d32;
+            border-radius: 12px;
+            overflow: hidden; /* Helps contain children */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            position: relative;
+            box-sizing: border-box; /* Ensure padding/border included in size */
         }
         .certificate-bg {
-            background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.95) 100%),
-                        url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+            position: relative;
+            z-index: 1;
+        }
+        /* Blob decorations */
+        .blob-top-right {
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 300px;
+            height: 300px;
+            background-color: #2e7d32;
+            border-radius: 50% 30% 70% 50%;
+            z-index: 0;
+            opacity: 0.8;
+        }
+        .blob-bottom-left {
+            position: absolute;
+            bottom: -100px;
+            left: -100px;
+            width: 300px;
+            height: 300px;
+            background-color: #2e7d32;
+            border-radius: 70% 50% 50% 30%;
+            z-index: 0;
+            opacity: 0.8;
+        }
+        /* Certificate header */
+        .certificate-header {
+            background: linear-gradient(to right, #2e7d32, #388e3c);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        .certificate-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        /* Certificate body */
+        .certificate-body {
+            padding: 2rem 3rem;
+            position: relative;
+            z-index: 1;
+        }
+        /* Student info */
+        .student-info {
+            text-align: center;
+            margin-bottom: 2.5rem;
         }
         .student-name-display {
-            min-height: 72px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             position: relative;
+            min-height: 72px; /* Adjust if needed based on button/form */
+            margin-bottom: 1rem;
         }
-        .edit-name-btn {
+        .student-name {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+        .divider {
+            width: 100px;
+            height: 4px;
+            background-color: #2e7d32;
+            margin: 1rem auto;
+        }
+        /* Course info */
+        .course-info {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .course-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2e7d32;
+            margin-bottom: 0.5rem;
+        }
+        /* Signatures section */
+        .signatures {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end; /* Align items at the bottom */
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e0e0e0;
+        }
+        .signature-box {
+            text-align: center;
+            width: 30%;
+        }
+        .signature-placeholder {
+            height: 60px;
+            margin-bottom: 1rem;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="60" viewBox="0 0 200 60"><path d="M10,30 Q50,10 90,30 T170,30" stroke="%232e7d32" fill="none" stroke-width="2" stroke-dasharray="5,3"/></svg>') no-repeat center;
+        }
+        /* Certificate seal */
+        .certificate-seal {
+             margin: 0 auto 1rem auto; /* Add bottom margin */
+             width: 80px;
+             height: 80px;
+        }
+         .certificate-seal img, .certificate-seal svg {
+             width: 100%;
+             height: 100%;
+             object-fit: contain;
+         }
+        /* Molecule styles */
+        .molecule-left {
             position: absolute;
-            right: 0;
-            bottom: 0;
-            transform: translateY(100%);
-            padding: 0.25rem 0.5rem;
-            font-size: 0.875rem;
+            top: 120px;
+            left: 50px;
+            z-index: 0;
         }
-        .name-input-form {
-            transition: all 0.3s ease;
+        .molecule-right {
+            position: absolute;
+            bottom: 80px;
+            right: 50px;
+            z-index: 0;
         }
-        .name-input {
-            min-width: 400px;
-            border-bottom: 2px solid #d1d5db;
+        /* Verification Footer */
+        .verification-footer {
+            background-color: #f0f0f0;
+            border-top: 1px solid #ddd;
+            padding: 1rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #666;
         }
-        .name-input:focus {
-            border-color: #f59e0b;
-            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
-        }
+        /* Share dropdown and edit name styles */
         .share-container {
             position: relative;
             display: inline-block;
@@ -71,19 +157,209 @@
             background-color: white;
             min-width: 200px;
             box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
+            z-index: 50; /* Ensure dropdown is above other elements */
             border-radius: 0.375rem;
             right: 0;
-            display: none;
+            margin-top: 0.5rem; /* Space from button */
+            display: none; /* Initially hidden */
         }
-        .share-container:hover .share-dropdown {
+        /* Use JS to toggle visibility, hover might be finicky */
+        .share-dropdown.visible {
             display: block;
         }
+        .edit-name-btn {
+            position: absolute;
+            right: 0;
+            bottom: -25px; /* Position below the name */
+            /* transform: translateY(100%); Removed, using bottom positioning */
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            z-index: 10; /* Ensure button is clickable */
+        }
+        .name-input-form {
+            transition: all 0.3s ease;
+            /* Ensure form doesn't interfere when hidden */
+        }
+        .name-input {
+            min-width: 400px; /* Or adjust as needed */
+            border-bottom: 2px solid #d1d5db;
+        }
+        .name-input:focus {
+            border-color: #f59e0b; /* Tailwind amber-500 */
+            outline: none; /* Remove default focus outline */
+            box-shadow: none; /* Remove default focus shadow if any */
+        }
+        /* Style for the name input form wrapper when active */
+         .student-name-display form {
+             /* Styles for the form container */
+             padding-top: 1rem; /* Add some space when form is visible */
+         }
+
+        /* --- PRINT STYLES --- */
+        @page {
+            size: A4 portrait; /* Or 'Letter portrait' */
+            margin: 1cm; /* Adjust margins as needed */
+        }
+
+        @media print {
+            html, body {
+                padding: 0 !important;
+                margin: 0 !important;
+                background: white !important; /* Ensure white background */
+                width: 100%;
+                height: 100%;
+                overflow: hidden !important; /* Prevent scrollbars affecting print layout */
+                -webkit-print-color-adjust: exact !important; /* Force color printing */
+                print-color-adjust: exact !important; /* Standard property */
+            }
+            nav, footer, .no-print, #puzzleModal, .name-input-form, .edit-name-btn, .share-container {
+                display: none !important; /* Hide non-certificate elements including edit/share */
+            }
+
+            .certificate-container {
+                box-shadow: none !important;
+                border: 4px solid #2e7d32 !important; /* Keep border visible */
+                margin: 0 auto !important; /* Center on the page */
+                width: 100% !important; /* Fit within page margins set by @page */
+                height: auto !important; /* Let content determine height */
+                max-height: 100% !important; /* Try to fit on one page */
+                page-break-inside: avoid !important; /* CRUCIAL: Prevent breaking container across pages */
+                overflow: hidden !important; /* Hide any minor overflow within the container */
+                position: relative !important; /* Reset position if needed */
+                top: 0 !important;
+                left: 0 !important;
+                border-radius: 12px !important; /* Keep rounded corners if desired */
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            .certificate-header {
+                background: linear-gradient(to right, #2e7d32, #388e3c) !important; /* Force background */
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                color: white !important; /* Ensure text color */
+            }
+
+            .certificate-body {
+                padding: 1.5rem 2rem !important; /* Slightly reduce padding for print if needed */
+                position: relative !important;
+                z-index: 1 !important;
+            }
+
+            .certificate-bg {
+                /* If using a background image/gradient here, ensure it's forced */
+                background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.95) 100%) !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            /* Option 1: Keep decorative elements but ensure they print */
+            .blob-top-right, .blob-bottom-left, .molecule-left, .molecule-right {
+                background-color: #2e7d32 !important; /* Force background color */
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                opacity: 0.6 !important; /* Reduce opacity slightly if they obscure text */
+                z-index: 0 !important; /* Ensure they are behind content */
+            }
+            .molecule-left svg *, .molecule-right svg * {
+                 fill: #2e7d32 !important; /* Force fill colors */
+                 -webkit-print-color-adjust: exact !important;
+                 print-color-adjust: exact !important;
+            }
+            /* Force specific colors within molecules */
+            .molecule-left svg circle[fill="#fdd835"], .molecule-right svg circle[fill="#fdd835"] { fill: #fdd835 !important; }
+            .molecule-left svg circle[fill="#e53935"], .molecule-right svg circle[fill="#e53935"] { fill: #e53935 !important; }
+
+
+            /* Option 2: Hide potentially problematic decorative elements for print */
+            /*
+            .blob-top-right, .blob-bottom-left, .molecule-left, .molecule-right {
+                display: none !important;
+            }
+            */
+
+            /* Ensure images print correctly */
+            img {
+                max-width: 100% !important; /* Prevent images from overflowing */
+                height: auto !important;
+                -webkit-print-color-adjust: exact !important; /* May help complex images/SVGs */
+                print-color-adjust: exact !important;
+            }
+            .signature-box img, .certificate-seal img, .signature-box .h-20 img {
+                max-height: 60px !important; /* Control height of signature/seal/qr IMAGE */
+                width: auto !important;
+                object-fit: contain !important;
+            }
+             .signature-box .h-20 { /* Target the CONTAINER for QR */
+                 height: 60px !important; /* Set container height */
+                 width: 60px !important; /* Set container width to make QR square */
+                 margin-left: auto;
+                 margin-right: auto;
+             }
+             .signature-box .h-20 img { /* Ensure image fills the container */
+                 height: 100% !important;
+                 width: 100% !important;
+             }
+
+            .certificate-seal {
+                width: 70px !important; /* Explicit size for seal container */
+                height: 70px !important;
+            }
+            .kalabash {
+                width: 70px !important; /* Explicit size for seal container */
+            }
+
+            /* Ensure SVGs render colors */
+            svg, svg * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            /* Force specific SVG colors if needed (examples) */
+            .certificate-seal svg circle[stroke="#2e7d32"] { stroke: #2e7d32 !important; }
+            .certificate-seal svg path[stroke="#2e7d32"] { stroke: #2e7d32 !important; }
+            .certificate-seal svg circle[fill="#fdd835"] { fill: #fdd835 !important; }
+            /* Medal SVG */
+            div[style*="text-align: center"] svg circle { stroke: #2e7d32 !important; fill: none !important; }
+            div[style*="text-align: center"] svg path { stroke: #2e7d32 !important; }
+
+
+            /* Adjust font sizes slightly if needed to fit */
+            .student-name {
+                font-size: 2.2rem !important;
+            }
+            .course-title {
+                font-size: 1.6rem !important;
+            }
+            /* Add other font-size adjustments if necessary */
+            p, .signature-box p, .verification-footer p {
+                 font-size: 0.9rem !important; /* Slightly smaller base text */
+                 line-height: 1.4 !important; /* Adjust line height */
+            }
+            .student-info > p:last-of-type { /* Target the long description text */
+                font-size: 0.85rem !important;
+            }
+
+
+            /* Ensure signature placeholder renders */
+            .signature-placeholder {
+                background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="60" viewBox="0 0 200 60"><path d="M10,30 Q50,10 90,30 T170,30" stroke="%232e7d32" fill="none" stroke-width="2" stroke-dasharray="5,3"/></svg>') no-repeat center !important;
+                background-size: contain !important; /* Ensure it scales if needed */
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                height: 60px !important; /* Keep height consistent */
+            }
+             /* Adjust signature vertical spacing if needed */
+            .signatures {
+                 margin-top: 2rem !important;
+                 padding-top: 1rem !important;
+            }
+        }
+        /* --- End PRINT STYLES --- */
+
     </style>
 </head>
 <body class="bg-gray-100 font-sans">
-    <!-- Sticky Navigation Bar -->
-    <nav class="bg-gray-900 text-white shadow-lg sticky top-0">
+    <nav class="bg-gray-900 text-white shadow-lg sticky top-0 z-50 no-print">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <a href="/home" class="flex items-center space-x-2">
                 <i class="fas fa-graduation-cap text-yellow-400 text-2xl"></i>
@@ -118,31 +394,41 @@
         </div>
     </nav>
 
-    <!-- Certificate Content -->
     <div class="container mx-auto px-4 py-8">
         <div class="max-w-4xl mx-auto">
-            <div class="certificate-bg border-4 border-yellow-500 rounded-xl shadow-2xl overflow-hidden certificate-container">
-                <!-- Gold Foil Header -->
-                <div class="bg-gradient-to-r from-yellow-400 to-yellow-500 px-8 py-6 text-center">
-                    <h1 class="text-3xl font-bold text-gray-900">Certificate of Achievement</h1>
-                    <p class="text-gray-800 mt-1">This certifies that</p>
+            <div class="certificate-container">
+                <div class="blob-top-right"></div>
+                <div class="blob-bottom-left"></div>
+
+                <div class="molecule-left">
+                <img  src="https://www.npontu.com/assets/images/npontu_logo.png" width="70px" class=" mt-5">
+
                 </div>
 
-                <!-- Body Content -->
-                <div class="px-10 py-12">
-                    <!-- Learner Info -->
-                    <div class="text-center mb-10">
+                <div class="certificate-header">
+                    <h1 class="font-bold">CERTIFICATE</h1>
+                    <p>OF COMPLETION</p>
+                </div>
+
+                <div class="certificate-body certificate-bg">
+                    <div class="student-info">
+                        <p>PRESENTED TO:</p>
                         <div class="student-name-display">
+                            {{-- NOTE: This logic shows name or edit form based on query param --}}
+                            {{-- For printing, only the final name should ideally be shown --}}
                             @if(request()->has('student_name'))
-                                <h2 class="text-5xl font-bold text-gray-900 mb-3">{{ request()->input('student_name') }}</h2>
+                                <h2 class="student-name">{{ request()->input('student_name') }}</h2>
                                 <a href="{{ route('course.completion', $certificate['course']['id']) }}"
-                                   class="edit-name-btn bg-yellow-500 hover:bg-yellow-600 text-white rounded">
+                                   class="edit-name-btn bg-yellow-500 hover:bg-yellow-600 text-white rounded no-print">
                                     <i class="fas fa-edit mr-1"></i> Edit Name
                                 </a>
                             @else
-                                <h2 class="text-5xl font-bold text-gray-900 mb-3">{{ $certificate['user']['name'] }}</h2>
+                                {{-- Default view showing name, form might be hidden by JS/CSS --}}
+                                <h2 class="student-name">{{ $certificate['user']['name'] }}</h2>
+                                {{-- The form below should ideally be hidden by default and shown via JS if needed --}}
+                                {{-- Added 'no-print' class to hide form during print --}}
                                 <form method="GET" action="{{ route('course.completion', $certificate['course']['id']) }}"
-                                      class="name-input-form absolute inset-0 flex flex-col items-center justify-center">
+                                      class="name-input-form absolute inset-0 flex flex-col items-center justify-center no-print" style="/* display: none; */"> {{-- Initially hide form? --}}
                                     <input type="text" name="student_name"
                                            value="{{ $certificate['user']['name'] }}"
                                            class="name-input text-4xl text-center bg-transparent outline-none pb-2 mb-4"
@@ -154,78 +440,92 @@
                                 </form>
                             @endif
                         </div>
-                        <div class="w-24 h-1 bg-yellow-400 mx-auto mb-4"></div>
-                        <p class="text-xl text-gray-600">has successfully completed the course</p>
+                        <div class="divider"></div>
+                        <p>WHO HAS SUCCESSFULLY COMPLETED THE REQUIREMENTS FOR THE COURSE</p> {{-- Simplified text a bit --}}
                     </div>
 
-                    <!-- Course Info -->
-                    <div class="text-center mb-12">
-                        <h3 class="text-3xl font-semibold text-yellow-600">{{ $certificate['course']['title'] }}</h3>
-                        <p class="text-gray-500 mt-3">
-                            with distinction, achieving a score of
-                            <span class="font-bold text-gray-700">{{ $certificate['completion_details']['score'] }}%</span>
-                            (Grade: {{ $certificate['completion_details']['grade'] }})
-                        </p>
-                        <p class="text-gray-500 mt-2">
-                            Completed on: {{ $certificate['completion_details']['completed_at'] }}
-                        </p>
+                    <div class="course-info">
+                        <h3 class="course-title">{{ $certificate['course']['title'] }}</h3>
+                        <p>with distinction, achieving a score of <strong>{{ $certificate['completion_details']['score'] }}%</strong> (Grade: {{ $certificate['completion_details']['grade'] }})</p>
+                        <p>Completed on: {{ $certificate['completion_details']['completed_at'] }}</p>
                     </div>
 
-                    <!-- Signatures -->
-                    <div class="flex justify-between mt-16 pt-8 border-t border-gray-200">
-                        <div class="text-center w-1/3">
-                            @if($certificate['institution']['signature'])
-                                <img src="{{ $certificate['institution']['signature'] }}" alt="Instructor Signature" class="h-20 mx-auto mb-3">
+                    <div style="text-align: center; margin: 2rem 0;">
+                        <svg width="70" height="70" viewBox="0 0 70 70">
+                            <circle cx="35" cy="35" r="25" fill="none" stroke="#2e7d32" stroke-width="2" />
+                            <circle cx="35" cy="35" r="20" fill="none" stroke="#2e7d32" stroke-width="2" />
+                            <path d="M35 50 L35 70" stroke="#2e7d32" stroke-width="2" />
+                            <path d="M30 55 L40 55" stroke="#2e7d32" stroke-width="2" />
+                            <path d="M25 65 L45 65" stroke="#2e7d32" stroke-width="2" />
+                        </svg>
+                    </div>
+
+                    <div class="signatures">
+                        <div class="signature-box">
+                            {{-- Instructor Signature --}}
+                            @if($certificate['institution']['signature']) {{-- Assuming institution signature path --}}
+                                <img src="{{ $certificate['institution']['signature'] }}" alt="Instructor Signature" class="h-16 mx-auto mb-3 object-contain"> {{-- Adjusted height --}}
                             @else
-                                <div class="signature-placeholder mb-3 mx-auto"></div>
+                                <div class="signature-placeholder"></div>
                             @endif
-                            <p class="font-medium text-gray-700">{{ $certificate['instructor']['name'] }}</p>
-                            <p class="text-sm text-gray-500">{{ $certificate['instructor']['title'] }}</p>
+                            <p><strong>{{ $certificate['instructor']['name'] }}</strong></p>
+                            <p>{{ $certificate['instructor']['title'] }}</p>
                         </div>
 
-                        <div class="text-center w-1/3">
-                            <div class="h-20 mb-3 mx-auto">
+                        <div class="signature-box">
+                            {{-- Seal --}}
+                            <div class="certificate-seal">
                                 @if(!empty($certificate['institution']['seal']))
                                     <img src="{{ asset($certificate['institution']['seal']) }}"
-                                        alt="Organization Seal"
-                                        class="h-full mx-auto"
-                                        onerror="this.onerror=null;this.src='https://unsplash.com/photos/a-gold-letter-with-a-green-background-Q-qBa2D9sdw'">
+                                         alt="Organization Seal">
+                                         {{-- Removed onerror placeholder for cleaner print --}}
                                 @else
-                                    <!-- Fallback to a placeholder image -->
-                                    <img src="https://unsplash.com/photos/a-gold-letter-with-a-green-background-Q-qBa2D9sdw"
-                                        alt="Default Organization Seal"
-                                        class="h-full mx-auto">
+                                    {{-- Fallback SVG Seal --}}
+                                    <svg viewBox="0 0 100 100">
+                                        <circle cx="50" cy="50" r="45" fill="none" stroke="#2e7d32" stroke-width="2" />
+                                        <circle cx="50" cy="50" r="35" fill="none" stroke="#2e7d32" stroke-width="2" />
+                                        <path d="M30,50 L70,50" stroke="#2e7d32" stroke-width="2" />
+                                        <path d="M50,30 L50,70" stroke="#2e7d32" stroke-width="2" />
+                                        <circle cx="50" cy="50" r="10" fill="#fdd835" />
+                                    </svg>
                                 @endif
                             </div>
-                            <p class="font-medium text-gray-700">{{ $certificate['institution']['name'] }}</p>
-                            <p class="text-sm text-gray-500">Issuing Authority</p>
+                            <p><strong>{{ $certificate['institution']['name'] }}</strong></p>
+                            <p>Issuing Authority</p>
                         </div>
 
-                        <div class="text-center w-1/3">
-                            <div class="h-20 mb-3 mx-auto">
-                                <img src="{{ $certificate['qr_code'] }}"
-                                     alt="Verification QR Code"
-                                     class="h-full mx-auto">
+                        <div class="signature-box">
+                            {{-- QR Code and ID --}}
+                            <div class="h-15 mb-3 mx-auto"> {{-- Container for QR --}}
+                                <img class= "h-15" src="{{ $certificate['qr_code'] }}"
+                                     alt="Verification QR Code">
                             </div>
-                            <p class="font-medium text-gray-700">ID: <span>{{ $certificate['certificate_info']['id'] }}</span></p>
-                            <p class="text-sm text-gray-500">Issued: {{ $certificate['certificate_info']['issued_date'] }}</p>
+                            <p><strong>ID: {{ $certificate['certificate_info']['id'] }}</strong></p>
+                            <p>Issued: {{ $certificate['certificate_info']['issued_date'] }}</p>
                         </div>
+                    </div>
+
+                    <div class="molecule-right" >
+                        <img class= "kalabash" src="https://www.npontu.com/assets/images/npontu_logo.png" width="70px">
+                        <!-- <svg width="80" height="60" viewBox="0 0 80 60">
+                            <circle cx="40" cy="30" r="18" fill="#2e7d32" />
+                            <circle cx="65" cy="15" r="10" fill="#fdd835" />
+                            <circle cx="20" cy="15" r="7" fill="#e53935" />
+                        </svg> -->
                     </div>
                 </div>
 
-                <!-- Verification Footer -->
-                <div class="bg-gray-50 px-6 py-4 border-t border-gray-200 text-center">
-                    <p class="text-xs text-gray-500">
+                <div class="verification-footer">
+                    <p>
                         Verify authenticity at:
-                        <span class="font-mono text-yellow-600">eduverse.com/verify/</span>
+                        <span style="font-family: monospace; color: #2e7d32;">eduverse.com/verify/</span>
                         <span>{{ $certificate['certificate_info']['verification_code'] }}</span>
                     </p>
                 </div>
             </div>
 
-            <!-- Action Buttons -->
             <div class="mt-8 flex justify-center space-x-4 no-print">
-                <button id="downloadBtn" class="px-6 py-3 bg-yellow-500 hover:bg-yellow-600 rounded-lg shadow-md flex items-center transition">
+                <button id="downloadBtn" class="px-6 py-3 bg-yellow-500 hover:bg-yellow-600 rounded-lg shadow-md flex items-center transition text-gray-900">
                     <i class="fas fa-download mr-2"></i> Download Certificate
                 </button>
 
@@ -233,20 +533,20 @@
                     <button id="shareBtn" class="px-6 py-3 bg-gray-800 hover:bg-gray-700 text-white rounded-lg shadow-md flex items-center transition">
                         <i class="fas fa-share-alt mr-2"></i> Share Achievement
                     </button>
-                    <div id="shareDropdown" class="share-dropdown">
-                        <button onclick="shareCertificate('facebook')" class="w-full text-left px-4 py-2 hover:bg-gray-100 rounded flex items-center">
+                    <div id="shareDropdown" class="share-dropdown hidden"> {{-- Start hidden --}}
+                        <button onclick="shareCertificate('facebook')" class="w-full text-left px-4 py-2 hover:bg-gray-100 rounded flex items-center text-gray-800">
                             <i class="fab fa-facebook-f text-blue-600 mr-2"></i> Facebook
                         </button>
-                        <button onclick="shareCertificate('twitter')" class="w-full text-left px-4 py-2 hover:bg-gray-100 rounded flex items-center">
+                        <button onclick="shareCertificate('twitter')" class="w-full text-left px-4 py-2 hover:bg-gray-100 rounded flex items-center text-gray-800">
                             <i class="fab fa-twitter text-blue-400 mr-2"></i> Twitter
                         </button>
-                        <button onclick="shareCertificate('linkedin')" class="w-full text-left px-4 py-2 hover:bg-gray-100 rounded flex items-center">
+                        <button onclick="shareCertificate('linkedin')" class="w-full text-left px-4 py-2 hover:bg-gray-100 rounded flex items-center text-gray-800">
                             <i class="fab fa-linkedin-in text-blue-700 mr-2"></i> LinkedIn
                         </button>
-                        <button onclick="shareCertificate('whatsapp')" class="w-full text-left px-4 py-2 hover:bg-gray-100 rounded flex items-center">
+                        <button onclick="shareCertificate('whatsapp')" class="w-full text-left px-4 py-2 hover:bg-gray-100 rounded flex items-center text-gray-800">
                             <i class="fab fa-whatsapp text-green-500 mr-2"></i> WhatsApp
                         </button>
-                        <button onclick="copyCertificateLink()" class="w-full text-left px-4 py-2 hover:bg-gray-100 rounded flex items-center">
+                        <button onclick="copyCertificateLink()" class="w-full text-left px-4 py-2 hover:bg-gray-100 rounded flex items-center text-gray-800">
                             <i class="fas fa-link text-gray-600 mr-2"></i> Copy Link
                         </button>
                     </div>
@@ -254,95 +554,12 @@
             </div>
         </div>
     </div>
-    <footer class="bg-gray-800 text-white pt-12 pb-6">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-                <!-- Column 1 -->
-                <div>
-                    <h3 class="text-xl font-bold text-yellow-400 mb-4 flex items-center">
-                        <i class="fas fa-graduation-cap mr-2"></i> EduVerse
-                    </h3>
-                    <p class="text-gray-400 mb-4">Empowering learners worldwide with accessible, high-quality education since 2015.</p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">
-                            <i class="fab fa-youtube"></i>
-                        </a>
-                    </div>
-                </div>
 
-                <!-- Column 2 -->
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">Home</a></li>
-                        <li><a href="{{ route('courses.publishedCourse') }}" class="text-gray-400 hover:text-yellow-400 transition duration-300">Courses</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">About Us</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">Instructors</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">Pricing</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">Blog</a></li>
-                    </ul>
-                </div>
+    <x-footer/>
 
-                <!-- Column 3 -->
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Support</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">Help Center</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">FAQs</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">Terms of Service</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">Privacy Policy</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">Cookie Policy</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">Contact Us</a></li>
-                    </ul>
-                </div>
 
-                <!-- Column 4 -->
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Newsletter</h4>
-                    <p class="text-gray-400 mb-4">Subscribe to get updates on new courses, discounts and special offers.</p>
-                    <form class="flex">
-                        <input type="email" placeholder="Your email" class="bg-gray-700 text-white px-4 py-2 rounded-l focus:outline-none focus:ring-2 focus:ring-yellow-400 w-full">
-                        <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-black px-4 py-2 rounded-r transition duration-300">
-                            <i class="fas fa-paper-plane"></i>
-                        </button>
-                    </form>
-                    <div class="mt-4 flex items-center text-gray-400">
-                        <i class="fas fa-phone-alt mr-2"></i>
-                        <span>+1 (555) 123-4567</span>
-                    </div>
-                    <div class="mt-2 flex items-center text-gray-400">
-                        <i class="fas fa-envelope mr-2"></i>
-                        <span>support@eduverse.com</span>
-                    </div>
-                </div>
-            </div>
+    {{-- Including JS directly below for standalone example --}}
+    <script src="{{ asset('assets/js/certificate.js') }}"></script>
 
-            <div class="border-t border-gray-700 pt-6 flex flex-col md:flex-row justify-between items-center">
-                <p class="text-gray-400 text-sm mb-4 md:mb-0">© 2023 EduVerse University. All rights reserved.</p>
-                <div class="flex space-x-6">
-                    <a href="#" class="text-gray-400 hover:text-yellow-400 text-sm transition duration-300">Privacy Policy</a>
-                    <a href="#" class="text-gray-400 hover:text-yellow-400 text-sm transition duration-300">Terms of Service</a>
-                    <a href="#" class="text-gray-400 hover:text-yellow-400 text-sm transition duration-300">Sitemap</a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- JavaScript -->
-    <script src="{{ asset('assets/js/certificate.js') }}">
-
-    </script>
 </body>
 </html>

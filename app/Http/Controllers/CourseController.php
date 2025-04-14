@@ -225,7 +225,8 @@ private function getMockCourseContent($courseId)
             'https://sample-videos.com/video123/mp4/240/big_buck_bunny_240p_2mb.mp4',
             'https://sample-videos.com/video123/mp4/240/big_buck_bunny_240p_5mb.mp4'
         ],
-        7=> [ 'https://sample-videos.com/video123/mp4/240/big_buck_bunny_240p_1mb.mp4',
+        7=> [// AI
+            'https://sample-videos.com/video123/mp4/240/big_buck_bunny_240p_1mb.mp4',
             'https://sample-videos.com/video123/mp4/240/big_buck_bunny_240p_2mb.mp4',
             'https://sample-videos.com/video123/mp4/240/big_buck_bunny_240p_5mb.mp4'
         ]
